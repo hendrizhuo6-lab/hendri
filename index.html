@@ -9,114 +9,96 @@
 
   <body>
     <header>
-      <h1>Note Catatan</h1>
-
+      <h1>📝 Note Catatan</h1>
       <nav>
-        <!-- <a href="#">Dashboard</a> -->
+        <button id="btn-logout" class="btn-logout" title="Logout">🚪 Keluar</button>
         <a
           href="https://script.google.com/macros/s/AKfycbw2IvmPs018jxB2aO5WVWRDDnYPBgKW6bDfYxcWqNNakai_6mt41KewnxmkhYYEbATkkQ/exec"
-          >BACKUPSCRIPT</a
+          target="_blank"
+          >💾 BACKUPSCRIPT</a
         >
       </nav>
     </header>
+
     <div class="container-all">
       <main>
         <section id="note-form-section" class="hidden">
-          <h2>Tambah Catatan</h2>
-
+          <h2>✏️ Tambah Catatan</h2>
           <form id="note-form">
+            <input type="hidden" name="csrf_token" id="csrf-token" />
             <label for="title">Judul</label>
-            <input type="text" name="title" id="title" required />
-
+            <input type="text" name="title" id="title" required placeholder="Masukkan judul catatan..." />
             <label for="content">Isi Catatan</label>
-            <textarea name="content" id="note-content" required></textarea>
-
-            <label for="note-favorite">
+            <textarea name="content" id="note-content" required placeholder="Tulis isi catatan di sini..."></textarea>
+            <label for="note-favorite" class="checkbox-label">
               <input type="checkbox" name="favorite" id="note-favorite" />
-              <span>Tandai sebagai penting</span>
+              <span>⭐ Tandai sebagai penting</span>
             </label>
-
-            <button type="submit" id="save-btn">Simpan Catatan</button>
-            <button type="button" id="cancel-btn">Batal</button>
+            <div class="form-actions">
+              <button type="submit" id="save-btn">💾 Simpan Catatan</button>
+              <button type="button" id="cancel-btn">❌ Batal</button>
+            </div>
           </form>
         </section>
 
-        <section>
+        <section class="search-section">
           <form id="search-form">
-            <input
-              type="search"
-              name="search"
-              id="search-input"
-              placeholder="Cari catatan..."
-            />
+            <input type="search" name="search" id="search-input" placeholder="🔍 Cari catatan..." />
             <button type="submit">Cari</button>
           </form>
-
-          <button id="btn-add-note" class="button-catatan">
-            + Tambah Catatan
-          </button>
+          <button id="btn-add-note" class="button-catatan">➕ Tambah Catatan</button>
         </section>
 
         <section id="recent-note-section">
-          <h2>Catatan Terbaru</h2>
-          <!-- Wadah kosong khusus untuk JavaScript -->
+          <h2>📋 Catatan Terbaru</h2>
           <div id="recent-note-list"></div>
         </section>
       </main>
 
       <footer>
-        <p>Dashboard Catatan</p>
+        <p>© 2026 Dashboard Catatan | Dibuat dengan ❤️</p>
       </footer>
     </div>
 
-    <!-- Modal Mengambang untuk View Catatan -->
+    <!-- Modal untuk View Catatan -->
     <div id="note-modal" class="modal-overlay">
       <div class="modal-content">
         <h2 id="modal-title"></h2>
-
         <div class="modal-body">
           <p id="modal-body"></p>
         </div>
-
         <div class="modal-actions">
-          <button type="button" id="modal-edit-btn" class="btn-edit">
-            Edit
-          </button>
-          <button type="button" id="modal-close-btn" class="btn-close">
-            Tutup
-          </button>
+          <button type="button" id="modal-edit-btn" class="btn-edit">✏️ Edit</button>
+          <button type="button" id="modal-close-btn" class="btn-close">❌ Tutup</button>
         </div>
       </div>
     </div>
 
+    <!-- Modal untuk Edit Catatan -->
     <div id="edit-modal" class="modal-overlay">
       <div class="modal-content">
-        <h2>Edit Catatan</h2>
-
+        <h2>✏️ Edit Catatan</h2>
         <form id="edit-note-form">
+          <input type="hidden" name="csrf_token" id="edit-csrf-token" />
           <label for="edit-title">Judul</label>
-          <input type="text" id="edit-title" required />
-
+          <input type="text" id="edit-title" required placeholder="Masukkan judul..." />
           <label for="edit-content">Isi Catatan</label>
-          <textarea id="edit-content" required></textarea>
-
-          <label>
+          <textarea id="edit-content" required placeholder="Tulis isi catatan..."></textarea>
+          <label class="checkbox-label">
             <input type="checkbox" id="edit-important" />
-            Tandai sebagai penting
+            <span>⭐ Tandai sebagai penting</span>
           </label>
-
           <div class="modal-actions">
-            <button type="button" id="edit-cancel-btn">Batal</button>
-
-            <button type="submit" id="edit-save-btn">Simpan Perubahan</button>
+            <button type="button" id="edit-cancel-btn">❌ Batal</button>
+            <button type="submit" id="edit-save-btn">💾 Simpan Perubahan</button>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Di dalam tag head atau sebelum main.js -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
+    <script src="monitoring.js"></script>
     <script src="auth.js"></script>
     <script src="main.js"></script>
   </body>
