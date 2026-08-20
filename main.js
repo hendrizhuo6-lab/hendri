@@ -1,15 +1,32 @@
-// main.js - Versi Lengkap dengan Supabase
+// main.js - Versi Fitur Catatan (Terproteksi Auth)
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Cek koneksi Supabase
+document.addEventListener("DOMContentLoaded", async function () {
+  // 1. Cek koneksi Supabase
   if (typeof supabaseClient === "undefined") {
     console.error("❌ Supabase client not found!");
     alert("Error: Supabase tidak terhubung. Periksa konfigurasi.");
     return;
   }
-  // console.log('✅ Supabase connected');
 
-  // Ambil elemen DOM
+  // ================================
+  // PROTEKSI KEAMANAN (AUTH CHECK)
+  // ================================
+  // Ambil sesi user saat ini dari Supabase
+  const { data: { session } } = await supabaseClient.auth.getSession();
+
+  // Jika tidak ada sesi aktif, blokir akses dan alihkan ke halaman utama/login
+  if (!session) {
+    alert("Akses ditolak! Anda harus login terlebih dahulu.");
+    window.location.href = "https://hendrizhuo6-lab.github.io/";
+    return;
+  }
+
+  // Simpan ID user yang sedang login
+  const currentUserId = session.user.id;
+
+  // ================================
+  // ELEMEN DOM
+  // ================================
   const btnAddNote = document.getElementById("btn-add-note");
   const noteFormSection = document.getElementById("note-form-section");
   const cancelBtn = document.getElementById("cancel-btn");
@@ -38,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // FUNGSI CRUD DENGAN SUPABASE
   // ================================
 
-  // Ambil semua catatan
+  // Ambil semua catatan (Filtered by RLS)
   async function fetchNotes() {
     try {
       const { data, error } = await supabaseClient
@@ -54,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Tambah catatan
+  // Tambah catatan (Disambungkan dengan user_id)
   async function addNote(title, content, is_important) {
     try {
       const { data, error } = await supabaseClient
@@ -64,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
             title: title,
             content: content,
             is_important: is_important,
+            user_id: currentUserId, // Menyimpan ID milik akun yang login
             created_at: new Date().toISOString(),
           },
         ])
@@ -131,7 +149,7 @@ document.addEventListener("DOMContentLoaded", function () {
         note.title,
         note.content,
         note.is_important,
-        note.id,
+        note.id
       );
       noteList.appendChild(noteElement);
     });
@@ -198,18 +216,14 @@ document.addEventListener("DOMContentLoaded", function () {
     activeNoteElement = noteElement;
     activeNoteId = noteElement.dataset.id;
 
-    const currentTitle = noteElement.dataset.title;
-    const currentContent = noteElement.dataset.content;
-
-    modalTitle.textContent = currentTitle;
-    modalBody.textContent = currentContent;
+    modalTitle.textContent = noteElement.dataset.title;
+    modalBody.textContent = noteElement.dataset.content;
 
     noteModal.classList.add("active");
   }
 
   function closeModal() {
     noteModal.classList.remove("active");
-
     activeNoteElement = null;
     activeNoteId = null;
   }
@@ -218,12 +232,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // EVENT LISTENERS
   // ================================
 
-  // Tampilkan/Sembunyikan Form
   btnAddNote.addEventListener("click", function () {
     noteFormSection.classList.toggle("hidden");
   });
 
-  // Tombol Batal
   if (cancelBtn) {
     cancelBtn.addEventListener("click", function () {
       noteFormSection.classList.add("hidden");
@@ -231,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Submit Form
+  // Submit Tambah Catatan
   noteForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -255,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newNote.title,
         newNote.content,
         newNote.is_important,
-        newNote.id,
+        newNote.id
       );
       noteList.prepend(noteElement);
 
@@ -274,16 +286,12 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.textContent = "Simpan Catatan";
   });
 
-  // Modal Edit
+  // Modal Edit Actions
   modalEditBtn.addEventListener("click", () => {
     if (!activeNoteElement || !activeNoteId) return;
 
-    const currentTitle = activeNoteElement.dataset.title;
-    const currentContent = activeNoteElement.dataset.content;
-
-    editTitle.value = currentTitle;
-    editContent.value = currentContent;
-
+    editTitle.value = activeNoteElement.dataset.title;
+    editContent.value = activeNoteElement.dataset.content;
     editImportant.checked = activeNoteElement.classList.contains("important");
 
     noteModal.classList.remove("active");
@@ -295,73 +303,61 @@ document.addEventListener("DOMContentLoaded", function () {
     noteModal.classList.add("active");
   });
 
-  //tombol submit
- // Ganti bagian editForm submit dengan kode ini:
-editForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  // Submit Update Catatan
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const newTitle = editTitle.value.trim();
-  const newContent = editContent.value.trim();
-  const newImportant = editImportant.checked;
+    const newTitle = editTitle.value.trim();
+    const newContent = editContent.value.trim();
+    const newImportant = editImportant.checked;
 
-  if (!newTitle || !newContent) {
-    alert("Judul dan isi catatan harus diisi!");
-    return;
-  }
-
-  const updatedNote = await updateNote(
-    activeNoteId,
-    newTitle,
-    newContent,
-    newImportant,
-  );
-
-  if (!updatedNote) {
-    alert("Gagal mengupdate catatan.");
-    return;
-  }
-
-  // Update data di element
-  activeNoteElement.dataset.title = updatedNote.title;
-  activeNoteElement.dataset.content = updatedNote.content;
-
-  // Update judul
-  activeNoteElement.querySelector(".note-title").textContent = updatedNote.title;
-  
-  // Update isi
-  activeNoteElement.querySelector(".note-body").textContent = updatedNote.content;
-
-  // Update badge penting dengan benar
-  const previewDiv = activeNoteElement.querySelector(".note-content-preview");
-  const existingBadge = previewDiv.querySelector(".badge-important");
-  
-  if (updatedNote.is_important) {
-    if (!existingBadge) {
-      const badge = document.createElement("span");
-      badge.className = "badge-important";
-      badge.textContent = "⭐ Penting";
-      previewDiv.appendChild(badge);
+    if (!newTitle || !newContent) {
+      alert("Judul dan isi catatan harus diisi!");
+      return;
     }
-    activeNoteElement.classList.add("important");
-  } else {
-    if (existingBadge) {
-      existingBadge.remove();
+
+    const updatedNote = await updateNote(
+      activeNoteId,
+      newTitle,
+      newContent,
+      newImportant
+    );
+
+    if (!updatedNote) {
+      alert("Gagal mengupdate catatan.");
+      return;
     }
-    activeNoteElement.classList.remove("important");
-  }
 
-  // Tutup modal edit
-  editModal.classList.remove("active");
-  
-  // Tampilkan modal view dengan data baru
-  modalTitle.textContent = updatedNote.title;
-  modalBody.textContent = updatedNote.content;
-  noteModal.classList.add("active");
+    activeNoteElement.dataset.title = updatedNote.title;
+    activeNoteElement.dataset.content = updatedNote.content;
 
-  console.log("Berhasil update:", updatedNote);
-});
+    activeNoteElement.querySelector(".note-title").textContent = updatedNote.title;
+    activeNoteElement.querySelector(".note-body").textContent = updatedNote.content;
 
-  // Tutup Modal
+    const previewDiv = activeNoteElement.querySelector(".note-content-preview");
+    const existingBadge = previewDiv.querySelector(".badge-important");
+
+    if (updatedNote.is_important) {
+      if (!existingBadge) {
+        const badge = document.createElement("span");
+        badge.className = "badge-important";
+        badge.textContent = "⭐ Penting";
+        previewDiv.appendChild(badge);
+      }
+      activeNoteElement.classList.add("important");
+    } else {
+      if (existingBadge) {
+        existingBadge.remove();
+      }
+      activeNoteElement.classList.remove("important");
+    }
+
+    editModal.classList.remove("active");
+    modalTitle.textContent = updatedNote.title;
+    modalBody.textContent = updatedNote.content;
+    noteModal.classList.add("active");
+  });
+
   modalCloseBtn.addEventListener("click", closeModal);
 
   noteModal.addEventListener("click", function (e) {
@@ -370,7 +366,7 @@ editForm.addEventListener("submit", async (e) => {
     }
   });
 
-  // Pencarian
+  // Filter Pencarian
   searchForm.addEventListener("submit", function (event) {
     event.preventDefault();
     const keyword = searchInput.value.toLowerCase().trim();
@@ -390,8 +386,6 @@ editForm.addEventListener("submit", async (e) => {
     });
   });
 
-  // ================================
-  // LOAD DATA
-  // ================================
+  // Load Data Pertama Kali
   loadNotes();
 });
