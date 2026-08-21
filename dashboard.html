@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dasbor — Note Catatan</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <div class="dash-page">
+
+    <!-- ============================================
+         HEADER
+         ============================================ -->
+    <header class="dash-header">
+      <div class="dash-header-left">
+        <h1>📝 Note Catatan</h1>
+      </div>
+      <div class="dash-header-right">
+        <span id="user-email" class="user-email"></span>
+        <button id="logout-btn" class="btn-logout">Keluar</button>
+      </div>
+    </header>
+
+    <main class="dash-main">
+
+      <!-- ============================================
+           TOOLBAR: search, filter kategori, tombol tambah
+           ============================================ -->
+      <div class="dash-toolbar">
+        <div class="toolbar-filters">
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="🔍 Cari catatan..."
+          />
+          <select id="category-filter" class="category-filter">
+            <option value="">Semua Kategori</option>
+          </select>
+          <label class="checkbox-filter">
+            <input type="checkbox" id="important-filter" />
+            ⭐ Penting saja
+          </label>
+        </div>
+        <button id="new-note-btn" class="btn-primary">+ Catatan Baru</button>
+      </div>
+
+      <!-- ============================================
+           STATUS: loading / kosong
+           ============================================ -->
+      <div id="loading-state" class="state-box hidden">
+        <p>⏳ Memuat catatan...</p>
+      </div>
+
+      <div id="empty-state" class="state-box hidden">
+        <p>Belum ada catatan. Yuk buat catatan pertamamu!</p>
+      </div>
+
+      <div id="error-state" class="state-box state-error hidden"></div>
+
+      <!-- ============================================
+           GRID CATATAN
+           ============================================ -->
+      <div id="notes-grid" class="notes-grid"></div>
+
+    </main>
+  </div>
+
+  <!-- ============================================
+       MODAL: TAMBAH / EDIT CATATAN
+       ============================================ -->
+  <div id="note-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modal-title">Catatan Baru</h2>
+        <button id="modal-close-btn" class="btn-close" type="button">&times;</button>
+      </div>
+
+      <div id="modal-message" class="form-message hidden"></div>
+
+      <form id="note-form">
+        <input type="hidden" id="note-id" value="" />
+
+        <label for="note-title">Judul</label>
+        <input
+          type="text"
+          id="note-title"
+          required
+          placeholder="Judul catatan"
+          maxlength="150"
+        />
+
+        <label for="note-category">Kategori</label>
+        <input
+          type="text"
+          id="note-category"
+          placeholder="Umum"
+          list="category-suggestions"
+          maxlength="50"
+        />
+        <datalist id="category-suggestions"></datalist>
+
+        <label for="note-content">Isi Catatan</label>
+        <textarea
+          id="note-content"
+          rows="8"
+          required
+          placeholder="Tulis catatanmu di sini..."
+        ></textarea>
+
+        <label class="checkbox-inline">
+          <input type="checkbox" id="note-important" />
+          Tandai sebagai penting
+        </label>
+
+        <div class="modal-actions">
+          <button type="button" id="modal-cancel-btn" class="btn-secondary">Batal</button>
+          <button type="submit" id="modal-save-btn" class="btn-primary">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================
+       MODAL: KONFIRMASI HAPUS
+       ============================================ -->
+  <div id="delete-modal" class="modal-overlay hidden">
+    <div class="modal-box modal-box-small">
+      <h2>Hapus catatan?</h2>
+      <p class="modal-confirm-text">
+        Catatan "<span id="delete-note-title"></span>" akan dihapus permanen dan tidak bisa dikembalikan.
+      </p>
+      <div class="modal-actions">
+        <button type="button" id="delete-cancel-btn" class="btn-secondary">Batal</button>
+        <button type="button" id="delete-confirm-btn" class="btn-danger">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

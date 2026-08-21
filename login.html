@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Masuk — Note Catatan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- Panel kiri: branding -->
+    <div class="auth-brand">
+      <div class="auth-brand-content">
+        <h1>📝 Note Catatan</h1>
+        <p>Simpan dan rapikan semua catatanmu di satu tempat, bisa diakses kapan saja hanya dengan akunmu sendiri.</p>
+      </div>
+    </div>
+
+    <!-- Panel kanan: form login -->
+    <div class="auth-form-panel">
+      <div class="auth-card">
+        <h2>Masuk ke akunmu</h2>
+        <p class="auth-subtitle">Masukkan email dan password untuk melanjutkan.</p>
+
+        <div id="login-message" class="form-message hidden"></div>
+
+        <form id="login-form">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" required placeholder="nama@email.com" autocomplete="email" />
+
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" required placeholder="Masukkan password" autocomplete="current-password" />
+
+          <button type="submit">Masuk</button>
+        </form>
+
+        <p class="auth-switch">
+          Belum punya akun? <a href="register.html">Daftar di sini</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+</body>
+</html>
