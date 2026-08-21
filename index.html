@@ -1,88 +1,26 @@
-<body>
-  <header>
-    <h1>📝 Note Catatan</h1>
-    <nav>
-      <!-- Tombol logout dihapus -->
-      <a href="https://script.google.com/macros/s/AKfycbw2IvmPs018jxB2aO5WVWRDDnYPBgKW6bDfYxcWqNNakai_6mt41KewnxmkhYYEbATkkQ/exec" target="_blank">💾 BACKUPSCRIPT</a>
-    </nav>
-    <link rel="stylesheet" href="styles.css">
-  </header>
-
-  <div class="container-all">
-    <main>
-      <section id="note-form-section" class="hidden">
-        <h2>✏️ Tambah Catatan</h2>
-        <form id="note-form">
-          <input type="hidden" name="csrf_token" id="csrf-token" />
-          <label for="title">Judul</label>
-          <input type="text" name="title" id="title" required placeholder="Masukkan judul catatan..." />
-          <label for="content">Isi Catatan</label>
-          <textarea name="content" id="note-content" required placeholder="Tulis isi catatan di sini..."></textarea>
-          <label for="note-favorite" class="checkbox-label">
-            <input type="checkbox" name="favorite" id="note-favorite" />
-            <span>⭐ Tandai sebagai penting</span>
-          </label>
-          <div class="form-actions">
-            <button type="submit" id="save-btn">💾 Simpan Catatan</button>
-            <button type="button" id="cancel-btn">❌ Batal</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="search-section">
-        <form id="search-form">
-          <input type="search" name="search" id="search-input" placeholder="🔍 Cari catatan..." />
-          <button type="submit">Cari</button>
-        </form>
-        <button id="btn-add-note" class="button-catatan">➕ Tambah Catatan</button>
-      </section>
-
-      <section id="recent-note-section">
-        <h2>📋 Catatan Terbaru</h2>
-        <div id="recent-note-list"></div>
-      </section>
-    </main>
-
-    <footer>
-      <p>© 2026 Dashboard Catatan</p>
-    </footer>
-  </div>
-
-  <!-- Modal View Catatan -->
-  <div id="note-modal" class="modal-overlay">
-    <div class="modal-content">
-      <h2 id="modal-title"></h2>
-      <div class="modal-body" id="modal-body"></div>
-      <div class="modal-actions">
-        <button type="button" id="modal-edit-btn" class="btn-edit">✏️ Edit</button>
-        <button type="button" id="modal-close-btn" class="btn-close">❌ Tutup</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Edit Catatan -->
-  <div id="edit-modal" class="modal-overlay">
-    <div class="modal-content">
-      <h2>✏️ Edit Catatan</h2>
-      <form id="edit-note-form">
-        <input type="hidden" name="csrf_token" id="edit-csrf-token" />
-        <label for="edit-title">Judul</label>
-        <input type="text" id="edit-title" required placeholder="Masukkan judul..." />
-        <label for="edit-content">Isi Catatan</label>
-        <textarea id="edit-content" required placeholder="Tulis isi catatan..."></textarea>
-        <label class="checkbox-label">
-          <input type="checkbox" id="edit-important" />
-          <span>⭐ Tandai sebagai penting</span>
-        </label>
-        <div class="modal-actions">
-          <button type="button" id="edit-cancel-btn">❌ Batal</button>
-          <button type="submit" id="edit-save-btn">💾 Simpan Perubahan</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Note Catatan</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
-  <script src="main.js"></script>
+</head>
+<body>
+  <script>
+    // Halaman ini hanya bertugas mengarahkan:
+    // - Kalau sudah login -> dashboard.html (dibuat di tahap berikutnya)
+    // - Kalau belum login -> login.html
+    (async function () {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+
+      if (session) {
+        window.location.href = 'dashboard.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
 </body>
+</html>
