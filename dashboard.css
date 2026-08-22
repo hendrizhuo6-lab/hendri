@@ -780,3 +780,27 @@
     min-height: 120px;
   }
 }
+
+#edit-note-modal .note-body {
+  flex: 1;
+  overflow-y: auto;
+  outline: none;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 8px 2px;
+  
+  /* TAMBAHKAN INI AGAR FORMAT TAMPIL SAMA PERSIS */
+  white-space: pre-wrap; 
+}
+
+/* Memastikan bullet list hasil paste tampil rapi */
+#edit-note-modal .note-body ul, 
+#edit-note-modal .note-body ol {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+#edit-note-modal .note-body p {
+  margin-bottom: 8px;
+}
