@@ -1,0 +1,169 @@
+:root {
+      --bg-color: #fff7d1;
+      --header-color: rgba(0, 0, 0, 0.05);
+      --text-color: #2c3e50;
+      --hover-color: rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f7;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    /* Container Utama Jendela Sticky Note */
+    .sticky-note {
+      width: 320px;
+      height: 380px;
+      min-width: 240px;
+      min-height: 220px;
+      background-color: var(--bg-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      resize: both; /* Resize dari sudut kanan bawah */
+      transition: background-color 0.2s;
+    }
+
+    /* Header Navigation */
+    .note-header {
+      background-color: var(--header-color);
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-color);
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background-color: var(--hover-color);
+    }
+
+    /* Custom Color Picker */
+    .color-picker-wrapper {
+      position: relative;
+      width: 28px;
+      height: 28px;
+    }
+
+    .color-picker-wrapper input[type="color"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    /* Area Editor Content */
+    .note-body {
+      padding: 12px;
+      flex: 1;
+      outline: none;
+      color: var(--text-color);
+      font-size: 15px;
+      line-height: 1.5;
+      overflow-y: auto;
+    }
+
+    .note-body img {
+      max-width: 100%;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+
+    .note-body ul {
+      padding-left: 20px;
+    }
+
+    /* Formatting & Action Toolbar */
+    .note-toolbar {
+      padding: 6px 10px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .toolbar-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .fmt-btn {
+      background: none;
+      border: none;
+      font-weight: 600;
+      font-size: 13px;
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .fmt-btn:hover {
+      background-color: var(--hover-color);
+    }
+
+    /* Modifikasi Khusus Tombol Save & Cancel */
+    .btn-save:hover {
+      background-color: rgba(46, 204, 113, 0.2);
+    }
+
+    .btn-cancel:hover {
+      background-color: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+    }
+
+    /* Minimize Mode */
+    .sticky-note.minimized .note-body,
+    .sticky-note.minimized .note-toolbar {
+      display: none;
+    }
+
+    .sticky-note.minimized {
+      height: auto !important;
+      min-height: 0;
+      resize: none;
+    }
