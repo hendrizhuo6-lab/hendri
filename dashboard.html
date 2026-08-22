@@ -11,9 +11,7 @@
 
   <div class="dash-page">
 
-    <!-- ============================================
-         HEADER
-         ============================================ -->
+    <!-- HEADER -->
     <header class="dash-header">
       <div class="dash-header-left">
         <h1>📝 Note Catatan</h1>
@@ -26,9 +24,7 @@
 
     <main class="dash-main">
 
-      <!-- ============================================
-           TOOLBAR: search, filter kategori, tombol tambah
-           ============================================ -->
+      <!-- TOOLBAR -->
       <div class="dash-toolbar">
         <div class="toolbar-filters">
           <input
@@ -40,6 +36,7 @@
           <select id="category-filter" class="category-filter">
             <option value="">Semua Kategori</option>
           </select>
+          <datalist id="category-suggestions"></datalist>
           <label class="checkbox-filter">
             <input type="checkbox" id="important-filter" />
             ⭐ Penting saja
@@ -48,9 +45,7 @@
         <button id="new-note-btn" class="btn-primary">+ Catatan Baru</button>
       </div>
 
-      <!-- ============================================
-           STATUS: loading / kosong
-           ============================================ -->
+      <!-- STATUS STATE -->
       <div id="loading-state" class="state-box hidden">
         <p>⏳ Memuat catatan...</p>
       </div>
@@ -61,66 +56,129 @@
 
       <div id="error-state" class="state-box state-error hidden"></div>
 
-      <!-- ============================================
-           GRID CATATAN
-           ============================================ -->
+      <!-- GRID CATATAN -->
       <div id="notes-grid" class="notes-grid"></div>
 
     </main>
   </div>
 
   <!-- ============================================
-       MODAL: TAMBAH / EDIT CATATAN
+       MODAL: TAMBAH CATATAN
        ============================================ -->
-  <div id="note-modal" class="modal-overlay hidden">
+  <div id="add-note-modal" class="modal-overlay hidden">
     <div class="modal-box">
       <div class="modal-header">
-        <h2 id="modal-title">Catatan Baru</h2>
-        <button id="modal-close-btn" class="btn-close" type="button">&times;</button>
+        <h2>Catatan Baru</h2>
+        <button id="add-modal-close-btn" class="btn-close" type="button">&times;</button>
       </div>
 
-      <div id="modal-message" class="form-message hidden"></div>
+      <div id="add-modal-message" class="form-message hidden"></div>
 
-      <form id="note-form">
-        <input type="hidden" id="note-id" value="" />
-
-        <label for="note-title">Judul</label>
+      <form id="add-note-form">
+        <label for="add-note-title">Judul</label>
         <input
           type="text"
-          id="note-title"
+          id="add-note-title"
           required
           placeholder="Judul catatan"
           maxlength="150"
         />
 
-        <label for="note-category">Kategori</label>
+        <label for="add-note-category">Kategori</label>
         <input
           type="text"
-          id="note-category"
+          id="add-note-category"
           placeholder="Umum"
           list="category-suggestions"
           maxlength="50"
         />
-        <datalist id="category-suggestions"></datalist>
 
-        <label for="note-content">Isi Catatan</label>
+        <label for="add-note-content">Isi Catatan</label>
         <textarea
-          id="note-content"
+          id="add-note-content"
           rows="8"
           required
           placeholder="Tulis catatanmu di sini..."
         ></textarea>
 
         <label class="checkbox-inline">
-          <input type="checkbox" id="note-important" />
-          Tandai sebagai penting
+          <input type="checkbox" id="add-note-important" />
+          ⭐ Tandai sebagai penting
         </label>
 
-        <div class="modal-actions">
-          <button type="button" id="modal-cancel-btn" class="btn-secondary">Batal</button>
-          <button type="submit" id="modal-save-btn" class="btn-primary">Simpan</button>
+        <div class="modal-footer">
+          <div class="modal-actions">
+            <button type="button" id="add-modal-cancel-btn" class="btn-secondary">Batal</button>
+            <button type="submit" id="add-modal-save-btn" class="btn-primary">Simpan</button>
+          </div>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ============================================
+       MODAL: EDIT CATATAN (STICKY NOTE)
+       ============================================ -->
+  <div id="edit-note-modal" class="modal-overlay hidden">
+    <div class="sticky-note">
+      
+      <!-- Header Controls -->
+      <header class="note-header">
+        <div class="header-actions">
+          <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
+          <div class="color-picker-wrapper" title="Ubah Warna Catatan">
+            <button type="button" class="icon-btn">🎨</button>
+            <input type="color" id="bgColorPicker" value="#fff7d1">
+          </div>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="icon-btn" id="btnMinimize" title="Minimize (—)">—</button>
+          <button type="button" class="icon-btn" id="edit-delete-btn" title="Hapus Catatan">🗑️</button>
+          <button type="button" class="icon-btn" id="edit-close-btn" title="Menu Opsional">⋯</button>
+        </div>
+      </header>
+
+      <div id="edit-modal-message" class="form-message hidden"></div>
+
+      <!-- Form Edit -->
+      <form id="edit-note-form">
+        <input type="hidden" id="edit-note-id" value="" />
+
+        <div class="note-inputs">
+          <input type="text" id="edit-note-title" placeholder="Judul Catatan" maxlength="150" required />
+          <input type="text" id="edit-note-category" placeholder="Kategori (mis: Umum)" list="category-suggestions" maxlength="50" />
+        </div>
+
+        <!-- Editor Area -->
+        <div class="note-body" contenteditable="true" id="editor">
+          Tulis catatanmu di sini...
+        </div>
+
+        <label class="checkbox-inline">
+          <input type="checkbox" id="edit-note-important" />
+          ⭐ Tandai sebagai penting
+        </label>
+
+        <!-- Formatting & Save/Cancel Toolbar -->
+        <footer class="note-toolbar">
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-bold" title="Bold"><b>B</b></button>
+            <button type="button" class="fmt-btn" id="btn-italic" title="Italic"><i>I</i></button>
+            <button type="button" class="fmt-btn" id="btn-underline" title="Underline"><u>U</u></button>
+            <button type="button" class="fmt-btn" id="btn-strike" title="Strikethrough"><s>S</s></button>
+            <button type="button" class="fmt-btn" id="btn-list" title="Bulleted List">•</button>
+            
+            <button type="button" class="fmt-btn" id="btn-image" title="Sisipkan Gambar">🖼️</button>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+          </div>
+
+          <div class="toolbar-group">
+            <button type="submit" class="fmt-btn btn-save" title="Simpan Catatan" id="modal-save-btn">💾</button>
+            <button type="button" class="fmt-btn btn-cancel" title="Batal" id="modal-cancel-btn">✕</button>
+          </div>
+        </footer>
+      </form>
+
     </div>
   </div>
 
@@ -143,5 +201,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="dashboard.js"></script>
+  <script></script>
 </body>
 </html>
