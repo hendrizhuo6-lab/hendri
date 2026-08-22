@@ -6,6 +6,7 @@
   <title>Dasbor — Note Catatan</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="dashboard.css" />
+  <!-- <link rel="stylesheet" href="sticky.css"> -->
 </head>
 <body>
 
@@ -144,11 +145,6 @@
       <form id="edit-note-form">
         <input type="hidden" id="edit-note-id" value="" />
 
-        <div class="note-inputs">
-          <input type="text" id="edit-note-title" placeholder="Judul Catatan" maxlength="150" required />
-          <input type="text" id="edit-note-category" placeholder="Kategori (mis: Umum)" list="category-suggestions" maxlength="50" />
-        </div>
-
         <!-- Editor Area -->
         <div class="note-body" contenteditable="true" id="editor">
           Tulis catatanmu di sini...
@@ -178,7 +174,6 @@
           </div>
         </footer>
       </form>
-
     </div>
   </div>
 
@@ -201,6 +196,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="dashboard.js"></script>
-  <script></script>
+  <script src="sticky.js"></script>
 </body>
 </html>
