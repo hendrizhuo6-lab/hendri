@@ -310,7 +310,7 @@
   color: #475569;
   font-size: 0.88rem;
   line-height: 1.6;
-  white-space: pre-wrap;
+  word-break: break-word;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 4;
@@ -492,7 +492,7 @@
 }
 
 /* ============================================
-   MODAL EDIT (STICKY NOTE WITH WORKING RESIZE)
+   MODAL EDIT (STICKY NOTE EDITOR)
    ============================================ */
 
 #edit-note-modal .sticky-note {
@@ -501,11 +501,9 @@
   --text-color: #2c3e50;
   --hover-color: rgba(0, 0, 0, 0.08);
 
-  /* UTAMA: Aktifkan Fitur Resize */
   overflow: hidden !important;
   resize: both !important;
 
-  /* Ukuran awal & Batas resize fleksibel */
   width: 400px;
   height: 350px;
   min-width: 280px;
@@ -593,6 +591,17 @@
   font-size: 0.95rem;
   line-height: 1.6;
   padding: 8px 2px;
+  word-break: break-word;
+}
+
+#edit-note-modal .note-body ul, 
+#edit-note-modal .note-body ol {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+
+#edit-note-modal .note-body p {
+  margin-bottom: 8px;
 }
 
 #edit-note-modal .note-body img {
@@ -779,28 +788,4 @@
   #edit-note-modal .note-body {
     min-height: 120px;
   }
-}
-
-#edit-note-modal .note-body {
-  flex: 1;
-  overflow-y: auto;
-  outline: none;
-  color: var(--text-color);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  padding: 8px 2px;
-  
-  /* TAMBAHKAN INI AGAR FORMAT TAMPIL SAMA PERSIS */
-  white-space: pre-wrap; 
-}
-
-/* Memastikan bullet list hasil paste tampil rapi */
-#edit-note-modal .note-body ul, 
-#edit-note-modal .note-body ol {
-  padding-left: 20px;
-  margin: 8px 0;
-}
-
-#edit-note-modal .note-body p {
-  margin-bottom: 8px;
 }
