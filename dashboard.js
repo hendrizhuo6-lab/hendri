@@ -471,22 +471,64 @@ document.addEventListener("DOMContentLoaded", async function () {
   await loadNotes();
 });
 
-// EVENT PASTE PERFEKTIF (RAPI, PERTAHANKAN ENTER & TENTUKAN SUSUNAN TEKS)
-const editor = document.getElementById('editor');
+// FITUR PASTE AUTOMATIS (TEKS RAPI + SCREENSHOT JADI URL)
+// FITUR PASTE SCREENSHOT AUTOMATIS (PERBAIKAN PUBLIC URL)
+(function () {
+  const editor = document.getElementById('editor');
 
-if (editor) {
-  editor.addEventListener('paste', function (e) {
-    e.preventDefault(); // Batalkan paste bawaan browser
+  if (editor) {
+    editor.addEventListener('paste', async function (e) {
+      const items = (e.clipboardData || e.originalEvent.clipboardData).items;
 
-    // Ambil data teks polos dari clipboard (menghilangkan style/margin raksasa dari web luar)
-    const textData = e.clipboardData.getData('text/plain');
+      for (let item of items) {
+        if (item.type.indexOf('image') !== -1) {
+          e.preventDefault();
 
-    if (textData) {
-      // Ubah karakter newline (\n) menjadi tag baris <br> agar susunan baris tetap sama
-      const formattedText = textData.replace(/\r\n|\r|\n/g, '<br>');
+          const file = item.getAsFile();
+          const fileName = `ss_${Date.now()}.png`;
 
-      // Masukkan teks ke dalam editor
-      document.execCommand('insertHTML', false, formattedText);
-    }
-  });
-}
+          // Tampilkan indikator loading
+          document.execCommand('insertHTML', false, '<span id="uploading-img">⏳ Mengunggah gambar...</span>');
+
+          // 1. Unggah file ke Storage
+          const { data: uploadData, error: uploadError } = await supabaseClient
+            .storage
+            .from('note-images')
+            .upload(fileName, file, {
+              cacheControl: '3600',
+              upsert: false
+            });
+
+          const loadingEl = document.getElementById('uploading-img');
+          if (loadingEl) loadingEl.remove();
+
+          if (uploadError) {
+            alert('❌ Gagal mengunggah screenshot: ' + uploadError.message);
+            return;
+          }
+
+          // 2. Ambil Public URL dengan sintaks yang tepat
+          const { data } = supabaseClient
+            .storage
+            .from('note-images')
+            .getPublicUrl(fileName);
+
+          const publicUrl = data.publicUrl;
+
+          // 3. Sisipkan tag <img> menggunakan Public URL
+          const imgHtml = `<br><img src="${publicUrl}" alt="Screenshot" style="max-width:100%; height:auto;"><br>`;
+          document.execCommand('insertHTML', false, imgHtml);
+          return;
+        }
+      }
+
+      // Jika paste teks biasa
+      const textData = e.clipboardData.getData('text/plain');
+      if (textData) {
+        e.preventDefault();
+        const formattedText = textData.replace(/\r\n|\r|\n/g, '<br>');
+        document.execCommand('insertHTML', false, formattedText);
+      }
+    });
+  }
+})();
