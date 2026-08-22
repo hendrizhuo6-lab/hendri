@@ -1,80 +1,88 @@
 document.addEventListener('DOMContentLoaded', async function () {
 
-  // ============================================
-  // CEK SUPABASE SUDAH TERHUBUNG
-  // ============================================
-
   if (typeof supabaseClient === 'undefined') {
     console.error('❌ Supabase client tidak ditemukan. Cek supabase-config.js');
     return;
   }
 
-  // ============================================
-  // CEK SESI LOGIN — kalau belum login, tendang ke login.html
-  // ============================================
-
+  // SESI LOGIN
   const { data: { session } } = await supabaseClient.auth.getSession();
-
   if (!session) {
     window.location.href = 'login.html';
     return;
   }
-
   const currentUser = session.user;
 
-  // Pantau perubahan sesi (misalnya token expired / logout dari tab lain)
   supabaseClient.auth.onAuthStateChange((event, newSession) => {
     if (event === 'SIGNED_OUT' || !newSession) {
       window.location.href = 'login.html';
     }
   });
 
-  // ============================================
-  // ELEMEN-ELEMEN DOM
-  // ============================================
-
+  // ELEMEN MAIN DASHBOARD
   const userEmailEl = document.getElementById('user-email');
   const logoutBtn = document.getElementById('logout-btn');
-
   const searchInput = document.getElementById('search-input');
   const categoryFilter = document.getElementById('category-filter');
   const importantFilter = document.getElementById('important-filter');
   const newNoteBtn = document.getElementById('new-note-btn');
-
   const loadingState = document.getElementById('loading-state');
   const emptyState = document.getElementById('empty-state');
   const errorState = document.getElementById('error-state');
   const notesGrid = document.getElementById('notes-grid');
-
-  const noteModal = document.getElementById('note-modal');
-  const modalTitle = document.getElementById('modal-title');
-  const modalMessage = document.getElementById('modal-message');
-  const noteForm = document.getElementById('note-form');
-  const noteIdInput = document.getElementById('note-id');
-  const noteTitleInput = document.getElementById('note-title');
-  const noteCategoryInput = document.getElementById('note-category');
-  const noteContentInput = document.getElementById('note-content');
-  const noteImportantInput = document.getElementById('note-important');
   const categorySuggestions = document.getElementById('category-suggestions');
-  const modalCloseBtn = document.getElementById('modal-close-btn');
-  const modalCancelBtn = document.getElementById('modal-cancel-btn');
-  const modalSaveBtn = document.getElementById('modal-save-btn');
 
+  // ELEMEN MODAL TAMBAH
+  const addNoteModal = document.getElementById('add-note-modal');
+  const addNoteForm = document.getElementById('add-note-form');
+  const addNoteTitleInput = document.getElementById('add-note-title');
+  const addNoteCategoryInput = document.getElementById('add-note-category');
+  const addNoteContentInput = document.getElementById('add-note-content');
+  const addNoteImportantInput = document.getElementById('add-note-important');
+  const addModalMessage = document.getElementById('add-modal-message');
+  const addModalCloseBtn = document.getElementById('add-modal-close-btn');
+  const addModalCancelBtn = document.getElementById('add-modal-cancel-btn');
+  const addModalSaveBtn = document.getElementById('add-modal-save-btn');
+
+  // ELEMEN MODAL EDIT
+  const editNoteModal = document.getElementById('edit-note-modal');
+  const editNoteForm = document.getElementById('edit-note-form');
+  const editNoteIdInput = document.getElementById('edit-note-id');
+  const editNoteTitleInput = document.getElementById('edit-note-title');
+  const editNoteCategoryInput = document.getElementById('edit-note-category');
+  const editNoteContentInput = document.getElementById('editor');
+  const editNoteImportantInput = document.getElementById('edit-note-important');
+  const editBgColorPicker = document.getElementById('bgColorPicker');
+  const editModalMessage = document.getElementById('edit-modal-message');
+  const editModalCloseBtn = document.getElementById('edit-close-btn');
+  const editModalCancelBtn = document.getElementById('modal-cancel-btn');
+  const editModalSaveBtn = document.getElementById('modal-save-btn');
+  const editBtnDelete = document.getElementById('edit-delete-btn');
+  const editBtnMinimize = document.getElementById('btnMinimize');
+  const editModalNewBtn = document.getElementById('modal-new-btn');
+
+  // TOOLBAR FORMATTING EDIT
+  const btnFmtBold = document.getElementById('btn-bold');
+  const btnFmtItalic = document.getElementById('btn-italic');
+  const btnFmtUnderline = document.getElementById('btn-underline');
+  const btnFmtStrike = document.getElementById('btn-strike');
+  const btnFmtList = document.getElementById('btn-list');
+  const btnFmtImage = document.getElementById('btn-image');
+  const editImageInput = document.getElementById('imageInput');
+
+  // ELEMEN MODAL HAPUS
   const deleteModal = document.getElementById('delete-modal');
   const deleteNoteTitle = document.getElementById('delete-note-title');
   const deleteCancelBtn = document.getElementById('delete-cancel-btn');
   const deleteConfirmBtn = document.getElementById('delete-confirm-btn');
 
-  // State lokal: semua catatan hasil fetch, sebelum difilter
+  // STATE LOKAL
   let allNotes = [];
   let noteIdPendingDelete = null;
 
   userEmailEl.textContent = currentUser.email;
 
-  // ============================================
   // HELPER
-  // ============================================
-
   function showMessage(el, text, type) {
     if (!el) return;
     el.textContent = text;
@@ -99,10 +107,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     return div.innerHTML;
   }
 
-  // ============================================
-  // LOGOUT
-  // ============================================
+  function executeCmd(command, value = null) {
+    document.execCommand(command, false, value);
+  }
 
+  // LOGOUT
   logoutBtn.addEventListener('click', async function () {
     logoutBtn.disabled = true;
     logoutBtn.textContent = 'Keluar...';
@@ -110,10 +119,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     window.location.href = 'login.html';
   });
 
-  // ============================================
-  // MUAT CATATAN DARI SUPABASE
-  // ============================================
-
+  // LOAD NOTES
   async function loadNotes() {
     loadingState.classList.remove('hidden');
     emptyState.classList.add('hidden');
@@ -138,7 +144,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     renderNotes();
   }
 
-  // Isi dropdown filter kategori berdasarkan kategori yang benar-benar dipakai
   function populateCategoryFilter() {
     const selected = categoryFilter.value;
     const categories = Array.from(
@@ -154,10 +159,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       .map(c => `<option value="${escapeHtml(c)}"></option>`).join('');
   }
 
-  // ============================================
-  // RENDER CATATAN (dengan filter search/kategori/penting)
-  // ============================================
-
+  // RENDER NOTES
   function renderNotes() {
     const keyword = searchInput.value.trim().toLowerCase();
     const category = categoryFilter.value;
@@ -187,13 +189,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     filtered.forEach(function (note) {
       const card = document.createElement('div');
       card.className = 'note-card' + (note.is_important ? ' note-card-important' : '');
+      if (note.color) card.style.backgroundColor = note.color;
+
       card.innerHTML = `
         <div class="note-card-top">
           <span class="note-card-title">${escapeHtml(note.title)}</span>
           ${note.is_important ? '<span class="note-star" title="Penting">⭐</span>' : ''}
         </div>
         <span class="note-category-badge">${escapeHtml(note.category || 'Umum')}</span>
-        <div class="note-card-content">${escapeHtml(note.content)}</div>
+        <div class="note-card-content">${note.content}</div>
         <div class="note-card-footer">
           <span class="note-date">${formatDate(note.updated_at || note.created_at)}</span>
           <div class="note-card-actions">
@@ -205,7 +209,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       notesGrid.appendChild(card);
     });
 
-    // Pasang event listener untuk tombol edit & hapus di setiap kartu
     notesGrid.querySelectorAll('.edit-btn').forEach(function (btn) {
       btn.addEventListener('click', () => openEditModal(btn.dataset.id));
     });
@@ -218,97 +221,164 @@ document.addEventListener('DOMContentLoaded', async function () {
   categoryFilter.addEventListener('change', renderNotes);
   importantFilter.addEventListener('change', renderNotes);
 
-  // ============================================
-  // MODAL TAMBAH / EDIT CATATAN
-  // ============================================
-
-  function openNewModal() {
-    modalTitle.textContent = 'Catatan Baru';
-    noteForm.reset();
-    noteIdInput.value = '';
-    modalMessage.classList.add('hidden');
-    modalSaveBtn.textContent = 'Simpan';
-    noteModal.classList.remove('hidden');
-    noteTitleInput.focus();
+  // KONTROL MODAL TAMBAH
+  function openAddModal() {
+    addNoteForm.reset();
+    addModalMessage.classList.add('hidden');
+    addNoteModal.classList.remove('hidden');
+    addNoteTitleInput.focus();
   }
 
+  function closeAddModal() {
+    addNoteModal.classList.add('hidden');
+  }
+
+  newNoteBtn.addEventListener('click', openAddModal);
+  addModalCloseBtn.addEventListener('click', closeAddModal);
+  addModalCancelBtn.addEventListener('click', closeAddModal);
+  addNoteModal.addEventListener('click', (e) => {
+    if (e.target === addNoteModal) closeAddModal();
+  });
+
+  addNoteForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const payload = {
+      title: addNoteTitleInput.value.trim(),
+      category: addNoteCategoryInput.value.trim() || 'Umum',
+      content: addNoteContentInput.value.trim(),
+      is_important: addNoteImportantInput.checked,
+      user_id: currentUser.id
+    };
+
+    addModalSaveBtn.disabled = true;
+    addModalSaveBtn.textContent = 'Menyimpan...';
+
+    const { error } = await supabaseClient.from('notes').insert(payload);
+
+    addModalSaveBtn.disabled = false;
+    addModalSaveBtn.textContent = 'Simpan';
+
+    if (error) {
+      showMessage(addModalMessage, '❌ Gagal menyimpan: ' + error.message, 'error');
+      return;
+    }
+
+    closeAddModal();
+    await loadNotes();
+  });
+
+  // KONTROL MODAL EDIT
   function openEditModal(id) {
     const note = allNotes.find(n => String(n.id) === String(id));
     if (!note) return;
 
-    modalTitle.textContent = 'Edit Catatan';
-    noteIdInput.value = note.id;
-    noteTitleInput.value = note.title;
-    noteCategoryInput.value = note.category || '';
-    noteContentInput.value = note.content;
-    noteImportantInput.checked = !!note.is_important;
-    modalMessage.classList.add('hidden');
-    modalSaveBtn.textContent = 'Simpan Perubahan';
-    noteModal.classList.remove('hidden');
-    noteTitleInput.focus();
+    editNoteIdInput.value = note.id;
+    editNoteTitleInput.value = note.title;
+    editNoteCategoryInput.value = note.category || '';
+    editNoteContentInput.innerHTML = note.content;
+    editNoteImportantInput.checked = !!note.is_important;
+    editBgColorPicker.value = note.color || '#fff7d1';
+
+    const stickyEl = editNoteModal.querySelector('.sticky-note');
+    if (stickyEl) {
+      stickyEl.style.setProperty('--bg-color', note.color || '#fff7d1');
+      stickyEl.classList.remove('minimized');
+    }
+
+    editModalMessage.classList.add('hidden');
+    editNoteModal.classList.remove('hidden');
+    editNoteTitleInput.focus();
   }
 
-  function closeNoteModal() {
-    noteModal.classList.add('hidden');
+  function closeEditModal() {
+    editNoteModal.classList.add('hidden');
   }
 
-  newNoteBtn.addEventListener('click', openNewModal);
-  modalCloseBtn.addEventListener('click', closeNoteModal);
-  modalCancelBtn.addEventListener('click', closeNoteModal);
-  noteModal.addEventListener('click', function (e) {
-    if (e.target === noteModal) closeNoteModal();
+  editModalCloseBtn.addEventListener('click', closeEditModal);
+  editModalCancelBtn.addEventListener('click', closeEditModal);
+  editNoteModal.addEventListener('click', (e) => {
+    if (e.target === editNoteModal) closeEditModal();
   });
 
-  // ============================================
-  // SIMPAN CATATAN (insert / update)
-  // ============================================
+  if (editBtnMinimize) {
+    editBtnMinimize.addEventListener('click', () => {
+      const stickyEl = editNoteModal.querySelector('.sticky-note');
+      if (stickyEl) stickyEl.classList.toggle('minimized');
+    });
+  }
+  if (editBtnDelete) {
+    editBtnDelete.addEventListener('click', () => {
+      const id = editNoteIdInput.value;
+      closeEditModal();
+      openDeleteModal(id);
+    });
+  }
+  if (editModalNewBtn) {
+    editModalNewBtn.addEventListener('click', () => {
+      closeEditModal();
+      openAddModal();
+    });
+  }
+  editBgColorPicker.addEventListener('input', (e) => {
+    const stickyEl = editNoteModal.querySelector('.sticky-note');
+    if (stickyEl) stickyEl.style.setProperty('--bg-color', e.target.value);
+  });
 
-  noteForm.addEventListener('submit', async function (e) {
+  // EVENT FORMATTING TOOLBAR
+  btnFmtBold.addEventListener('click', () => executeCmd('bold'));
+  btnFmtItalic.addEventListener('click', () => executeCmd('italic'));
+  btnFmtUnderline.addEventListener('click', () => executeCmd('underline'));
+  btnFmtStrike.addEventListener('click', () => executeCmd('strikeThrough'));
+  btnFmtList.addEventListener('click', () => executeCmd('insertUnorderedList'));
+  btnFmtImage.addEventListener('click', () => editImageInput.click());
+
+  editImageInput.addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        executeCmd('insertImage', event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // SUBMIT EDIT
+  editNoteForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const id = noteIdInput.value;
+    const id = editNoteIdInput.value;
     const payload = {
-      title: noteTitleInput.value.trim(),
-      category: noteCategoryInput.value.trim() || 'Umum',
-      content: noteContentInput.value.trim(),
-      is_important: noteImportantInput.checked,
+      title: editNoteTitleInput.value.trim(),
+      category: editNoteCategoryInput.value.trim() || 'Umum',
+      content: editNoteContentInput.innerHTML.trim(),
+      is_important: editNoteImportantInput.checked,
+      color: editBgColorPicker.value,
       updated_at: new Date().toISOString()
     };
 
-    modalSaveBtn.disabled = true;
-    modalSaveBtn.textContent = 'Menyimpan...';
+    editModalSaveBtn.disabled = true;
+    editModalSaveBtn.textContent = 'Menyimpan...';
 
-    let error;
+    const { error } = await supabaseClient
+      .from('notes')
+      .update(payload)
+      .eq('id', id);
 
-    if (id) {
-      // UPDATE catatan yang sudah ada
-      ({ error } = await supabaseClient
-        .from('notes')
-        .update(payload)
-        .eq('id', id));
-    } else {
-      // INSERT catatan baru — user_id wajib diisi manual sesuai RLS
-      ({ error } = await supabaseClient
-        .from('notes')
-        .insert({ ...payload, user_id: currentUser.id }));
-    }
-
-    modalSaveBtn.disabled = false;
-    modalSaveBtn.textContent = id ? 'Simpan Perubahan' : 'Simpan';
+    editModalSaveBtn.disabled = false;
+    editModalSaveBtn.textContent = '💾';
 
     if (error) {
-      showMessage(modalMessage, '❌ Gagal menyimpan: ' + error.message, 'error');
+      showMessage(editModalMessage, '❌ Gagal menyimpan: ' + error.message, 'error');
       return;
     }
 
-    closeNoteModal();
+    closeEditModal();
     await loadNotes();
   });
 
-  // ============================================
-  // HAPUS CATATAN
-  // ============================================
-
+  // KONTROL MODAL HAPUS
   function openDeleteModal(id) {
     const note = allNotes.find(n => String(n.id) === String(id));
     if (!note) return;
@@ -324,7 +394,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   deleteCancelBtn.addEventListener('click', closeDeleteModal);
-  deleteModal.addEventListener('click', function (e) {
+  deleteModal.addEventListener('click', (e) => {
     if (e.target === deleteModal) closeDeleteModal();
   });
 
@@ -353,10 +423,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     await loadNotes();
   });
 
-  // ============================================
-  // MULAI: muat catatan pertama kali
-  // ============================================
-
+  // START
   await loadNotes();
 
 });
