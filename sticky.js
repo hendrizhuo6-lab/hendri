@@ -72,3 +72,5 @@
     document.getElementById('btnMinimize').addEventListener('click', () => {
       note.classList.toggle('minimized');
     });
+
+    
