@@ -316,7 +316,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     editModalMessage.classList.add("hidden");
     editNoteModal.classList.remove("hidden");
     
-    // Aman dari error focus()
     editNoteContentInput.focus();
   }
 
@@ -326,8 +325,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   editModalCloseBtn.addEventListener("click", closeEditModal);
   editModalCancelBtn.addEventListener("click", closeEditModal);
+
+  // AMAN DARI AUTO-CLOSE SAAT RESIZE / DRAG
+  let isDragging = false;
+  editNoteModal.addEventListener("mousedown", (e) => {
+    isDragging = e.target !== editNoteModal;
+  });
   editNoteModal.addEventListener("click", (e) => {
-    if (e.target === editNoteModal) closeEditModal();
+    if (e.target === editNoteModal && !isDragging) closeEditModal();
   });
 
   if (editBtnMinimize) {
@@ -379,7 +384,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const id = editNoteIdInput.value;
 
-    // Ambil isi teks murni untuk membuat judul default jika input judul tidak ada di HTML
     const plainText = editNoteContentInput.innerText.trim();
     const defaultTitle = plainText.length > 0 
       ? plainText.substring(0, 20) + (plainText.length > 20 ? '...' : '')
@@ -466,3 +470,23 @@ document.addEventListener("DOMContentLoaded", async function () {
   // START
   await loadNotes();
 });
+
+// EVENT PASTE PERFEKTIF (RAPI, PERTAHANKAN ENTER & TENTUKAN SUSUNAN TEKS)
+const editor = document.getElementById('editor');
+
+if (editor) {
+  editor.addEventListener('paste', function (e) {
+    e.preventDefault(); // Batalkan paste bawaan browser
+
+    // Ambil data teks polos dari clipboard (menghilangkan style/margin raksasa dari web luar)
+    const textData = e.clipboardData.getData('text/plain');
+
+    if (textData) {
+      // Ubah karakter newline (\n) menjadi tag baris <br> agar susunan baris tetap sama
+      const formattedText = textData.replace(/\r\n|\r|\n/g, '<br>');
+
+      // Masukkan teks ke dalam editor
+      document.execCommand('insertHTML', false, formattedText);
+    }
+  });
+}
