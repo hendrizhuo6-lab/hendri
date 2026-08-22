@@ -1,29 +1,42 @@
+
 /* ============================================
-   LAYOUT DASBOR
+   LAYOUT DASHBOARD
    ============================================ */
 
 .dash-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #7b8792;
 }
 
 /* ============================================
-   HEADER
+   HEADER — Google Keep style
    ============================================ */
 
 .dash-header {
-  background: #1e293b;
-  color: #ffffff;
-  padding: 16px 32px;
+  background: #ffffff;
+  color: #1e293b;
+  padding: 12px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .dash-header h1 {
   font-size: 1.3rem;
   font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.02em;
+}
+
+.dash-header h1::before {
+  content: '📒 ';
 }
 
 .dash-header-right {
@@ -33,15 +46,15 @@
 }
 
 .user-email {
-  color: #cbd5e1;
+  color: #64748b;
   font-size: 0.9rem;
 }
 
 .btn-logout {
-  background: transparent;
-  color: #f1f5f9;
-  border: 1px solid #475569;
-  padding: 8px 16px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 8px 18px;
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 600;
@@ -50,8 +63,8 @@
 }
 
 .btn-logout:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: #64748b;
+  background: #e2e8f0;
+  border-color: #cbd5e1;
 }
 
 /* ============================================
@@ -63,11 +76,11 @@
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
-  padding: 28px 24px 60px;
+  padding: 24px 24px 60px;
 }
 
 /* ============================================
-   TOOLBAR
+   TOOLBAR — Google Keep search style
    ============================================ */
 
 .dash-toolbar {
@@ -75,8 +88,12 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 28px;
+  background: #ffffff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 .toolbar-filters {
@@ -84,27 +101,47 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-}
-
-.search-input,
-.category-filter {
-  padding: 10px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background: #ffffff;
-  color: #1e293b;
+  flex: 1;
 }
 
 .search-input {
-  min-width: 220px;
+  padding: 10px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: #f8fafc;
+  color: #1e293b;
+  min-width: 240px;
+  flex: 1;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-.search-input:focus,
+.search-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+}
+
+.search-input::placeholder {
+  color: #94a3b8;
+}
+
+.category-filter {
+  padding: 10px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  background: #f8fafc;
+  color: #1e293b;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
 .category-filter:focus {
   outline: none;
   border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
 }
 
 .checkbox-filter {
@@ -115,47 +152,62 @@
   color: #475569;
   cursor: pointer;
   user-select: none;
+  padding: 8px 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.checkbox-filter:hover {
+  background: #f1f5f9;
 }
 
 .btn-primary {
-  padding: 11px 20px;
+  padding: 11px 22px;
   background: #4f46e5;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
   white-space: nowrap;
 }
 
 .btn-primary:hover {
   background: #4338ca;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
-  padding: 11px 20px;
+  padding: 11px 22px;
   background: #f1f5f9;
   color: #334155;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .btn-secondary:hover {
   background: #e2e8f0;
+  border-color: #cbd5e1;
 }
 
 .btn-danger {
-  padding: 11px 20px;
+  padding: 11px 22px;
   background: #dc2626;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
@@ -185,35 +237,41 @@
 }
 
 /* ============================================
-   GRID CATATAN
+   GRID CATATAN — Google Keep card style
    ============================================ */
 
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
+  gap: 20px;
 }
 
 .note-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 18px;
+  border-radius: 14px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   position: relative;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition: box-shadow 0.25s, transform 0.2s, border-color 0.2s;
+  cursor: pointer;
 }
 
 .note-card:hover {
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
 }
 
 .note-card-important {
   border-color: #fbbf24;
   background: #fffbeb;
+}
+
+.note-card-important:hover {
+  border-color: #f59e0b;
 }
 
 .note-card-top {
@@ -228,11 +286,13 @@
   color: #0f172a;
   font-size: 1.02rem;
   word-break: break-word;
+  flex: 1;
 }
 
 .note-star {
   font-size: 1.1rem;
   flex-shrink: 0;
+  color: #fbbf24;
 }
 
 .note-category-badge {
@@ -240,16 +300,17 @@
   align-self: flex-start;
   background: #eef2ff;
   color: #4f46e5;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 999px;
+  letter-spacing: 0.02em;
 }
 
 .note-card-content {
   color: #475569;
   font-size: 0.88rem;
-  line-height: 1.5;
+  line-height: 1.6;
   white-space: pre-wrap;
   overflow: hidden;
   display: -webkit-box;
@@ -262,12 +323,12 @@
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
-  padding-top: 8px;
+  padding-top: 10px;
   border-top: 1px solid #f1f5f9;
 }
 
 .note-date {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #94a3b8;
 }
 
@@ -281,38 +342,53 @@
   border: none;
   cursor: pointer;
   font-size: 0.95rem;
-  padding: 4px 6px;
-  border-radius: 6px;
-  transition: background 0.15s;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: background 0.15s, transform 0.1s;
+  color: #94a3b8;
 }
 
 .note-action-btn:hover {
   background: #f1f5f9;
+  color: #475569;
+  transform: scale(1.05);
+}
+
+.note-action-btn:active {
+  transform: scale(0.95);
 }
 
 /* ============================================
-   MODAL
+   MODAL — Google Keep popup style
    ============================================ */
 
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  z-index: 100;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .modal-box {
   background: #ffffff;
-  border-radius: 12px;
-  padding: 28px;
+  border-radius: 16px;
+  padding: 32px;
   width: 100%;
   max-width: 480px;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
 }
 
 .modal-box-small {
@@ -323,26 +399,29 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .modal-header h2 {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   color: #0f172a;
+  font-weight: 700;
 }
 
 .btn-close {
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   line-height: 1;
   color: #94a3b8;
   cursor: pointer;
   padding: 0 4px;
+  transition: color 0.2s, transform 0.1s;
 }
 
 .btn-close:hover {
   color: #475569;
+  transform: rotate(90deg);
 }
 
 .modal-box label {
@@ -354,22 +433,31 @@
 }
 
 .modal-box input[type="text"],
-.modal-box textarea {
+.modal-box textarea,
+.modal-box select {
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
   font-size: 0.9rem;
   margin-bottom: 16px;
   color: #1e293b;
   resize: vertical;
+  background: #f8fafc;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
 .modal-box input[type="text"]:focus,
-.modal-box textarea:focus {
+.modal-box textarea:focus,
+.modal-box select:focus {
   outline: none;
   border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+}
+
+.modal-box textarea {
+  min-height: 100px;
 }
 
 .checkbox-inline {
@@ -380,6 +468,15 @@
   font-size: 0.9rem;
   color: #475569;
   cursor: pointer;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.checkbox-inline:hover {
+  background: #f1f5f9;
 }
 
 .modal-actions {
@@ -390,35 +487,300 @@
 
 .modal-confirm-text {
   color: #64748b;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.6;
   margin-bottom: 20px;
 }
 
 /* ============================================
-   RESPONSIF
+   MODAL EDIT (STICKY NOTE) — Google Keep style
    ============================================ */
 
-@media (max-width: 600px) {
+#edit-note-modal .sticky-note {
+  --bg-color: #fff7d1;
+  --header-color: rgba(0, 0, 0, 0.05);
+  --text-color: #2c3e50;
+  --hover-color: rgba(0, 0, 0, 0.08);
+
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  background-color: var(--bg-color);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-out;
+}
+
+#edit-note-modal .note-header {
+  background-color: var(--header-color);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#edit-note-modal .header-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+#edit-note-modal .icon-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  transition: background 0.2s, transform 0.1s;
+}
+
+#edit-note-modal .icon-btn:hover {
+  background-color: var(--hover-color);
+}
+
+#edit-note-modal .icon-btn:active {
+  transform: scale(0.92);
+}
+
+#edit-note-modal .color-picker-wrapper {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+#edit-note-modal .color-picker-wrapper input[type="color"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+#edit-note-modal form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 16px 18px;
+}
+
+#edit-note-modal .note-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+#edit-note-modal .note-inputs input {
+  border: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  background: transparent;
+  padding: 8px 2px;
+  font-size: 1rem;
+  color: var(--text-color);
+  font-weight: 600;
+  transition: border-color 0.2s;
+}
+
+#edit-note-modal .note-inputs input:focus {
+  outline: none;
+  border-bottom-color: #4f46e5;
+}
+
+#edit-note-modal .note-body {
+  flex: 1;
+  min-height: 160px;
+  overflow-y: auto;
+  outline: none;
+  color: var(--text-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 8px 2px;
+}
+
+#edit-note-modal .note-body img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+#edit-note-modal .note-toolbar {
+  padding: 12px 2px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 8px;
+}
+
+#edit-note-modal .toolbar-group {
+  display: flex;
+  gap: 4px;
+}
+
+#edit-note-modal .fmt-btn {
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#edit-note-modal .fmt-btn:hover {
+  background-color: var(--hover-color);
+}
+
+#edit-note-modal .fmt-btn:active {
+  transform: scale(0.92);
+}
+
+#edit-note-modal .btn-save {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+#edit-note-modal .btn-save:hover {
+  background-color: rgba(46, 125, 50, 0.12);
+}
+
+#edit-note-modal .btn-cancel {
+  color: #c62828;
+}
+
+#edit-note-modal .btn-cancel:hover {
+  background-color: rgba(198, 40, 40, 0.12);
+}
+
+/* Mode minimize: hanya tampilkan header */
+#edit-note-modal .sticky-note.minimized .note-body,
+#edit-note-modal .sticky-note.minimized .note-toolbar,
+#edit-note-modal .sticky-note.minimized .note-inputs {
+  display: none;
+}
+
+/* ============================================
+   RESPONSIF — Google Keep responsive
+   ============================================ */
+
+@media (max-width: 768px) {
   .dash-header {
-    padding: 14px 18px;
+    padding: 12px 20px;
+  }
+
+  .dash-header h1 {
+    font-size: 1.1rem;
   }
 
   .user-email {
     display: none;
   }
 
+  .dash-main {
+    padding: 16px 16px 40px;
+  }
+
   .dash-toolbar {
     flex-direction: column;
     align-items: stretch;
+    padding: 16px;
+    gap: 12px;
   }
 
   .toolbar-filters {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
 
   .search-input {
     min-width: 0;
+    width: 100%;
+  }
+
+  .checkbox-filter {
+    justify-content: center;
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+
+  .modal-box {
+    padding: 24px;
+    max-width: 100%;
+    margin: 16px;
+  }
+
+  #edit-note-modal .sticky-note {
+    max-width: 100%;
+    margin: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dash-header {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dash-header-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .btn-logout {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  .notes-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .note-card {
+    padding: 16px;
+  }
+
+  .modal-box {
+    padding: 20px 16px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    width: 100%;
+  }
+
+  #edit-note-modal .sticky-note {
+    border-radius: 8px;
+  }
+
+  #edit-note-modal .note-body {
+    min-height: 120px;
   }
 }
