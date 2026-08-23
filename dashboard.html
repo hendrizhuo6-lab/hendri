@@ -24,7 +24,7 @@
 
     <main class="dash-main">
 
-      <!-- COMPOSE BOX (gaya Google Keep — melebar inline saat diklik) -->
+      <!-- COMPOSE BOX (gaya Google Keep) -->
       <div id="compose-box" class="compose-box">
         <form id="add-note-form">
           <input
@@ -42,23 +42,20 @@
             rows="1"
           ></textarea>
 
-          <!-- ikon ringkas saat kotak masih tertutup -->
           <div class="compose-quick-icons" id="compose-quick-icons">
-            <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">✅</button>
-            <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🖌️</button>
-            <button type="button" class="compose-icon-btn" id="quick-image-btn" title="Tulis catatan">🖼️</button>
+            <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">⭐</button>
+            <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🎨</button>
           </div>
 
-          <!-- toolbar lengkap saat kotak melebar -->
           <div class="compose-toolbar hidden" id="compose-toolbar">
             <div class="compose-toolbar-left">
               <div class="note-quick-color" id="addColorWrapper">
-                <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🖌️</button>
+                <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🎨</button>
                 <div id="add-color-popover" class="color-popover hidden">
                   <div id="add-color-swatches" class="color-swatches"></div>
                 </div>
               </div>
-              <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">☆</button>
+              <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">⭐</button>
               <input
                 type="text"
                 id="add-note-category"
@@ -132,9 +129,9 @@
           </div>
         </div>
         <div class="header-actions">
-          <button type="button" class="icon-btn" id="btnMinimize" title="Minimize (—)">—</button>
+          <button type="button" class="icon-btn" id="btnMinimize" title="Minimize">—</button>
           <button type="button" class="icon-btn" id="edit-delete-btn" title="Hapus Catatan">🗑️</button>
-          <button type="button" class="icon-btn" id="edit-close-btn" title="Menu Opsional">⋯</button>
+          <button type="button" class="icon-btn" id="edit-close-btn" title="Tutup">✕</button>
         </div>
       </header>
 
@@ -154,18 +151,41 @@
           ⭐ Tandai sebagai penting
         </label>
 
-        <!-- Formatting & Save/Cancel Toolbar -->
+        <!-- Formatting Toolbar LENGKAP -->
         <footer class="note-toolbar">
           <div class="toolbar-group">
-            <button type="button" class="fmt-btn" id="btn-bold" title="Bold"><b>B</b></button>
-            <button type="button" class="fmt-btn" id="btn-italic" title="Italic"><i>I</i></button>
-            <button type="button" class="fmt-btn" id="btn-underline" title="Underline"><u>U</u></button>
-            <button type="button" class="fmt-btn" id="btn-strike" title="Strikethrough"><s>S</s></button>
-            <button type="button" class="fmt-btn" id="btn-list" title="Bulleted List">•</button>
-            
-            <button type="button" class="fmt-btn" id="btn-image" title="Sisipkan Gambar">🖼️</button>
-            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+            <button type="button" class="fmt-btn" id="btn-bold" title="Tebal (Ctrl+B)"><b>B</b></button>
+            <button type="button" class="fmt-btn" id="btn-italic" title="Miring (Ctrl+I)"><i>I</i></button>
+            <button type="button" class="fmt-btn" id="btn-underline" title="Garis Bawah (Ctrl+U)"><u>U</u></button>
+            <button type="button" class="fmt-btn" id="btn-strike" title="Coret"><s>S</s></button>
           </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-h1" title="Heading 1">H1</button>
+            <button type="button" class="fmt-btn" id="btn-h2" title="Heading 2">H2</button>
+            <button type="button" class="fmt-btn" id="btn-h3" title="Heading 3">H3</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-ul" title="Bullet List">•</button>
+            <button type="button" class="fmt-btn" id="btn-ol" title="Numbered List">1.</button>
+            <button type="button" class="fmt-btn" id="btn-checklist" title="Checklist">☑</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-link" title="Tambah Link (Ctrl+K)">🔗</button>
+            <button type="button" class="fmt-btn" id="btn-table" title="Tambah Tabel">📊</button>
+            <button type="button" class="fmt-btn" id="btn-image" title="Tambah Gambar">🖼️</button>
+            <button type="button" class="fmt-btn" id="btn-more" title="Lainnya">⋮</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
 
           <div class="toolbar-group">
             <button type="submit" class="fmt-btn btn-save" title="Simpan Catatan" id="modal-save-btn">💾</button>
@@ -173,6 +193,49 @@
           </div>
         </footer>
       </form>
+    </div>
+  </div>
+
+  <!-- ============================================
+        MODAL: PREVIEW AI
+        ============================================ -->
+  <div id="ai-preview-modal" class="modal-overlay hidden">
+    <div class="modal-box" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2>✨ Hasil AI - Rapikan Catatan</h2>
+        <button type="button" class="btn-close" id="ai-close-btn">&times;</button>
+      </div>
+
+      <div id="ai-preview-loading" class="state-box">
+        <p>⏳ AI sedang merapikan catatan...</p>
+      </div>
+
+      <div id="ai-preview-error" class="state-box state-error hidden"></div>
+
+      <div id="ai-preview-content" class="hidden">
+        <div id="ai-preview-color-bar" style="height:4px; border-radius:4px; margin-bottom:12px;"></div>
+        
+        <div style="margin-bottom:8px;">
+          <span style="font-size:0.75rem; color:#5f6368;">JUDUL</span>
+          <h3 id="ai-preview-title" style="margin:4px 0 8px;"></h3>
+        </div>
+
+        <div style="margin-bottom:8px;">
+          <span style="font-size:0.75rem; color:#5f6368;">KATEGORI</span>
+          <p id="ai-preview-category" style="margin:4px 0 8px;"></p>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <span style="font-size:0.75rem; color:#5f6368;">ISI CATATAN</span>
+          <div id="ai-preview-body" style="padding:12px; border:1px solid #e2e8f0; border-radius:8px; min-height:100px; max-height:300px; overflow-y:auto;"></div>
+        </div>
+      </div>
+
+      <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+        <button type="button" id="ai-cancel-btn" class="btn-secondary">Batal</button>
+        <button type="button" id="ai-edit-btn" class="btn-secondary">✏️ Edit</button>
+        <button type="button" id="ai-apply-btn" class="btn-primary">✅ Gunakan</button>
+      </div>
     </div>
   </div>
 
@@ -188,6 +251,26 @@
       <div class="modal-actions">
         <button type="button" id="delete-cancel-btn" class="btn-secondary">Batal</button>
         <button type="button" id="delete-confirm-btn" class="btn-danger">Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+        MODAL: MORE MENU (⋮)
+        ============================================ -->
+  <div id="more-menu-modal" class="modal-overlay hidden">
+    <div class="modal-box modal-box-small">
+      <div class="modal-header">
+        <h2>Lainnya</h2>
+        <button type="button" class="btn-close" id="more-close-btn">&times;</button>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <button class="btn-secondary" id="btn-align-left">⬅ Rata Kiri</button>
+        <button class="btn-secondary" id="btn-align-center">⬌ Rata Tengah</button>
+        <button class="btn-secondary" id="btn-align-right">➡ Rata Kanan</button>
+        <button class="btn-secondary" id="btn-clear-format">🧹 Hapus Format</button>
+        <button class="btn-secondary" id="btn-undo">↩ Undo</button>
+        <button class="btn-secondary" id="btn-redo">↪ Redo</button>
       </div>
     </div>
   </div>
