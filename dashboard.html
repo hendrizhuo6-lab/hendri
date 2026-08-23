@@ -24,7 +24,56 @@
 
     <main class="dash-main">
 
-      <!-- TOOLBAR -->
+      <!-- COMPOSE BOX (gaya Google Keep — melebar inline saat diklik) -->
+      <div id="compose-box" class="compose-box">
+        <form id="add-note-form">
+          <input
+            type="text"
+            id="add-note-title"
+            class="compose-title hidden"
+            placeholder="Judul"
+            maxlength="150"
+          />
+
+          <textarea
+            id="add-note-content"
+            class="compose-content"
+            placeholder="Buat catatan..."
+            rows="1"
+          ></textarea>
+
+          <!-- ikon ringkas saat kotak masih tertutup -->
+          <div class="compose-quick-icons" id="compose-quick-icons">
+            <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">✅</button>
+            <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🖌️</button>
+            <button type="button" class="compose-icon-btn" id="quick-image-btn" title="Tulis catatan">🖼️</button>
+          </div>
+
+          <!-- toolbar lengkap saat kotak melebar -->
+          <div class="compose-toolbar hidden" id="compose-toolbar">
+            <div class="compose-toolbar-left">
+              <div class="note-quick-color" id="addColorWrapper">
+                <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🖌️</button>
+                <div id="add-color-popover" class="color-popover hidden">
+                  <div id="add-color-swatches" class="color-swatches"></div>
+                </div>
+              </div>
+              <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">☆</button>
+              <input
+                type="text"
+                id="add-note-category"
+                class="compose-category"
+                placeholder="Kategori"
+                list="category-suggestions"
+                maxlength="50"
+              />
+            </div>
+            <button type="submit" class="btn-text-close" id="add-modal-save-btn">Tutup</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- TOOLBAR FILTER -->
       <div class="dash-toolbar">
         <div class="toolbar-filters">
           <input
@@ -42,7 +91,6 @@
             ⭐ Penting saja
           </label>
         </div>
-        <button id="new-note-btn" class="btn-primary">+ Catatan Baru</button>
       </div>
 
       <!-- STATUS STATE -->
@@ -63,60 +111,6 @@
   </div>
 
   <!-- ============================================
-        MODAL: TAMBAH CATATAN
-        ============================================ -->
-  <div id="add-note-modal" class="modal-overlay hidden">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h2>Catatan Baru</h2>
-        <button id="add-modal-close-btn" class="btn-close" type="button">&times;</button>
-      </div>
-
-      <div id="add-modal-message" class="form-message hidden"></div>
-
-      <form id="add-note-form">
-        <label for="add-note-title">Judul</label>
-        <input
-          type="text"
-          id="add-note-title"
-          required
-          placeholder="Judul catatan"
-          maxlength="150"
-        />
-
-        <label for="add-note-category">Kategori</label>
-        <input
-          type="text"
-          id="add-note-category"
-          placeholder="Umum"
-          list="category-suggestions"
-          maxlength="50"
-        />
-
-        <label for="add-note-content">Isi Catatan</label>
-        <textarea
-          id="add-note-content"
-          rows="8"
-          required
-          placeholder="Tulis catatanmu di sini..."
-        ></textarea>
-
-        <label class="checkbox-inline">
-          <input type="checkbox" id="add-note-important" />
-          ⭐ Tandai sebagai penting
-        </label>
-
-        <div class="modal-footer">
-          <div class="modal-actions">
-            <button type="button" id="add-modal-cancel-btn" class="btn-secondary">Batal</button>
-            <button type="submit" id="add-modal-save-btn" class="btn-primary">Simpan</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ============================================
         MODAL: EDIT CATATAN (STICKY NOTE)
         ============================================ -->
   <div id="edit-note-modal" class="modal-overlay hidden">
@@ -126,9 +120,15 @@
       <header class="note-header">
         <div class="header-actions">
           <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
-          <div class="color-picker-wrapper" title="Ubah Warna Catatan">
-            <button type="button" class="icon-btn">🎨</button>
-            <input type="color" id="bgColorPicker" value="#fff7d1">
+          <div class="color-picker-wrapper" id="colorPickerWrapper" title="Ubah Warna Catatan">
+            <button type="button" class="icon-btn" id="btnPaletteToggle">🎨</button>
+            <div id="edit-color-popover" class="color-popover hidden">
+              <div id="edit-color-swatches" class="color-swatches"></div>
+              <label class="color-popover-custom">
+                Kustom
+                <input type="color" id="bgColorPicker" value="#fff7d1">
+              </label>
+            </div>
           </div>
         </div>
         <div class="header-actions">
@@ -192,6 +192,7 @@
     </div>
   </div>
 
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="dashboard.js"></script>
