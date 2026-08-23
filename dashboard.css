@@ -1,4 +1,26 @@
 /* ============================================
+   DESIGN TOKENS — terinspirasi Google Keep
+   ============================================ */
+
+:root {
+  --keep-bg: #f6f6f6;
+  --keep-surface: #ffffff;
+  --keep-border: rgba(0, 0, 0, 0.14);
+  --keep-border-hover: rgba(0, 0, 0, 0.28);
+  --keep-text: #202124;
+  --keep-text-muted: #5f6368;
+  --keep-text-faint: #80868b;
+  --keep-accent: #4f46e5;
+  --keep-accent-dark: #4338ca;
+  --keep-star: #f2ac00;
+  --keep-danger: #d93025;
+  --keep-shadow: 0 1px 2px rgba(60, 64, 67, 0.30), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  --keep-shadow-hover: 0 2px 6px rgba(60, 64, 67, 0.35), 0 4px 10px 2px rgba(60, 64, 67, 0.15);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+}
+
+/* ============================================
    LAYOUT DASHBOARD
    ============================================ */
 
@@ -6,36 +28,32 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #7b8792;
+  background: var(--keep-bg);
 }
 
 /* ============================================
-   HEADER — Google Keep style
+   HEADER
    ============================================ */
 
 .dash-header {
-  background: #ffffff;
-  color: #1e293b;
+  background: var(--keep-surface);
+  color: var(--keep-text);
   padding: 12px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-bottom: 1px solid #eceff1;
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.08);
   position: sticky;
   top: 0;
   z-index: 50;
 }
 
 .dash-header h1 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #1e293b;
-  letter-spacing: -0.02em;
-}
-
-.dash-header h1::before {
-  content: '📒 ';
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--keep-text);
+  letter-spacing: -0.01em;
 }
 
 .dash-header-right {
@@ -45,16 +63,16 @@
 }
 
 .user-email {
-  color: #64748b;
-  font-size: 0.9rem;
+  color: var(--keep-text-muted);
+  font-size: 0.88rem;
 }
 
 .btn-logout {
-  background: #f1f5f9;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+  background: transparent;
+  color: var(--keep-text-muted);
+  border: 1px solid var(--keep-border);
   padding: 8px 18px;
-  border-radius: 8px;
+  border-radius: 999px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -62,8 +80,8 @@
 }
 
 .btn-logout:hover {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
+  background: #f1f3f4;
+  border-color: var(--keep-border-hover);
 }
 
 /* ============================================
@@ -72,27 +90,179 @@
 
 .dash-main {
   flex: 1;
-  /* max-width: 1100px; */
+  max-width: 1400px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 24px 60px;
+  padding: 28px 32px 60px;
 }
 
 /* ============================================
-   TOOLBAR — Google Keep search style
+   COMPOSE BOX — "Buat catatan..." khas Keep,
+   melebar inline saat diklik/fokus
+   ============================================ */
+
+.compose-box {
+  width: 100%;
+  max-width: 620px;
+  margin: 4px auto 28px;
+  background: var(--keep-surface);
+  border: 1px solid var(--keep-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--keep-shadow);
+  padding: 8px 10px 8px 18px;
+  transition: box-shadow 0.2s, border-radius 0.2s, padding 0.15s;
+  position: relative;
+}
+
+.compose-box:not(.is-expanded):hover {
+  box-shadow: var(--keep-shadow-hover);
+}
+
+.compose-box.is-expanded {
+  box-shadow: var(--keep-shadow-hover);
+  padding: 14px 16px 8px;
+  border-radius: var(--radius-md);
+}
+
+.compose-box:not(.is-expanded) form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compose-title {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--keep-text);
+  background: transparent;
+  margin-bottom: 4px;
+  padding: 4px 2px;
+}
+
+.compose-content {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--keep-text);
+  background: transparent;
+  padding: 6px 2px;
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.compose-box:not(.is-expanded) .compose-content {
+  flex: 1;
+  padding: 6px 2px;
+}
+
+.compose-quick-icons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.compose-icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 8px;
+  border-radius: 999px;
+  color: var(--keep-text-muted);
+  transition: background 0.15s, transform 0.1s, color 0.15s;
+  line-height: 1;
+}
+
+.compose-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.compose-icon-btn.is-active {
+  color: var(--keep-star);
+}
+
+.compose-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid #f1f3f4;
+}
+
+.compose-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.compose-category {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--keep-text-muted);
+  padding: 6px 8px;
+  width: 110px;
+}
+
+.compose-category:focus {
+  color: var(--keep-text);
+}
+
+.btn-text-close {
+  background: none;
+  border: none;
+  color: var(--keep-text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.btn-text-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* Popover warna generik (dipakai compose box & kartu) */
+.color-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  background: #ffffff;
+  border: 1px solid var(--keep-border);
+  border-radius: 12px;
+  box-shadow: var(--keep-shadow-hover);
+  padding: 10px;
+  width: 190px;
+  z-index: 30;
+}
+
+.color-popover .color-swatches {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   TOOLBAR FILTER — baris sekunder, ringkas
    ============================================ */
 
 .dash-toolbar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 28px;
-  background: #ffffff;
-  padding: 12px 20px;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  gap: 10px;
+  margin-bottom: 24px;
 }
 
 .toolbar-filters {
@@ -104,71 +274,71 @@
 }
 
 .search-input {
-  padding: 10px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  background: #f8fafc;
-  color: #1e293b;
-  min-width: 240px;
+  padding: 9px 16px;
+  border: 1px solid var(--keep-border);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  background: var(--keep-surface);
+  color: var(--keep-text);
+  max-width: 320px;
+  min-width: 220px;
   flex: 1;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #4f46e5;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+  border-color: var(--keep-accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: var(--keep-text-faint);
 }
 
 .category-filter {
-  padding: 10px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  background: #f8fafc;
-  color: #1e293b;
+  padding: 9px 14px;
+  border: 1px solid var(--keep-border);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: var(--keep-surface);
+  color: var(--keep-text);
   cursor: pointer;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .category-filter:focus {
   outline: none;
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+  border-color: var(--keep-accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
 
 .checkbox-filter {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.9rem;
-  color: #475569;
+  font-size: 0.85rem;
+  color: var(--keep-text-muted);
   cursor: pointer;
   user-select: none;
   padding: 8px 14px;
-  background: #f8fafc;
-  border-radius: 10px;
-  border: 2px solid #e2e8f0;
+  background: var(--keep-surface);
+  border-radius: 999px;
+  border: 1px solid var(--keep-border);
   transition: background 0.2s, border-color 0.2s;
 }
 
 .checkbox-filter:hover {
-  background: #f1f5f9;
+  background: #f1f3f4;
 }
 
 .btn-primary {
-  padding: 11px 22px;
-  background: #4f46e5;
+  padding: 10px 20px;
+  background: var(--keep-accent);
   color: #ffffff;
   border: none;
-  border-radius: 10px;
-  font-size: 0.9rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
@@ -176,55 +346,53 @@
 }
 
 .btn-primary:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
+  background: var(--keep-accent-dark);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: scale(0.98);
 }
 
 .btn-secondary {
-  padding: 11px 22px;
-  background: #f1f5f9;
-  color: #334155;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  font-size: 0.9rem;
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--keep-text-muted);
+  border: 1px solid var(--keep-border);
+  border-radius: 999px;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
 }
 
 .btn-secondary:hover {
-  background: #e2e8f0;
-  border-color: #cbd5e1;
+  background: #f1f3f4;
 }
 
 .btn-danger {
-  padding: 11px 22px;
-  background: #dc2626;
+  padding: 10px 20px;
+  background: var(--keep-danger);
   color: #ffffff;
   border: none;
-  border-radius: 10px;
-  font-size: 0.9rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .btn-danger:hover {
-  background: #b91c1c;
+  background: #b0271e;
 }
 
 /* ============================================
-   STATUS BOX (loading / kosong / error)
+   STATUS BOX
    ============================================ */
 
 .state-box {
   text-align: center;
-  padding: 48px 20px;
-  color: #64748b;
+  padding: 60px 20px;
+  color: var(--keep-text-faint);
   font-size: 0.95rem;
 }
 
@@ -236,41 +404,40 @@
 }
 
 /* ============================================
-   GRID CATATAN — Google Keep card style
+   GRID CATATAN — Masonry ala Google Keep
    ============================================ */
 
 .notes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  column-count: 5;
+  column-gap: 16px;
 }
 
 .note-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  margin: 0 0 16px;
+  background: var(--card-color, var(--keep-surface));
+  border: 1px solid var(--keep-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
   position: relative;
-  transition: box-shadow 0.25s, transform 0.2s, border-color 0.2s;
+  transition: box-shadow 0.18s, border-color 0.18s;
   cursor: pointer;
 }
 
-.note-card:hover {
-  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
-  transform: translateY(-3px);
-  border-color: #cbd5e1;
+.note-card:hover,
+.note-card:focus-within {
+  box-shadow: var(--keep-shadow-hover);
+  border-color: transparent;
 }
 
 .note-card-important {
-  border-color: #fbbf24;
-  background: #fffbeb;
+  box-shadow: inset 0 0 0 2px var(--keep-star);
 }
 
 .note-card-important:hover {
-  border-color: #f59e0b;
+  box-shadow: inset 0 0 0 2px var(--keep-star), var(--keep-shadow-hover);
 }
 
 .note-card-top {
@@ -278,78 +445,110 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
+  margin-bottom: 6px;
 }
 
 .note-card-title {
-  font-weight: 700;
-  color: #0f172a;
-  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--keep-text);
+  font-size: 1rem;
   word-break: break-word;
   flex: 1;
 }
 
-.note-star {
-  font-size: 1.1rem;
+.note-pin-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
   flex-shrink: 0;
-  color: #fbbf24;
+  line-height: 1;
+  padding: 2px;
+  opacity: 0.35;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.note-pin-btn:hover {
+  transform: scale(1.15);
+}
+
+.note-pin-btn.is-active,
+.note-card:hover .note-pin-btn,
+.note-card:focus-within .note-pin-btn {
+  opacity: 1;
 }
 
 .note-category-badge {
   display: inline-block;
   align-self: flex-start;
-  background: #eef2ff;
-  color: #4f46e5;
-  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.68rem;
   font-weight: 600;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 999px;
   letter-spacing: 0.02em;
+  margin-bottom: 8px;
 }
 
 .note-card-content {
-  color: #475569;
-  font-size: 0.88rem;
+  color: #3c4043;
+  font-size: 0.87rem;
   line-height: 1.6;
   word-break: break-word;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
+}
+
+.note-card-content img {
+  max-width: 100%;
+  border-radius: 6px;
 }
 
 .note-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid #f1f5f9;
+  margin-top: 10px;
+  padding-top: 8px;
+  min-height: 30px;
 }
 
 .note-date {
-  font-size: 0.7rem;
-  color: #94a3b8;
+  font-size: 0.68rem;
+  color: var(--keep-text-faint);
 }
 
 .note-card-actions {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.note-card:hover .note-card-actions,
+.note-card:focus-within .note-card-actions {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .note-action-btn {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.95rem;
-  padding: 6px 8px;
-  border-radius: 8px;
+  font-size: 0.9rem;
+  padding: 6px 7px;
+  border-radius: 999px;
   transition: background 0.15s, transform 0.1s;
-  color: #94a3b8;
+  color: var(--keep-text-muted);
 }
 
 .note-action-btn:hover {
-  background: #f1f5f9;
-  color: #475569;
+  background: rgba(0, 0, 0, 0.08);
   transform: scale(1.05);
 }
 
@@ -357,8 +556,69 @@
   transform: scale(0.95);
 }
 
+/* Popover warna cepat langsung di kartu */
+.note-quick-color {
+  position: relative;
+}
+
+.note-color-popover {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  right: 0;
+  background: var(--keep-surface);
+  border: 1px solid var(--keep-border);
+  border-radius: 12px;
+  box-shadow: var(--keep-shadow-hover);
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  z-index: 20;
+}
+
 /* ============================================
-   MODAL — Google Keep popup style
+   PALET WARNA (dipakai di modal & kartu)
+   ============================================ */
+
+.color-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.color-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--keep-border);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s, box-shadow 0.15s;
+  position: relative;
+}
+
+.color-swatch:hover {
+  transform: scale(1.12);
+}
+
+.color-swatch.is-selected {
+  box-shadow: 0 0 0 2px var(--keep-surface), 0 0 0 4px var(--keep-accent);
+}
+
+.color-swatch.is-selected::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* ============================================
+   MODAL
    ============================================ */
 
 .modal-overlay {
@@ -380,8 +640,8 @@
 }
 
 .modal-box {
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--keep-surface);
+  border-radius: var(--radius-lg);
   padding: 32px;
   width: 100%;
   max-width: 480px;
@@ -402,8 +662,8 @@
 }
 
 .modal-header h2 {
-  font-size: 1.2rem;
-  color: #0f172a;
+  font-size: 1.15rem;
+  color: var(--keep-text);
   font-weight: 700;
 }
 
@@ -412,14 +672,14 @@
   border: none;
   font-size: 1.6rem;
   line-height: 1;
-  color: #94a3b8;
+  color: var(--keep-text-faint);
   cursor: pointer;
   padding: 0 4px;
   transition: color 0.2s, transform 0.1s;
 }
 
 .btn-close:hover {
-  color: #475569;
+  color: var(--keep-text-muted);
   transform: rotate(90deg);
 }
 
@@ -427,8 +687,8 @@
   display: block;
   margin-bottom: 6px;
   font-weight: 500;
-  color: #475569;
-  font-size: 0.9rem;
+  color: var(--keep-text-muted);
+  font-size: 0.88rem;
 }
 
 .modal-box input[type="text"],
@@ -436,13 +696,13 @@
 .modal-box select {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
+  border: 1px solid var(--keep-border);
+  border-radius: var(--radius-md);
   font-size: 0.9rem;
   margin-bottom: 16px;
-  color: #1e293b;
+  color: var(--keep-text);
   resize: vertical;
-  background: #f8fafc;
+  background: #f8f9fa;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
@@ -450,9 +710,9 @@
 .modal-box textarea:focus,
 .modal-box select:focus {
   outline: none;
-  border-color: #4f46e5;
+  border-color: var(--keep-accent);
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
 }
 
 .modal-box textarea {
@@ -465,17 +725,17 @@
   gap: 8px;
   margin-bottom: 20px;
   font-size: 0.9rem;
-  color: #475569;
+  color: var(--keep-text-muted);
   cursor: pointer;
   padding: 8px 12px;
-  background: #f8fafc;
-  border-radius: 10px;
-  border: 2px solid #e2e8f0;
+  background: #f8f9fa;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--keep-border);
   transition: background 0.2s, border-color 0.2s;
 }
 
 .checkbox-inline:hover {
-  background: #f1f5f9;
+  background: #f1f3f4;
 }
 
 .modal-actions {
@@ -485,7 +745,7 @@
 }
 
 .modal-confirm-text {
-  color: #64748b;
+  color: var(--keep-text-muted);
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 20px;
@@ -504,15 +764,15 @@
   overflow: hidden !important;
   resize: both !important;
 
-  width: 400px;
-  height: 350px;
+  width: 420px;
+  height: 370px;
   min-width: 280px;
   min-height: 250px;
   max-width: 90vw;
   max-height: 85vh;
 
   background-color: var(--bg-color);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
@@ -561,17 +821,37 @@
 
 #edit-note-modal .color-picker-wrapper {
   position: relative;
-  width: 30px;
-  height: 30px;
 }
 
-#edit-note-modal .color-picker-wrapper input[type="color"] {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
+#edit-note-modal .color-popover {
+  top: calc(100% + 6px);
+  bottom: auto;
+  left: 0;
+}
+
+#edit-note-modal .color-popover .color-swatches {
+  margin-bottom: 8px;
+}
+
+#edit-note-modal .color-popover-custom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--keep-text-muted);
+  margin: 0;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#edit-note-modal .color-popover-custom input[type="color"] {
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 50%;
   cursor: pointer;
+  padding: 0;
+  background: none;
 }
 
 #edit-note-modal form {
@@ -687,6 +967,18 @@
    RESPONSIF
    ============================================ */
 
+@media (max-width: 1200px) {
+  .notes-grid {
+    column-count: 4;
+  }
+}
+
+@media (max-width: 900px) {
+  .notes-grid {
+    column-count: 3;
+  }
+}
+
 @media (max-width: 768px) {
   .dash-header {
     padding: 12px 20px;
@@ -704,11 +996,13 @@
     padding: 16px 16px 40px;
   }
 
+  .compose-box {
+    max-width: 100%;
+  }
+
   .dash-toolbar {
     flex-direction: column;
     align-items: stretch;
-    padding: 16px;
-    gap: 12px;
   }
 
   .toolbar-filters {
@@ -727,8 +1021,12 @@
   }
 
   .notes-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 14px;
+    column-count: 2;
+    column-gap: 12px;
+  }
+
+  .note-card {
+    margin-bottom: 12px;
   }
 
   .modal-box {
@@ -761,12 +1059,20 @@
   }
 
   .notes-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    column-count: 1;
   }
 
   .note-card {
     padding: 16px;
+  }
+
+  .note-card-actions {
+    opacity: 1;
+    transform: none;
+  }
+
+  .note-pin-btn {
+    opacity: 1;
   }
 
   .modal-box {
