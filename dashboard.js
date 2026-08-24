@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     return;
   }
 
-  // SESI LOGIN
   const {
     data: { session },
   } = await supabaseClient.auth.getSession();
@@ -20,7 +19,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-  // ELEMEN MAIN DASHBOARD
+  // Tambahkan baris ini di sekitar baris 35-45 (bagian deklarasi elemen modal edit)
+  const editNoteFolderSelect = document.getElementById("edit-note-folder");
   const userEmailEl = document.getElementById("user-email");
   const logoutBtn = document.getElementById("logout-btn");
   const searchInput = document.getElementById("search-input");
@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const notesGrid = document.getElementById("notes-grid");
   const categorySuggestions = document.getElementById("category-suggestions");
 
-  // ELEMEN COMPOSE BOX (Tambah Catatan)
   const composeBox = document.getElementById("compose-box");
   const addNoteForm = document.getElementById("add-note-form");
   const addNoteTitleInput = document.getElementById("add-note-title");
@@ -42,14 +41,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   const composeToolbar = document.getElementById("compose-toolbar");
   const quickImportantBtn = document.getElementById("quick-important-btn");
   const quickPaletteBtn = document.getElementById("quick-palette-btn");
-  const quickImageBtn = document.getElementById("quick-image-btn");
   const addPaletteBtn = document.getElementById("add-palette-btn");
   const addImportantBtn = document.getElementById("add-important-btn");
   const addColorWrapper = document.getElementById("addColorWrapper");
   const addColorPopover = document.getElementById("add-color-popover");
   const addColorSwatches = document.getElementById("add-color-swatches");
 
-  // ELEMEN MODAL EDIT
   const editNoteModal = document.getElementById("edit-note-modal");
   const editNoteForm = document.getElementById("edit-note-form");
   const editNoteIdInput = document.getElementById("edit-note-id");
@@ -69,7 +66,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const editBtnMinimize = document.getElementById("btnMinimize");
   const editModalNewBtn = document.getElementById("modal-new-btn");
 
-  // TOOLBAR FORMATTING EDIT
   const btnFmtBold = document.getElementById("btn-bold");
   const btnFmtItalic = document.getElementById("btn-italic");
   const btnFmtUnderline = document.getElementById("btn-underline");
@@ -78,21 +74,21 @@ document.addEventListener("DOMContentLoaded", async function () {
   const btnFmtImage = document.getElementById("btn-image");
   const editImageInput = document.getElementById("imageInput");
 
-  // ELEMEN MODAL HAPUS
   const deleteModal = document.getElementById("delete-modal");
   const deleteNoteTitle = document.getElementById("delete-note-title");
   const deleteCancelBtn = document.getElementById("delete-cancel-btn");
   const deleteConfirmBtn = document.getElementById("delete-confirm-btn");
 
-  // STATE LOKAL
   let allNotes = [];
   let noteIdPendingDelete = null;
   let selectedAddColor = "#ffffff";
-  let openQuickColorPopover = null; // popover warna cepat yang sedang terbuka (di kartu)
+  let openQuickColorPopover = null;
+
+  let aiPendingNoteId = null;
+  let aiResult = null;
 
   userEmailEl.textContent = currentUser.email;
 
-  // PALET WARNA — gaya Google Keep
   const NOTE_COLORS = [
     { name: "Default", value: "#ffffff" },
     { name: "Coral", value: "#f28b82" },
@@ -108,8 +104,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     { name: "Abu-abu", value: "#e8eaed" },
   ];
 
-  // Render satu baris swatch warna ke dalam sebuah container.
-  // onSelect(colorValue) dipanggil setiap kali user memilih warna.
   function renderColorSwatches(container, selectedValue, onSelect) {
     if (!container) return;
     container.innerHTML = "";
@@ -132,7 +126,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   }
 
-  // HELPER
   function showMessage(el, text, type) {
     if (!el) return;
     el.textContent = text;
@@ -164,7 +157,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.execCommand(command, false, value);
   }
 
-  // LOGOUT
   logoutBtn.addEventListener("click", async function () {
     logoutBtn.disabled = true;
     logoutBtn.textContent = "Keluar...";
@@ -172,7 +164,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     window.location.href = "login.html";
   });
 
-  // LOAD NOTES
   async function loadNotes() {
     loadingState.classList.remove("hidden");
     emptyState.classList.add("hidden");
@@ -222,7 +213,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  // RENDER NOTES
   function renderNotes() {
     const keyword = searchInput.value.trim().toLowerCase();
     const category = categoryFilter.value;
@@ -267,6 +257,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         <div class="note-card-footer">
           <span class="note-date">${formatDate(note.updated_at || note.created_at)}</span>
           <div class="note-card-actions">
+            <button class="note-action-btn ai-btn" title="Rapikan dengan AI" data-id="${note.id}">✨</button>
             <div class="note-quick-color">
               <button class="note-action-btn color-btn" title="Ubah warna" data-id="${note.id}">🎨</button>
             </div>
@@ -277,7 +268,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       notesGrid.appendChild(card);
     });
 
-    // Klik di mana pun pada kartu (selain tombol aksi) membuka editor
     notesGrid.querySelectorAll(".note-card").forEach(function (card) {
       card.addEventListener("click", function (e) {
         if (e.target.closest(".note-card-actions") || e.target.closest(".note-pin-btn")) {
@@ -294,7 +284,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
     });
 
-    // Toggle penting langsung dari kartu, tanpa buka modal
     notesGrid.querySelectorAll(".note-pin-btn").forEach(function (btn) {
       btn.addEventListener("click", async function (e) {
         e.stopPropagation();
@@ -302,16 +291,22 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
     });
 
-    // Popover warna cepat langsung dari kartu
     notesGrid.querySelectorAll(".color-btn").forEach(function (btn) {
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
         openQuickColorPicker(btn);
       });
     });
+
+    notesGrid.querySelectorAll(".ai-btn").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const noteId = btn.dataset.id;
+        if (noteId) openAIPreview(noteId);
+      });
+    });
   }
 
-  // TOGGLE PENTING (dari kartu)
   async function toggleImportant(id) {
     const note = allNotes.find((n) => String(n.id) === String(id));
     if (!note) return;
@@ -330,7 +325,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadNotes();
   }
 
-  // UBAH WARNA (dari kartu, tanpa buka modal)
   async function setNoteColor(id, color) {
     const { error } = await supabaseClient
       .from("notes")
@@ -346,7 +340,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadNotes();
   }
 
-  // POPOVER WARNA CEPAT DI KARTU
   function closeQuickColorPicker() {
     if (openQuickColorPopover) {
       openQuickColorPopover.remove();
@@ -389,7 +382,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   categoryFilter.addEventListener("change", renderNotes);
   importantFilter.addEventListener("change", renderNotes);
 
-  // KONTROL COMPOSE BOX (gaya Google Keep — melebar inline, bukan modal)
   let selectedAddImportant = false;
 
   function selectAddColor(color) {
@@ -437,7 +429,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const title = addNoteTitleInput.value.trim();
     const content = addNoteContentInput.value.trim();
 
-    // Kotak kosong: tutup saja tanpa menyimpan apa pun, persis perilaku Keep
     if (!title && !content) {
       collapseComposeBox();
       resetComposeBox();
@@ -447,8 +438,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const payload = {
       title:
         title ||
-        content.substring(0, 20) + (content.length > 20 ? "..." : "") ||
-        "Catatan Tanpa Judul",
+        content.substring(0, 20) + (content.length > 20 ? "..." : "") || "Catatan Tanpa Judul",
       category: addNoteCategoryInput.value.trim() || "Umum",
       content: content,
       is_important: selectedAddImportant,
@@ -497,13 +487,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     addColorPopover.classList.toggle("hidden");
   });
 
-  quickImageBtn.addEventListener("click", function (e) {
-    e.stopPropagation();
-    expandComposeBox();
-    addNoteContentInput.focus();
-  });
-
-  // Klik di luar kotak = "Tutup" (auto-simpan kalau ada isinya), sama seperti Keep
   document.addEventListener("click", function (e) {
     if (
       !addColorPopover.classList.contains("hidden") &&
@@ -521,11 +504,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     saveAndCollapseComposeBox();
   });
 
-  // Render awal
   renderColorSwatches(addColorSwatches, selectedAddColor, selectAddColor);
   updateAddImportantIcon();
 
-  // KONTROL MODAL EDIT
   function openEditModal(id) {
     const note = allNotes.find((n) => String(n.id) === String(id));
     if (!note) return;
@@ -563,10 +544,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     editColorPopover.classList.add("hidden");
   }
 
-  editModalCloseBtn.addEventListener("click", closeEditModal);
-  editModalCancelBtn.addEventListener("click", closeEditModal);
+  if (editModalCloseBtn) editModalCloseBtn.addEventListener("click", closeEditModal);
+  if (editModalCancelBtn) editModalCancelBtn.addEventListener("click", closeEditModal);
 
-  // AMAN DARI AUTO-CLOSE SAAT RESIZE / DRAG
   let isDragging = false;
   editNoteModal.addEventListener("mousedown", (e) => {
     isDragging = e.target !== editNoteModal;
@@ -596,6 +576,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       composeBox.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   }
+
   function applyEditColor(color) {
     const stickyEl = editNoteModal.querySelector(".sticky-note");
     if (stickyEl) stickyEl.style.setProperty("--bg-color", color);
@@ -603,9 +584,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     renderColorSwatches(editColorSwatches, color, applyEditColor);
   }
 
-  editBgColorPicker.addEventListener("input", (e) => {
-    applyEditColor(e.target.value);
-  });
+  if (editBgColorPicker) {
+    editBgColorPicker.addEventListener("input", (e) => {
+      applyEditColor(e.target.value);
+    });
+  }
 
   if (btnPaletteToggle) {
     btnPaletteToggle.addEventListener("click", function (e) {
@@ -624,70 +607,210 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   });
 
-  // EVENT FORMATTING TOOLBAR
-  btnFmtBold.addEventListener("click", () => executeCmd("bold"));
-  btnFmtItalic.addEventListener("click", () => executeCmd("italic"));
-  btnFmtUnderline.addEventListener("click", () => executeCmd("underline"));
-  btnFmtStrike.addEventListener("click", () => executeCmd("strikeThrough"));
-  btnFmtList.addEventListener("click", () => executeCmd("insertUnorderedList"));
-  btnFmtImage.addEventListener("click", () => editImageInput.click());
+  if (btnFmtBold) btnFmtBold.addEventListener("click", () => executeCmd("bold"));
+  if (btnFmtItalic) btnFmtItalic.addEventListener("click", () => executeCmd("italic"));
+  if (btnFmtUnderline) btnFmtUnderline.addEventListener("click", () => executeCmd("underline"));
+  if (btnFmtStrike) btnFmtStrike.addEventListener("click", () => executeCmd("strikeThrough"));
+  if (btnFmtList) btnFmtList.addEventListener("click", () => executeCmd("insertUnorderedList"));
+  if (btnFmtImage) {
+    btnFmtImage.addEventListener("click", () => {
+      if (editImageInput) editImageInput.click();
+    });
+  }
 
-  editImageInput.addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        executeCmd("insertImage", event.target.result);
-      };
-      reader.readAsDataURL(file);
+  if (editImageInput) {
+    editImageInput.addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          executeCmd("insertImage", event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  const btnH1 = document.getElementById("btn-h1");
+  const btnH2 = document.getElementById("btn-h2");
+  const btnH3 = document.getElementById("btn-h3");
+  const btnOl = document.getElementById("btn-ol");
+  const btnChecklist = document.getElementById("btn-checklist");
+  const btnLink = document.getElementById("btn-link");
+  const btnTable = document.getElementById("btn-table");
+  const btnMore = document.getElementById("btn-more");
+  const btnAlignLeft = document.getElementById("btn-align-left");
+  const btnAlignCenter = document.getElementById("btn-align-center");
+  const btnAlignRight = document.getElementById("btn-align-right");
+  const btnClearFormat = document.getElementById("btn-clear-format");
+  const btnUndo = document.getElementById("btn-undo");
+  const btnRedo = document.getElementById("btn-redo");
+
+  if (btnH1) btnH1.addEventListener("click", () => executeCmd("formatBlock", "h1"));
+  if (btnH2) btnH2.addEventListener("click", () => executeCmd("formatBlock", "h2"));
+  if (btnH3) btnH3.addEventListener("click", () => executeCmd("formatBlock", "h3"));
+  if (btnOl) btnOl.addEventListener("click", () => executeCmd("insertOrderedList"));
+
+  if (btnChecklist) {
+    btnChecklist.addEventListener("click", toggleChecklist);
+  }
+
+  function toggleChecklist() {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+    
+    const range = selection.getRangeAt(0);
+    let container = range.commonAncestorContainer;
+    
+    let li = null;
+    if (container.closest) {
+      li = container.closest('li');
+    } else {
+      let el = container;
+      while (el && el.tagName !== 'LI') {
+        el = el.parentNode;
+      }
+      li = el;
     }
-  });
-
-  // SUBMIT EDIT
-  editNoteForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const id = editNoteIdInput.value;
-
-    const plainText = editNoteContentInput.innerText.trim();
-    const defaultTitle = plainText.length > 0 
-      ? plainText.substring(0, 20) + (plainText.length > 20 ? '...' : '')
-      : 'Catatan Tanpa Judul';
-
-    const payload = {
-      title: editNoteTitleInput ? editNoteTitleInput.value.trim() : defaultTitle,
-      category: editNoteCategoryInput ? editNoteCategoryInput.value.trim() : "Umum",
-      content: editNoteContentInput.innerHTML.trim(),
-      is_important: editNoteImportantInput.checked,
-      color: editBgColorPicker.value,
-      updated_at: new Date().toISOString(),
-    };
-
-    editModalSaveBtn.disabled = true;
-    editModalSaveBtn.textContent = "Menyimpan...";
-
-    const { error } = await supabaseClient
-      .from("notes")
-      .update(payload)
-      .eq("id", id);
-
-    editModalSaveBtn.disabled = false;
-    editModalSaveBtn.textContent = "💾";
-
-    if (error) {
-      showMessage(
-        editModalMessage,
-        "❌ Gagal menyimpan: " + error.message,
-        "error",
-      );
-      return;
+    
+    if (li && li.classList && li.classList.contains('checklist-item')) {
+      const checkbox = li.querySelector('.checklist-checkbox');
+      if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        li.classList.toggle('checked', checkbox.checked);
+      }
+    } else {
+      const html = `<ul class="checklist">
+        <li class="checklist-item">
+          <input type="checkbox" class="checklist-checkbox">
+          <span class="checklist-text" contenteditable="true">Item checklist</span>
+        </li>
+      </ul>`;
+      document.execCommand('insertHTML', false, html);
+      
+      setTimeout(() => {
+        const textSpan = document.querySelector('.checklist-item:last-child .checklist-text');
+        if (textSpan) {
+          const range = document.createRange();
+          range.selectNodeContents(textSpan);
+          const sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }, 10);
     }
+  }
 
-    closeEditModal();
-    await loadNotes();
-  });
+  if (btnLink) {
+    btnLink.addEventListener("click", () => {
+      const url = prompt('Masukkan URL:', 'https://');
+      if (url) {
+        document.execCommand('createLink', false, url);
+      }
+    });
+  }
 
-  // KONTROL MODAL HAPUS
+  if (btnTable) {
+    btnTable.addEventListener("click", insertTableDialog);
+  }
+
+  function insertTableDialog() {
+    const rows = prompt('Jumlah baris (termasuk header):', 3);
+    const cols = prompt('Jumlah kolom:', 3);
+    if (rows && cols) {
+      insertTable(parseInt(rows), parseInt(cols));
+    }
+  }
+
+  function insertTable(rows, cols) {
+    let html = '<br><table style="width:100%; border-collapse:collapse; margin:8px 0;">';
+    
+    html += '<thead><tr>';
+    for (let j = 0; j < cols; j++) {
+      html += `<th style="border:1px solid #cbd5e1; padding:6px 10px; text-align:left; background:rgba(0,0,0,0.05);">Header ${j+1}</th>`;
+    }
+    html += '</tr></thead><tbody>';
+    
+    for (let i = 1; i < rows; i++) {
+      html += '<tr>';
+      for (let j = 0; j < cols; j++) {
+        html += `<td style="border:1px solid #cbd5e1; padding:6px 10px;">&nbsp;</td>`;
+      }
+      html += '</tr>';
+    }
+    
+    html += '</tbody></table><br>';
+    document.execCommand('insertHTML', false, html);
+  }
+
+  const moreMenuModal = document.getElementById('more-menu-modal');
+  const moreCloseBtn = document.getElementById('more-close-btn');
+
+  if (btnMore) {
+    btnMore.addEventListener("click", () => {
+      if (moreMenuModal) moreMenuModal.classList.remove('hidden');
+    });
+  }
+
+  if (moreCloseBtn) {
+    moreCloseBtn.addEventListener("click", () => {
+      if (moreMenuModal) moreMenuModal.classList.add('hidden');
+    });
+  }
+
+  if (moreMenuModal) {
+    moreMenuModal.addEventListener("click", (e) => {
+      if (e.target === e.currentTarget) {
+        moreMenuModal.classList.add('hidden');
+      }
+    });
+  }
+
+  if (btnAlignLeft) btnAlignLeft.addEventListener("click", () => { executeCmd("justifyLeft"); if (moreMenuModal) moreMenuModal.classList.add('hidden'); });
+  if (btnAlignCenter) btnAlignCenter.addEventListener("click", () => { executeCmd("justifyCenter"); if (moreMenuModal) moreMenuModal.classList.add('hidden'); });
+  if (btnAlignRight) btnAlignRight.addEventListener("click", () => { executeCmd("justifyRight"); if (moreMenuModal) moreMenuModal.classList.add('hidden'); });
+  if (btnClearFormat) btnClearFormat.addEventListener("click", () => { executeCmd("removeFormat"); if (moreMenuModal) moreMenuModal.classList.add('hidden'); });
+  if (btnUndo) btnUndo.addEventListener("click", () => { executeCmd("undo"); if (moreMenuModal) moreMenuModal.classList.add('hidden'); });
+  if (btnRedo) btnRedo.addEventListener("click", () => { executeCmd("redo"); if (moreMenuModal) moreMenuModal.classList.add('hidden'); });
+
+ // dashboard.js
+editNoteForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const id = editNoteIdInput.value;
+  const contentHTML = editNoteContentInput.innerHTML.trim();
+
+  if (!contentHTML) {
+    alert("Isi catatan tidak boleh kosong!");
+    return;
+  }
+
+  // Pengecekan Aman: Ambil elemen HTML jika ada
+  const folderInput = document.getElementById("edit-note-folder");
+  const folderValue = folderInput ? folderInput.value : null;
+
+  const payload = {
+    title: editNoteTitleInput ? editNoteTitleInput.value.trim() : 'Catatan Tanpa Judul',
+    // folder_id: folderValue,
+    content: contentHTML,
+    is_important: editNoteImportantInput ? editNoteImportantInput.checked : false,
+    color: editBgColorPicker ? editBgColorPicker.value : '#ffffff',
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = await supabaseClient
+    .from("notes")
+    .update(payload)
+    .eq("id", id);
+
+  if (error) {
+    alert("Gagal menyimpan: " + error.message);
+    return;
+  }
+
+  closeEditModal();
+  await loadNotes();
+});
   function openDeleteModal(id) {
     const note = allNotes.find((n) => String(n.id) === String(id));
     if (!note) return;
@@ -732,15 +855,274 @@ document.addEventListener("DOMContentLoaded", async function () {
     await loadNotes();
   });
 
-  // START
+  // ============================================
+  // AI GEMINI
+  // ============================================
+async function callGemini(content, instruction) {
+  const { data, error } = await supabaseClient.functions.invoke('gemini', {
+    body: { 
+      content: content,       // Isi catatan
+      instruction: instruction // Instruksi AI (misal: "Ringkasan", "Checklist", dll)
+    }
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+ async function openAIPreview(noteId) {
+  const note = allNotes.find(n => String(n.id) === String(noteId));
+  if (!note) {
+    alert('❌ Note tidak ditemukan.');
+    return;
+  }
+
+  // ✅ Cek apakah note memiliki content
+  if (!note.content || note.content.trim() === '') {
+    alert('❌ Catatan kosong. Tidak ada yang bisa diproses AI.');
+    return;
+  }
+
+  console.log('📝 Note content:', note.content);
+
+  const instructionInput = document.getElementById('ai-instruction');
+  const instruction = instructionInput ? instructionInput.value.trim() : null;
+
+  aiPendingNoteId = noteId;
+  
+  const loadingEl = document.getElementById('ai-preview-loading');
+  const contentEl = document.getElementById('ai-preview-content');
+  const errorEl = document.getElementById('ai-preview-error');
+  const actionsEl = document.getElementById('ai-preview-actions');
+  
+  if (loadingEl) loadingEl.classList.remove('hidden');
+  if (contentEl) contentEl.classList.add('hidden');
+  if (errorEl) errorEl.classList.add('hidden');
+  if (actionsEl) actionsEl.classList.add('hidden');
+  
+  const modal = document.getElementById('ai-preview-modal');
+  if (modal) modal.classList.remove('hidden');
+  
+  try {
+    const imgMatch = note.content.match(/<img[^>]+src="([^"]+)"/);
+    const imageUrl = imgMatch ? imgMatch[1] : null;
+    
+    const result = await callGemini(note.content, instruction);
+    aiResult = result;
+    
+    console.log('📝 AI Result received:', result);
+    
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (contentEl) contentEl.classList.remove('hidden');
+    if (actionsEl) actionsEl.classList.remove('hidden');
+    
+    const titleEl = document.getElementById('ai-preview-title');
+    const bodyEl = document.getElementById('ai-preview-body');
+    const categoryEl = document.getElementById('ai-preview-category');
+    const colorBar = document.getElementById('ai-preview-color-bar');
+    
+    if (titleEl) titleEl.textContent = result.title || note.title || 'Catatan';
+    if (bodyEl) bodyEl.innerHTML = result.content || note.content || '';
+    if (categoryEl) categoryEl.textContent = result.category || note.category || 'Umum';
+    
+    const color = result.color || note.color || '#ffffff';
+    if (colorBar) {
+      colorBar.style.backgroundColor = color;
+      colorBar.style.background = color;
+    }
+    
+  } catch (error) {
+    console.error('❌ AI Error:', error);
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (errorEl) {
+      errorEl.textContent = '❌ Gagal memproses dengan AI: ' + error.message;
+      errorEl.classList.remove('hidden');
+    }
+  }
+}
+  function closeAIPreview() {
+    const modal = document.getElementById('ai-preview-modal');
+    if (modal) modal.classList.add('hidden');
+    aiPendingNoteId = null;
+    aiResult = null;
+    const errorEl = document.getElementById('ai-preview-error');
+    if (errorEl) errorEl.classList.add('hidden');
+  }
+
+async function applyAIResult() {
+  if (!aiPendingNoteId || !aiResult) {
+    alert('❌ Tidak ada hasil AI untuk diterapkan.');
+    return;
+  }
+
+  const bodyEl = document.getElementById('ai-preview-body');
+  const resultContent = (aiResult.content || (bodyEl ? bodyEl.innerHTML : '') || '').trim();
+
+  if (!resultContent) {
+    alert("Hasil AI kosong!");
+    return;
+  }
+
+  const payload = {
+    title: aiResult.title || 'Catatan Tanpa Judul',
+    content: resultContent,
+    category: aiResult.category || 'Umum',
+    color: aiResult.color || '#ffffff',
+    is_important: !!aiResult.is_important,
+    updated_at: new Date().toISOString(),
+  };
+
+  const applyBtn = document.getElementById('ai-apply-btn');
+  if (applyBtn) {
+    applyBtn.disabled = true;
+    applyBtn.textContent = '⏳ Menyimpan...';
+  }
+
+  const { error } = await supabaseClient
+    .from('notes')
+    .update(payload)
+    .eq('id', aiPendingNoteId);
+
+  if (applyBtn) {
+    applyBtn.disabled = false;
+    applyBtn.textContent = '✅ Gunakan';
+  }
+
+  if (error) {
+    alert('❌ Gagal menyimpan hasil AI: ' + error.message);
+    return;
+  }
+
+  closeAIPreview();
   await loadNotes();
-});
+}
 
-// FITUR PASTE AUTOMATIS (TEKS RAPI + SCREENSHOT JADI URL)
-// FITUR PASTE SCREENSHOT AUTOMATIS (PERBAIKAN PUBLIC URL)
-(function () {
+ function editAIResult() {
+  if (!aiPendingNoteId || !aiResult) {
+    alert('❌ Tidak ada hasil AI untuk diedit.');
+    return;
+  }
+
+  console.log('📝 Edit AI Result:', aiResult);
+
+  // ✅ Simpan dulu sebelum closeAIPreview() mereset aiPendingNoteId & aiResult jadi null
+  const noteId = aiPendingNoteId;
+  const result = aiResult;
+
+  const note = allNotes.find(n => String(n.id) === String(noteId));
+  if (!note) {
+    alert('❌ Note tidak ditemukan.');
+    return;
+  }
+
+  // ✅ Pastikan content ada
+  const content = result.content || note.content || '';
+
+  const tempNote = {
+    ...note,
+    title: result.title || note.title,
+    content: content,
+    category: result.category || note.category,
+    color: result.color || note.color,
+    is_important: result.is_important || note.is_important
+  };
+
+  console.log('📝 Temp Note:', tempNote);
+
+  closeAIPreview();
+  openEditModalWithData(tempNote);
+}
+
+  function openEditModalWithData(note) {
+  if (!note) {
+    alert('❌ Data note tidak valid.');
+    return;
+  }
+
+  console.log('📝 Open Edit with Data:', note);
+
+  editNoteIdInput.value = note.id;
+  
+  if (editNoteTitleInput) {
+    editNoteTitleInput.value = note.title || 'catatan';
+  }
+  
+  if (editNoteCategoryInput) {
+    editNoteCategoryInput.value = note.category || '';
+  }
+  
+  // ✅ Pastikan content ada sebelum di-insert
+  const content = note.content || 'Catatan kosong';
+  editNoteContentInput.innerHTML = content;
+  
+  editNoteImportantInput.checked = !!note.is_important;
+  editBgColorPicker.value = note.color || '#fff7d1';
+  renderColorSwatches(editColorSwatches, note.color || '#fff7d1', applyEditColor);
+  editColorPopover.classList.add('hidden');
+  
+  const stickyEl = editNoteModal.querySelector('.sticky-note');
+  if (stickyEl) {
+    stickyEl.style.setProperty('--bg-color', note.color || '#fff7d1');
+    stickyEl.classList.remove('minimized');
+  }
+  
+  editModalMessage.classList.add('hidden');
+  editNoteModal.classList.remove('hidden');
+  editNoteContentInput.focus();
+}
+
+  const aiCloseBtn = document.getElementById('ai-close-btn');
+  const aiCancelBtn = document.getElementById('ai-cancel-btn');
+  const aiApplyBtn = document.getElementById('ai-apply-btn');
+  const aiEditBtn = document.getElementById('ai-edit-btn');
+  const aiModal = document.getElementById('ai-preview-modal');
+
+  if (aiCloseBtn) aiCloseBtn.addEventListener('click', closeAIPreview);
+  if (aiCancelBtn) aiCancelBtn.addEventListener('click', closeAIPreview);
+  if (aiApplyBtn) aiApplyBtn.addEventListener('click', applyAIResult);
+  if (aiEditBtn) aiEditBtn.addEventListener('click', editAIResult);
+
+  if (aiModal) {
+    aiModal.addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeAIPreview();
+    });
+  }
+
+  document.querySelectorAll('.ai-quick-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const instructionInput = document.getElementById('ai-instruction');
+      if (instructionInput) {
+        instructionInput.value = this.dataset.instruksi;
+        instructionInput.focus();
+        if (aiPendingNoteId) {
+          const loadingEl = document.getElementById('ai-preview-loading');
+          const contentEl = document.getElementById('ai-preview-content');
+          const errorEl = document.getElementById('ai-preview-error');
+          if (loadingEl) loadingEl.classList.remove('hidden');
+          if (contentEl) contentEl.classList.add('hidden');
+          if (errorEl) errorEl.classList.add('hidden');
+          openAIPreview(aiPendingNoteId);
+        }
+      }
+    });
+  });
+
+  document.getElementById('ai-instruction')?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (aiPendingNoteId) {
+        const loadingEl = document.getElementById('ai-preview-loading');
+        const contentEl = document.getElementById('ai-preview-content');
+        const errorEl = document.getElementById('ai-preview-error');
+        if (loadingEl) loadingEl.classList.remove('hidden');
+        if (contentEl) contentEl.classList.add('hidden');
+        if (errorEl) errorEl.classList.add('hidden');
+        openAIPreview(aiPendingNoteId);
+      }
+    }
+  });
+
   const editor = document.getElementById('editor');
-
   if (editor) {
     editor.addEventListener('paste', async function (e) {
       const items = (e.clipboardData || e.originalEvent.clipboardData).items;
@@ -752,10 +1134,8 @@ document.addEventListener("DOMContentLoaded", async function () {
           const file = item.getAsFile();
           const fileName = `ss_${Date.now()}.png`;
 
-          // Tampilkan indikator loading
           document.execCommand('insertHTML', false, '<span id="uploading-img">⏳ Mengunggah gambar...</span>');
 
-          // 1. Unggah file ke Storage
           const { data: uploadData, error: uploadError } = await supabaseClient
             .storage
             .from('note-images')
@@ -772,7 +1152,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
           }
 
-          // 2. Ambil Public URL dengan sintaks yang tepat
           const { data } = supabaseClient
             .storage
             .from('note-images')
@@ -780,14 +1159,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
           const publicUrl = data.publicUrl;
 
-          // 3. Sisipkan tag <img> menggunakan Public URL
           const imgHtml = `<br><img src="${publicUrl}" alt="Screenshot" style="max-width:100%; height:auto;"><br>`;
           document.execCommand('insertHTML', false, imgHtml);
           return;
         }
       }
 
-      // Jika paste teks biasa
       const textData = e.clipboardData.getData('text/plain');
       if (textData) {
         e.preventDefault();
@@ -796,34 +1173,27 @@ document.addEventListener("DOMContentLoaded", async function () {
       }
     });
   }
-})();
 
-// FITUR SISIP TABEL OTOMATIS
-const btnTable = document.getElementById('btn-table');
+  await loadNotes();
+});
 
-if (btnTable) {
-  btnTable.addEventListener('click', function () {
-    // Buat HTML tabel standar (2 baris x 2 kolom)
-    const tableHtml = `
-      <br>
-      <table style="width:100%; border-collapse:collapse; margin:10px 0;">
-        <thead>
-          <tr style="background-color: rgba(0,0,0,0.05);">
-            <th style="border:1px solid #cbd5e1; padding:6px 8px; text-align:left;">Header 1</th>
-            <th style="border:1px solid #cbd5e1; padding:6px 8px; text-align:left;">Header 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="border:1px solid #cbd5e1; padding:6px 8px;">Isi 1</td>
-            <td style="border:1px solid #cbd5e1; padding:6px 8px;">Isi 2</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-    `;
-    
-    // Sisipkan tabel ke posisi kursor editor
-    document.execCommand('insertHTML', false, tableHtml);
-  });
+// Fungsi Helper untuk memanggil Gemini AI via Supabase Edge Function
+async function generateNoteWithAI(promptText) {
+  try {
+    const { data, error } = await supabaseClient.functions.invoke('gemini', {
+      body: { prompt: promptText }
+    });
+
+    if (error) {
+      console.error('❌ Gagal menghubungi Edge Function:', error);
+      alert('Gagal memproses dengan AI: ' + error.message);
+      return null;
+    }
+
+    return data.result;
+  } catch (err) {
+    console.error('❌ Error internal:', err);
+    alert('Terjadi kesalahan jaringan/sistem.');
+    return null;
+  }
 }
