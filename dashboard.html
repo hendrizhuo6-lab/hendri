@@ -6,6 +6,7 @@
   <title>Dasbor — Note Catatan</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="dashboard.css" />
+  <link rel="icon" href="data:,">
 </head>
 <body>
 
@@ -24,7 +25,7 @@
 
     <main class="dash-main">
 
-      <!-- COMPOSE BOX (gaya Google Keep) -->
+      <!-- COMPOSE BOX -->
       <div id="compose-box" class="compose-box">
         <form id="add-note-form">
           <input
@@ -113,7 +114,6 @@
   <div id="edit-note-modal" class="modal-overlay hidden">
     <div class="sticky-note">
       
-      <!-- Header Controls -->
       <header class="note-header">
         <div class="header-actions">
           <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
@@ -137,11 +137,9 @@
 
       <div id="edit-modal-message" class="form-message hidden"></div>
 
-      <!-- Form Edit -->
       <form id="edit-note-form">
         <input type="hidden" id="edit-note-id" value="" />
 
-        <!-- Editor Area -->
         <div class="note-body" contenteditable="true" id="editor">
           Tulis catatanmu di sini...
         </div>
@@ -151,7 +149,6 @@
           ⭐ Tandai sebagai penting
         </label>
 
-        <!-- Formatting Toolbar LENGKAP -->
         <footer class="note-toolbar">
           <div class="toolbar-group">
             <button type="button" class="fmt-btn" id="btn-bold" title="Tebal (Ctrl+B)"><b>B</b></button>
@@ -200,14 +197,38 @@
         MODAL: PREVIEW AI
         ============================================ -->
   <div id="ai-preview-modal" class="modal-overlay hidden">
-    <div class="modal-box" style="max-width: 600px;">
+    <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
-        <h2>✨ Hasil AI - Rapikan Catatan</h2>
+        <h2>✨ Rapikan dengan AI</h2>
         <button type="button" class="btn-close" id="ai-close-btn">&times;</button>
       </div>
 
+      <!-- Input Instruksi -->
+      <div style="margin-bottom: 16px;">
+        <label for="ai-instruction" style="display:block; font-size:0.85rem; font-weight:600; color:#5f6368; margin-bottom:4px;">
+          📝 Instruksi tambahan (opsional):
+        </label>
+        <input 
+          type="text" 
+          id="ai-instruction" 
+          placeholder="Contoh: Buatkan ringkasan, Ubah menjadi checklist, Perbaiki grammar..."
+          style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='#4f46e5'"
+          onblur="this.style.borderColor='#e2e8f0'"
+        >
+        <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+          <button type="button" class="ai-quick-btn" data-instruksi="Buatkan ringkasan singkat">📋 Ringkasan</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Ubah menjadi checklist tugas">☑ Checklist</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Perbaiki grammar dan ejaan">✏️ Grammar</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Buat jadwal dari teks ini">📅 Jadwal</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Buat menjadi poin-poin penting">📍 Poin</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Buatkan judul yang menarik">📌 Judul</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Kategorikan dan beri warna">🏷️ Kategori</button>
+        </div>
+      </div>
+
       <div id="ai-preview-loading" class="state-box">
-        <p>⏳ AI sedang merapikan catatan...</p>
+        <p>⏳ AI sedang memproses catatan...</p>
       </div>
 
       <div id="ai-preview-error" class="state-box state-error hidden"></div>
@@ -231,8 +252,8 @@
         </div>
       </div>
 
-      <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
-        <button type="button" id="ai-cancel-btn" class="btn-secondary">Batal</button>
+      <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap;">
+        <button type="button" id="ai-cancel-btn" class="btn-secondary">❌ Batal</button>
         <button type="button" id="ai-edit-btn" class="btn-secondary">✏️ Edit</button>
         <button type="button" id="ai-apply-btn" class="btn-primary">✅ Gunakan</button>
       </div>
