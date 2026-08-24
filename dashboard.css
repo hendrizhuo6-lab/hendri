@@ -1309,3 +1309,495 @@
     padding: 8px 4px;
   }
 }
+
+/* ============================================
+   TOOLBAR EDITOR YANG LEBIH BAIK
+   ============================================ */
+
+#edit-note-modal .note-toolbar {
+  padding: 10px 2px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 8px;
+}
+
+#edit-note-modal .toolbar-group {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+#edit-note-modal .toolbar-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 4px;
+}
+
+#edit-note-modal .fmt-btn {
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-color, #2c3e50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+  position: relative;
+}
+
+#edit-note-modal .fmt-btn:hover {
+  background-color: var(--hover-color, rgba(0, 0, 0, 0.08));
+}
+
+#edit-note-modal .fmt-btn:active {
+  transform: scale(0.92);
+}
+
+#edit-note-modal .fmt-btn.is-active {
+  background-color: rgba(79, 70, 229, 0.15);
+  color: #4f46e5;
+}
+
+#edit-note-modal .fmt-btn.btn-save {
+  color: #2e7d32;
+}
+
+#edit-note-modal .fmt-btn.btn-save:hover {
+  background-color: rgba(46, 125, 50, 0.12);
+}
+
+#edit-note-modal .fmt-btn.btn-cancel {
+  color: #c62828;
+}
+
+#edit-note-modal .fmt-btn.btn-cancel:hover {
+  background-color: rgba(198, 40, 40, 0.12);
+}
+
+/* ============================================
+   CHECKLIST STYLING
+   ============================================ */
+
+.checklist {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.checklist-item .checklist-checkbox {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: #4f46e5;
+}
+
+.checklist-item .checklist-text {
+  flex: 1;
+  outline: none;
+}
+
+.checklist-item.checked .checklist-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ============================================
+   AI PREVIEW MODAL
+   ============================================ */
+
+#ai-preview-modal .modal-box {
+  max-width: 650px;
+}
+
+#ai-preview-modal .state-box {
+  padding: 40px 20px;
+}
+
+#ai-preview-body ul,
+#ai-preview-body ol {
+  padding-left: 24px;
+  margin: 8px 0;
+}
+
+#ai-preview-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+}
+
+#ai-preview-body table th,
+#ai-preview-body table td {
+  border: 1px solid #cbd5e1;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+#ai-preview-body table th {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   AI QUICK BUTTONS
+   ============================================ */
+
+.ai-quick-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 0.75rem;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.ai-quick-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.ai-quick-btn:active {
+  transform: scale(0.96);
+}
+
+#ai-instruction:focus {
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* ============================================
+   MORE MENU
+   ============================================ */
+
+#more-menu-modal .btn-secondary {
+  padding: 10px 8px;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+/* ============================================
+   RESPONSIF - TOOLBAR
+   ============================================ */
+
+@media (max-width: 768px) {
+  #edit-note-modal .note-toolbar {
+    gap: 2px;
+    padding: 8px 0;
+  }
+
+  #edit-note-modal .fmt-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  #edit-note-modal .toolbar-divider {
+    margin: 0 2px;
+  }
+
+  #edit-note-modal .toolbar-group {
+    flex-wrap: wrap;
+  }
+
+  .ai-quick-btn {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  #edit-note-modal .note-toolbar {
+    gap: 1px;
+  }
+
+  #edit-note-modal .fmt-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  #ai-preview-modal .modal-box {
+    padding: 16px;
+    margin: 10px;
+  }
+
+  #ai-preview-actions {
+    flex-wrap: wrap;
+  }
+
+  #ai-preview-actions button {
+    flex: 1;
+    min-width: 80px;
+  }
+
+  #more-menu-modal .modal-box {
+    padding: 16px;
+  }
+
+  #more-menu-modal .modal-box .btn-secondary {
+    font-size: 0.8rem;
+    padding: 8px 4px;
+  }
+
+  .ai-quick-btn {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+  }
+}
+
+
+/* ============================================
+   TOOLBAR EDITOR
+   ============================================ */
+
+#edit-note-modal .note-toolbar {
+  padding: 10px 2px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 8px;
+}
+
+#edit-note-modal .toolbar-group {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+#edit-note-modal .toolbar-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 4px;
+}
+
+#edit-note-modal .fmt-btn {
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-color, #2c3e50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.1s;
+}
+
+#edit-note-modal .fmt-btn:hover {
+  background-color: var(--hover-color, rgba(0, 0, 0, 0.08));
+}
+
+#edit-note-modal .fmt-btn:active {
+  transform: scale(0.92);
+}
+
+#edit-note-modal .fmt-btn.btn-save {
+  color: #2e7d32;
+}
+
+#edit-note-modal .fmt-btn.btn-save:hover {
+  background-color: rgba(46, 125, 50, 0.12);
+}
+
+#edit-note-modal .fmt-btn.btn-cancel {
+  color: #c62828;
+}
+
+#edit-note-modal .fmt-btn.btn-cancel:hover {
+  background-color: rgba(198, 40, 40, 0.12);
+}
+
+/* ============================================
+   CHECKLIST
+   ============================================ */
+
+.checklist {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.checklist-item .checklist-checkbox {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: #4f46e5;
+}
+
+.checklist-item .checklist-text {
+  flex: 1;
+  outline: none;
+}
+
+.checklist-item.checked .checklist-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ============================================
+   AI PREVIEW MODAL
+   ============================================ */
+
+#ai-preview-modal .modal-box {
+  max-width: 650px;
+}
+
+#ai-preview-modal .state-box {
+  padding: 40px 20px;
+}
+
+#ai-preview-body ul,
+#ai-preview-body ol {
+  padding-left: 24px;
+  margin: 8px 0;
+}
+
+#ai-preview-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+}
+
+#ai-preview-body table th,
+#ai-preview-body table td {
+  border: 1px solid #cbd5e1;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+#ai-preview-body table th {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   AI QUICK BUTTONS
+   ============================================ */
+
+.ai-quick-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 0.75rem;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.ai-quick-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.ai-quick-btn:active {
+  transform: scale(0.96);
+}
+
+#ai-instruction:focus {
+  border-color: #4f46e5 !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* ============================================
+   MORE MENU
+   ============================================ */
+
+#more-menu-modal .btn-secondary {
+  padding: 10px 8px;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+/* ============================================
+   RESPONSIF
+   ============================================ */
+
+@media (max-width: 768px) {
+  #edit-note-modal .note-toolbar {
+    gap: 2px;
+    padding: 8px 0;
+  }
+
+  #edit-note-modal .fmt-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  #edit-note-modal .toolbar-divider {
+    margin: 0 2px;
+  }
+
+  .ai-quick-btn {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  #edit-note-modal .note-toolbar {
+    gap: 1px;
+  }
+
+  #edit-note-modal .fmt-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  #ai-preview-modal .modal-box {
+    padding: 16px;
+    margin: 10px;
+  }
+
+  #ai-preview-actions {
+    flex-wrap: wrap;
+  }
+
+  #ai-preview-actions button {
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .ai-quick-btn {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+  }
+}
