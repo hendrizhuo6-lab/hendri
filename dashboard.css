@@ -2,7 +2,7 @@
    DESIGN TOKENS — terinspirasi Google Keep
    ============================================ */
 
-/* :root {
+:root {
   --keep-bg: #f6f6f6;
   --keep-surface: #ffffff;
   --keep-border: rgba(0, 0, 0, 0.14);
@@ -18,12 +18,9 @@
   --keep-shadow-hover: 0 2px 6px rgba(60, 64, 67, 0.35), 0 4px 10px 2px rgba(60, 64, 67, 0.15);
   --radius-lg: 16px;
   --radius-md: 10px;
-} */
+}
 
-/* ============================================
-   DASHBOARD — pakai token dari style.css
-   (--mtl-*, --radius-lg, --radius-md, dll)
-   ============================================ */
+
 
 /* ============================================
    LAYOUT DASHBOARD
@@ -37,8 +34,6 @@
     radial-gradient(ellipse 900px 500px at 15% -10%, rgba(220, 38, 38, 0.08), transparent 60%),
     var(--mtl-bg);
 }
-
-dash-h
 
 .user-email {
   color: var(--mtl-text-muted);
