@@ -47,7 +47,10 @@ body {
   background: var(--mtl-bg);
   color: var(--mtl-text);
   min-height: 100vh;
+  position: relative;
 }
+
+
 
 /* ============================================
    LAYOUT HALAMAN AUTH (Login & Register)
@@ -70,7 +73,7 @@ body {
   justify-content: center;
   padding: 60px;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   border-right: 1px solid var(--mtl-border);
 }
 
@@ -80,13 +83,13 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 12% 22%, var(--mtl-blood-glow) 0px, transparent 3px),
-    radial-gradient(circle at 15% 24%, var(--mtl-blood-glow) 0px, transparent 2px),
-    radial-gradient(circle at 78% 8%, var(--mtl-blood-glow) 0px, transparent 4px),
-    radial-gradient(circle at 82% 12%, var(--mtl-blood-glow) 0px, transparent 2px),
-    radial-gradient(circle at 65% 70%, var(--mtl-blood-glow) 0px, transparent 3px),
-    radial-gradient(circle at 30% 85%, var(--mtl-blood-glow) 0px, transparent 2px),
-    radial-gradient(circle at 90% 55%, var(--mtl-blood-glow) 0px, transparent 3px),
+    radial-gradient(circle at 12% 22%, var(--mtl-accent-glow) 0px, transparent 3px),
+    radial-gradient(circle at 15% 24%, var(--mtl-accent-glow) 0px, transparent 2px),
+    radial-gradient(circle at 78% 8%, var(--mtl-accent-glow) 0px, transparent 4px),
+    radial-gradient(circle at 82% 12%, var(--mtl-accent-glow) 0px, transparent 2px),
+    radial-gradient(circle at 65% 70%, var(--mtl-accent-glow) 0px, transparent 3px),
+    radial-gradient(circle at 30% 85%, var(--mtl-accent-glow) 0px, transparent 2px),
+    radial-gradient(circle at 90% 55%, var(--mtl-accent-glow) 0px, transparent 3px),
     repeating-linear-gradient(
       115deg,
       transparent,
@@ -123,7 +126,7 @@ body {
   line-height: 1.3;
   margin-bottom: 18px;
   color: #ffffff;
-    text-shadow: 0 0 14px var(--mtl-blood-glow), 0 3px 0 rgba(0, 0, 0, 0.8);
+    text-shadow: 0 0 14px var(--mtl-accent-glow), 0 3px 0 rgba(0, 0, 0, 0.8);
 }
 
 .auth-brand p {
@@ -486,48 +489,6 @@ body {
   overflow: visible;
 }
 
-.auth-brand::after {
-  content: '';
-  position: absolute;
-  bottom: -14px;
-  left: 0;
-  right: 0;
-  height: 14px;
-  background-image: repeating-linear-gradient(
-    90deg,
-    var(--mtl-blood) 0px,
-    var(--mtl-blood) 2px,
-    transparent 2px,
-    transparent 46px
-  );
-  -webkit-mask-image: repeating-radial-gradient(
-    circle at 1px 0px,
-    black 0px,
-    black 1.4px,
-    transparent 1.4px,
-    transparent 46px
-  );
-  mask-image: repeating-radial-gradient(
-    circle at 1px 0px,
-    black 0px,
-    black 1.4px,
-    transparent 1.4px,
-    transparent 46px
-  );
-  clip-path: polygon(
-    0% 0%, 100% 0%, 100% 20%,
-    97% 20%, 96% 90%, 94% 100%, 92% 90%, 91% 20%,
-    75% 20%, 74% 60%, 72% 75%, 70% 60%, 69% 20%,
-    53% 20%, 52% 100%, 50% 100%, 48% 50%, 47% 20%,
-    31% 20%, 30% 70%, 28% 85%, 26% 70%, 25% 20%,
-    9% 20%, 8% 45%, 6% 55%, 4% 45%, 3% 20%,
-    0% 20%
-  );
-  background-color: var(--mtl-blood);
-  box-shadow: 0 4px 12px rgba(127, 29, 29, 0.5);
-  pointer-events: none;
-  z-index: 2;
-}
 
 @media (max-width: 800px) {
   .auth-brand::after {
@@ -577,9 +538,7 @@ body {
    ATMOSFER SERAM — background horror
    ============================================ */
 
-body {
-  position: relative;
-}
+
 
 /* Layer 1: noise/grain film lama + vignette gelap */
 body::before {
@@ -601,7 +560,7 @@ body::after {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 50% 110%, var(--mtl-blood-glow) 0%, transparent 55%);
+  background: radial-gradient(ellipse 70% 60% at 50% 110%, var(--mtl-accent-glow) 0%, transparent 55%);
   opacity: 0.5;
   animation: eerieBreathe 7s ease-in-out infinite;
 }
@@ -622,7 +581,7 @@ body::after {
   height: 260px;
   z-index: 0;
   pointer-events: none;
-  background: var(--mtl-blood-dark);
+  background: var(--mtl-accent-dark);
   opacity: 0.5;
   clip-path: polygon(
     0% 0%, 22% 0%, 15% 18%, 30% 22%, 20% 40%,
@@ -641,7 +600,7 @@ body::after {
   height: 300px;
   z-index: 0;
   pointer-events: none;
-  background: var(--mtl-blood-dark);
+  background: var(--mtl-accent-dark);
   opacity: 0.5;
   clip-path: polygon(
     100% 100%, 75% 100%, 82% 82%, 65% 78%, 78% 58%,
