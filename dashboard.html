@@ -1,304 +1,744 @@
+Pasted text(20260912-115244).txt
+Document
+jadi buatkan css paling tidak bisa di tiru orang jangan mengubah class yang ada
+
+Nah, kalau yang Bro cari API gratis yang menarik buat bikin project, bukan sekadar API dummy, ada banyak yang seru. Saya pilih yang bisa bikin project Laravel/Vue terasa hidup.
+
+Ada direktori yang saat ini mengumpulkan 700+ public API gratis dalam puluhan kategori, bahkan ada katalog lain dengan 1.600+ API.
+
+🔥 Yang paling menarik
+API	Bisa dibuat apa?	Key
+🌦️ Open-Meteo	Dashboard cuaca realtime	❌
+🚀 NASA API	Foto luar angkasa, asteroid, Mars	biasanya key gratis
+🛰️ SpaceX API	Roket & jadwal peluncuran	❌
+🌍 REST Countries	Data semua negara	❌
+💰 Frankfurter	Kurs mata uang	❌
+📚 Open Library	Search buku	❌
+🐱 The Cat API	Foto/data kucing	biasanya key
+🐶 Dog CEO	Random dog image	❌
+🎮 PokéAPI	Pokémon lengkap	❌
+🍔 TheMealDB	Resep makanan	❌
+🎬 TVMaze	Film/TV series	❌
+🎵 MusicBrainz	Data musik/artis/album	❌
+💻 GitHub API	Repository, user, issue, commit	❌ untuk endpoint public
+🧠 Datamuse	Sinonim, kata, autocomplete	❌
+🌐 IP API	Informasi IP	beberapa endpoint ❌
+🔐 Passwordinator	Generate password	❌
+📻 Radio Browser	Radio internet seluruh dunia	❌
+🗺️ OpenStreetMap ecosystem	Maps/geodata	tergantung service
+🧪 GBIF	Data spesies & biodiversitas	❌
+🌌 Open Notify	ISS & astronot	❌
+
+Beberapa di antaranya memang tercatat sebagai API tanpa autentikasi, termasuk PokéAPI dan Datamuse.
+
+🚀 5 project yang menurut saya paling cocok buat Bro
+
+Karena Bro lagi belajar Laravel + Vue, saya justru akan bikin project dari API ini:
+
+1. 🌌 Space Dashboard
+
+Pakai:
+
+NASA API
++
+Laravel
++
+Vue
++
+Tailwind
+
+Fitur:
+
+NASA Picture of the Day
+        ↓
+Mars Rover Photos
+        ↓
+Asteroid tracker
+        ↓
+Earth imagery
+
+Hasilnya bisa kelihatan seperti dashboard NASA mini.
+
+2. 🌦️ Weather Dashboard
+
+Pakai Open-Meteo.
+
+Tidak perlu API key atau signup untuk penggunaan non-komersial dalam batas gratis yang didokumentasikan.
+
+Laravel
+   ↓
+Open-Meteo
+   ↓
+Redis Cache
+   ↓
+Vue
+   ↓
+Weather Dashboard
+
+Ini malah bagus untuk belajar caching Redis.
+
+3. 🎮 Pokémon Database
+
+Pakai PokéAPI.
+
+Bikin:
+
+/search
+    ↓
+pikachu
+    ↓
+Laravel
+    ↓
+PokéAPI
+    ↓
+Vue
+
+Kemudian:
+
+pagination
+search
+filter type
+detail Pokémon
+evolution
+stats
+favorite
+database lokal
+
+Ini project latihan API yang sangat bagus.
+
+4. 📚 Mini Google Books
+
+Pakai Open Library.
+
+Bisa bikin:
+
+Search
+   ↓
+Book list
+   ↓
+Book detail
+   ↓
+Author
+   ↓
+Cover
+
+Kemudian tambahkan Laravel:
+
+API
+ ↓
+Service Class
+ ↓
+Cache
+ ↓
+Controller
+ ↓
+Resource
+ ↓
+Vue
+
+Ini sudah mulai melatih arsitektur Laravel yang benar, bukan cuma Http::get() di controller.
+
+5. 🚀 SpaceX Launch Tracker
+
+Ini menurut saya paling keren untuk portfolio.
+
+Data:
+
+🚀 Rocket
+📅 Launch
+🛰️ Payload
+🏭 Manufacturer
+📍 Launchpad
+
+Kemudian buat:
+
+Laravel Scheduler
+       ↓
+SpaceX API
+       ↓
+Database
+       ↓
+Redis Cache
+       ↓
+Vue Dashboard
+
+Bisa ditambah:
+
+Upcoming Launch
+       ↓
+Countdown
+       ↓
+Notification
+💡 Kalau mau yang benar-benar "unik"
+
+Ada API yang lebih aneh tapi justru bagus untuk eksperimen:
+
+Radio Browser → bikin aplikasi radio internet.
+GBIF → eksplorasi jutaan data spesies.
+Datamuse → bikin word generator/synonym engine.
+Numbers API → fakta unik tentang angka.
+Fruits API → database buah.
+Nager.Date → kalender hari libur berbagai negara.
+Deck of Cards API → bikin game kartu online.
+D&D API → database monster, spell, class, item.
+Dota 2 API → statistik game.
+ArXiv API → pencarian paper penelitian.
+Open Notify → tracking ISS.
+
+Kategori public API yang tersedia memang sangat luas—games, science, finance, music, weather, security, books, maps, dan lain-lain.
+
+Kalau saya pilihkan untuk belajar Laravel dari level sekarang:
+LEVEL 1
+PokéAPI
+   ↓
+LEVEL 2
+Open Library
+   ↓
+LEVEL 3
+Open-Meteo
+   ↓
+LEVEL 4
+GitHub API
+   ↓
+LEVEL 5
+NASA / SpaceX
+   ↓
+LEVEL 6
+API + Laravel Service
+   ↓
+LEVEL 7
+API + Redis Cache
+   ↓
+LEVEL 8
+Laravel Queue + Scheduler
+   ↓
+LEVEL 9
+Vue Dashboard
+   ↓
+LEVEL 10
+Production VPS + Nginx
+
+Ini jauh lebih bagus daripada sekadar mengoleksi API, karena setiap tahap bisa sekaligus melatih Laravel, HTTP client, caching, queue, scheduler, database, Vue, dan deployment.
+
+ada picture tersembunyi di git hub
+
+Iya, kalau maksud Bro “picture tersembunyi di GitHub”, ada beberapa hal menarik.
+
+🕵️ 1. Gambar bisa disembunyikan di dalam gambar
+
+Ini disebut steganography. Contohnya ada project GitHub ImSter yang bisa menyisipkan teks terenkripsi ke dalam pixel gambar sehingga secara visual sulit dibedakan dari gambar biasa.
+
+ImSter — GitHub
+
+Ada juga project yang memang menyembunyikan gambar lain di dalam sebuah gambar menggunakan teknik bit/pixel.
+
+Steganography — hidden image in image
+
+🧩 2. GitHub sendiri punya "hidden" / Easter eggs
+
+Ada repository GitHub yang memang dibuat khusus untuk mencari Easter egg dan hal-hal tersembunyi. GitHub bahkan punya topic easter-eggs dengan puluhan repository.
+
+GitHub Easter Eggs
+
+🖼️ 3. Kalau maksudmu gambar yang disembunyikan di source code GitHub
+
+Ini juga bisa dilakukan. Misalnya gambar ditaruh di:
+
+.github/
+docs/
+assets/
+public/
+
+kemudian tidak ditampilkan di halaman utama, tetapi dipanggil dari README.md. GitHub memang mendukung image path relatif di README.
+
+Bahkan README.md pada repository dengan nama yang sama dengan username bisa otomatis ditampilkan di profile GitHub.
+
+😈 Yang lebih menarik
+
+Ada juga project Diffusion Illusions yang secara khusus mengeksplorasi cara menyembunyikan gambar/karakter di dalam gambar atau pola yang terlihat biasa.
+
+Diffusion Illusions — GitHub
+
+Kalau yang Bro maksud “ada gambar rahasia yang bisa ditemukan dari URL GitHub tertentu”, bilang saja — saya bisa kasih beberapa Easter egg GitHub yang bisa langsung Bro coba sendiri.
+
+Pasted text(20260912-122641).txt
+Document
+menurut mu ada yang perlu di ubah kasih saran donk
+
+Iya, setelah lihat HTML lengkapnya, ada beberapa hal yang menurut saya memang layak diubah, tapi tidak perlu mengubah struktur/class yang sudah ada. Struktur dashboard kamu sebenarnya sudah bagus: compose note, filter, masonry notes, editor, AI preview, delete confirmation, dan more menu sudah jelas.
+
+Yang paling saya sarankan:
+
+Hapus inline CSS
+Di AI modal cukup banyak style="...", misalnya input AI dan action buttons. Ini bikin styling susah dirawat.
+
+Jangan pakai onfocus / onblur untuk styling
+Ini:
+
+onfocus="this.style.borderColor='#4f46e5'"
+onblur="this.style.borderColor='#e2e8f0'"
+
+lebih bagus dipindahkan ke CSS :focus.
+
+Ada dua favicon
+Kamu punya:
+
+<link rel="icon" href="data:,">
+
+lalu di bawah:
+
+<link rel="icon" href="data:image/svg+xml,...">
+
+Sebaiknya cukup satu saja.
+
+Editor sudah cukup bagus, terutama toolbar-nya. Ada formatting, heading, list, checklist, link, tabel, gambar, save/cancel.
+AI UX bisa dibuat jauh lebih keren.
+Quick action seperti Ringkasan, Checklist, Grammar, Jadwal, Poin, Judul, dan Kategori sudah merupakan fondasi yang bagus.
+Saya akan tambahkan:
+loading animation yang lebih modern
+AI processing indicator
+hasil AI dengan transition
+tombol Apply yang lebih menonjol
+preview yang terasa seperti "AI workspace"
+
+Tambahkan keyboard shortcut
+Misalnya:
+
+Ctrl + K → Link
+Ctrl + B → Bold
+Ctrl + I → Italic
+Ctrl + U → Underline
+Ctrl + S → Save
+Esc       → Close
+
+Sebagian shortcut bahkan sudah kamu tampilkan di title tombol.
+
+Mobile sudah diperhatikan, karena layout memakai breakpoint dan toolbar editor juga responsif.
+Yang paling penting menurut saya
+
+Jangan terlalu fokus membuat CSS "tidak bisa ditiru".
+
+Lebih bagus kita bikin aplikasi ini punya identitas visual sendiri. Misalnya:
+
+        NOTE APP
+           │
+   ┌───────┴───────┐
+   │               │
+ Notes          AI Assistant
+   │               │
+   ├─ Search       ├─ Summary
+   ├─ Category     ├─ Grammar
+   ├─ Important    ├─ Checklist
+   └─ Color        └─ Schedule
+
+Jadi orang boleh melihat CSS-nya, tetapi UX + arsitektur + logic + integrasi AI tetap menjadi bagian yang jauh lebih sulit ditiru.
+
+Kalau saya yang pegang project ini, prioritas berikutnya adalah merapikan HTML + CSS dulu, khususnya menghilangkan inline style dan duplicate CSS, tanpa mengubah class/id atau JavaScript yang sudah bekerja.
+
+kasih saya mana mau di ganti di ganti dengan apa?
+
+Bisa. Kalau yang kamu maksud saran perubahan dari HTML dashboard yang tadi, saya bisa kasih format yang benar-benar praktis:
+
+Cari kode lama → hapus/ganti → tempel kode baru
+
+Yang paling saya sarankan kita ubah dulu adalah 3 bagian, tanpa mengubah class/id yang dipakai dashboard.js.
+
+1. Favicon — hapus yang ini
+
+Cari di bagian <head>:
+
+<link rel="icon" href="data:,">
+
+Hapus baris tersebut.
+
+Sisakan favicon SVG kamu:
+
+<link rel="icon" type="image/svg+xml" href="...">
+2. AI Preview — pindahkan inline CSS
+
+Di HTML kamu ada bagian seperti:
+
+<input
+    ...
+    style="..."
+    onfocus="this.style.borderColor='...'"
+    onblur="this.style.borderColor='...'"
+>
+
+Jangan pakai style="", onfocus="", dan onblur="" lagi.
+
+Contohnya ubah menjadi:
+
+<input
+    id="ai-instruction"
+    class="ai-instruction-input"
+    type="text"
+    placeholder="Contoh: Ringkas catatan ini..."
+>
+
+Lalu di dashboard.css tambahkan:
+
+.ai-instruction-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--keep-border);
+    border-radius: 10px;
+    background: var(--keep-surface);
+    color: var(--keep-text);
+    font: inherit;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.ai-instruction-input:focus {
+    border-color: var(--keep-accent);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.ai-instruction-input::placeholder {
+    color: var(--keep-text-faint);
+}
+
+Jadi styling sepenuhnya masuk CSS.
+
+3. Bagian AI quick button
+
+Kamu sudah punya:
+
+<button class="ai-quick-btn" data-instruksi="...">
+
+Class tersebut jangan diganti.
+
+Karena kemungkinan dashboard.js mencari:
+
+document.querySelectorAll('.ai-quick-btn')
+
+CSS-nya saja yang kita rapikan.
+
+Misalnya:
+
+.ai-quick-btn {
+    border: 1px solid var(--keep-border);
+    background: var(--keep-surface);
+    color: var(--keep-text);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.ai-quick-btn:hover {
+    transform: translateY(-1px);
+    background: #f8f8ff;
+    border-color: var(--keep-accent);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.ai-quick-btn:active {
+    transform: translateY(0);
+}
+Yang jangan diganti
+
+Untuk sementara jangan ubah:
+
+#notes-grid
+#edit-note-modal
+#ai-preview-modal
+#delete-modal
+#more-menu-modal
+.add-note-form
+.note-card
+.note-body
+.note-toolbar
+.fmt-btn
+.ai-quick-btn
+
+dan class/id lain yang kemungkinan dipanggil oleh dashboard.js.
+
+Karena kalau kita asal mengganti nama class:
+
+.note-card
+
+menjadi:
+
+.my-awesome-card
+
+CSS memang bisa kita ubah, tapi JavaScript bisa langsung rusak kalau JS masih mencari .note-card.
+
+Kalau tujuan kamu adalah "rapikan seluruh HTML + CSS saya sekalian, tetapi tampilan dan fungsi jangan rusak", saya sarankan kita lakukan file per file:
+
+Tahap 1: HTML → saya tunjukkan KODE LAMA dan GANTI MENJADI
+Tahap 2: CSS → saya bersihkan duplikat ±1800 baris tanpa mengubah class/id
+Tahap 3: JS → cek apakah ada selector yang tidak cocok
+Tahap 4: baru kita tambahkan efek visual 3D yang benar.
+
+Kalau mau aman, jangan langsung ganti semuanya sekaligus.
+
 <!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dasbor — Note Catatan</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="dashboard.css" />
-  <link rel="icon" type="image/svg+xml" href="data:,">
-</head>
-<body>
 
-  <div class="dash-page">
+<html lang="id"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Dasbor — Note Catatan</title> <link rel="stylesheet" href="style.css" /> <link rel="stylesheet" href="dashboard.css" /> <link rel="icon" href="data:,"> </head> <body>
 
-    <!-- HEADER -->
-    <header class="dash-header">
-      <div class="dash-header-left">
-        <h1>📝 Note Catatan</h1>
+<div class="dash-page">
+
+<!-- HEADER -->
+<header class="dash-header">
+  <div class="dash-header-left">
+    <h1>📝 Note Catatan</h1>
+  </div>
+  <div class="dash-header-right">
+    <span id="user-email" class="user-email"></span>
+    <button id="logout-btn" class="btn-logout">Keluar</button>
+  </div>
+</header>
+
+<main class="dash-main">
+
+  <!-- COMPOSE BOX -->
+  <div id="compose-box" class="compose-box">
+    <form id="add-note-form">
+      <input
+        type="text"
+        id="add-note-title"
+        class="compose-title hidden"
+        placeholder="Judul"
+        maxlength="150"
+      />
+
+      <textarea
+        id="add-note-content"
+        class="compose-content"
+        placeholder="Buat catatan..."
+        rows="1"
+      ></textarea>
+
+      <div class="compose-quick-icons" id="compose-quick-icons">
+        <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">⭐</button>
+        <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🎨</button>
       </div>
-      <div class="dash-header-right">
-        <span id="user-email" class="user-email"></span>
-        <button id="logout-btn" class="btn-logout">Keluar</button>
-      </div>
-    </header>
 
-    <main class="dash-main">
-
-      <!-- COMPOSE BOX -->
-      <div id="compose-box" class="compose-box">
-        <form id="add-note-form">
-          <input
-            type="text"
-            id="add-note-title"
-            class="compose-title hidden"
-            placeholder="Judul"
-            maxlength="150"
-          />
-
-          <textarea
-            id="add-note-content"
-            class="compose-content"
-            placeholder="Buat catatan..."
-            rows="1"
-          ></textarea>
-
-          <div class="compose-quick-icons" id="compose-quick-icons">
-            <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">⭐</button>
-            <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🎨</button>
-          </div>
-
-          <div class="compose-toolbar hidden" id="compose-toolbar">
-            <div class="compose-toolbar-left">
-              <div class="note-quick-color" id="addColorWrapper">
-                <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🎨</button>
-                <div id="add-color-popover" class="color-popover hidden">
-                  <div id="add-color-swatches" class="color-swatches"></div>
-                </div>
-              </div>
-              <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">⭐</button>
-              <input
-                type="text"
-                id="add-note-category"
-                class="compose-category"
-                placeholder="Kategori"
-                list="category-suggestions"
-                maxlength="50"
-              />
+      <div class="compose-toolbar hidden" id="compose-toolbar">
+        <div class="compose-toolbar-left">
+          <div class="note-quick-color" id="addColorWrapper">
+            <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🎨</button>
+            <div id="add-color-popover" class="color-popover hidden">
+              <div id="add-color-swatches" class="color-swatches"></div>
             </div>
-            <button type="submit" class="btn-text-close" id="add-modal-save-btn">Tutup</button>
           </div>
-        </form>
-      </div>
-
-      <!-- TOOLBAR FILTER -->
-      <div class="dash-toolbar">
-        <div class="toolbar-filters">
+          <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">⭐</button>
           <input
             type="text"
-            id="search-input"
-            class="search-input"
-            placeholder="🔍 Cari catatan..."
+            id="add-note-category"
+            class="compose-category"
+            placeholder="Kategori"
+            list="category-suggestions"
+            maxlength="50"
           />
-          <select id="category-filter" class="category-filter">
-            <option value="">Semua Kategori</option>
-          </select>
-          <datalist id="category-suggestions"></datalist>
-          <label class="checkbox-filter">
-            <input type="checkbox" id="important-filter" />
-            ⭐ Penting saja
+        </div>
+        <button type="submit" class="btn-text-close" id="add-modal-save-btn">Tutup</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- TOOLBAR FILTER -->
+  <div class="dash-toolbar">
+    <div class="toolbar-filters">
+      <input
+        type="text"
+        id="search-input"
+        class="search-input"
+        placeholder="🔍 Cari catatan..."
+      />
+      <select id="category-filter" class="category-filter">
+        <option value="">Semua Kategori</option>
+      </select>
+      <datalist id="category-suggestions"></datalist>
+      <label class="checkbox-filter">
+        <input type="checkbox" id="important-filter" />
+        ⭐ Penting saja
+      </label>
+    </div>
+  </div>
+
+  <!-- STATUS STATE -->
+  <div id="loading-state" class="state-box hidden">
+    <p>⏳ Memuat catatan...</p>
+  </div>
+
+  <div id="empty-state" class="state-box hidden">
+    <p>Belum ada catatan. Yuk buat catatan pertamamu!</p>
+  </div>
+
+  <div id="error-state" class="state-box state-error hidden"></div>
+
+  <!-- GRID CATATAN -->
+  <div id="notes-grid" class="notes-grid"></div>
+
+</main>
+
+</div>
+
+<!-- ============================================ MODAL: EDIT CATATAN (STICKY NOTE) ============================================ -->
+
+<div id="edit-note-modal" class="modal-overlay hidden"> <div class="sticky-note">
+
+  <header class="note-header">
+    <div class="header-actions">
+      <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
+      <div class="color-picker-wrapper" id="colorPickerWrapper" title="Ubah Warna Catatan">
+        <button type="button" class="icon-btn" id="btnPaletteToggle">🎨</button>
+        <div id="edit-color-popover" class="color-popover hidden">
+          <div id="edit-color-swatches" class="color-swatches"></div>
+          <label class="color-popover-custom">
+            Kustom
+            <input type="color" id="bgColorPicker" value="#fff7d1">
           </label>
         </div>
       </div>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="icon-btn" id="btnMinimize" title="Minimize">—</button>
+      <button type="button" class="icon-btn" id="edit-delete-btn" title="Hapus Catatan">🗑️</button>
+      <button type="button" class="icon-btn" id="edit-close-btn" title="Tutup">✕</button>
+    </div>
+  </header>
 
-      <!-- STATUS STATE -->
-      <div id="loading-state" class="state-box hidden">
-        <p>⏳ Memuat catatan...</p>
+  <div id="edit-modal-message" class="form-message hidden"></div>
+
+  <form id="edit-note-form">
+    <input type="hidden" id="edit-note-id" value="" />
+
+    <div class="note-body" contenteditable="true" id="editor">
+      Tulis catatanmu di sini...
+    </div>
+
+    <label class="checkbox-inline">
+      <input type="checkbox" id="edit-note-important" />
+      ⭐ Tandai sebagai penting
+    </label>
+
+    <footer class="note-toolbar">
+      <div class="toolbar-group">
+        <button type="button" class="fmt-btn" id="btn-bold" title="Tebal (Ctrl+B)"><b>B</b></button>
+        <button type="button" class="fmt-btn" id="btn-italic" title="Miring (Ctrl+I)"><i>I</i></button>
+        <button type="button" class="fmt-btn" id="btn-underline" title="Garis Bawah (Ctrl+U)"><u>U</u></button>
+        <button type="button" class="fmt-btn" id="btn-strike" title="Coret"><s>S</s></button>
       </div>
 
-      <div id="empty-state" class="state-box hidden">
-        <p>Belum ada catatan. Yuk buat catatan pertamamu!</p>
+      <div class="toolbar-divider"></div>
+
+      <div class="toolbar-group">
+        <button type="button" class="fmt-btn" id="btn-h1" title="Heading 1">H1</button>
+        <button type="button" class="fmt-btn" id="btn-h2" title="Heading 2">H2</button>
+        <button type="button" class="fmt-btn" id="btn-h3" title="Heading 3">H3</button>
       </div>
 
-      <div id="error-state" class="state-box state-error hidden"></div>
+      <div class="toolbar-divider"></div>
 
-      <!-- GRID CATATAN -->
-      <div id="notes-grid" class="notes-grid"></div>
+      <div class="toolbar-group">
+        <button type="button" class="fmt-btn" id="btn-ul" title="Bullet List">•</button>
+        <button type="button" class="fmt-btn" id="btn-ol" title="Numbered List">1.</button>
+        <button type="button" class="fmt-btn" id="btn-checklist" title="Checklist">☑</button>
+      </div>
 
-    </main>
-  </div>
+      <div class="toolbar-divider"></div>
 
-  <!-- ============================================
-        MODAL: EDIT CATATAN (STICKY NOTE)
-        ============================================ -->
-  <div id="edit-note-modal" class="modal-overlay hidden">
-    <div class="sticky-note">
-      
-      <header class="note-header">
-        <div class="header-actions">
-          <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
-          <div class="color-picker-wrapper" id="colorPickerWrapper" title="Ubah Warna Catatan">
-            <button type="button" class="icon-btn" id="btnPaletteToggle">🎨</button>
-            <div id="edit-color-popover" class="color-popover hidden">
-              <div id="edit-color-swatches" class="color-swatches"></div>
-              <label class="color-popover-custom">
-                Kustom
-                <input type="color" id="bgColorPicker" value="#fff7d1">
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="header-actions">
-          <button type="button" class="icon-btn" id="btnMinimize" title="Minimize">—</button>
-          <button type="button" class="icon-btn" id="edit-delete-btn" title="Hapus Catatan">🗑️</button>
-          <button type="button" class="icon-btn" id="edit-close-btn" title="Tutup">✕</button>
-        </div>
-      </header>
+      <div class="toolbar-group">
+        <button type="button" class="fmt-btn" id="btn-link" title="Tambah Link (Ctrl+K)">🔗</button>
+        <button type="button" class="fmt-btn" id="btn-table" title="Tambah Tabel">📊</button>
+        <button type="button" class="fmt-btn" id="btn-image" title="Tambah Gambar">🖼️</button>
+        <button type="button" class="fmt-btn" id="btn-more" title="Lainnya">⋮</button>
+      </div>
 
-      <div id="edit-modal-message" class="form-message hidden"></div>
+      <div class="toolbar-divider"></div>
 
-      <form id="edit-note-form">
-        <input type="hidden" id="edit-note-id" value="" />
+      <div class="toolbar-group">
+        <button type="submit" class="fmt-btn btn-save" title="Simpan Catatan" id="modal-save-btn">💾</button>
+        <button type="button" class="fmt-btn btn-cancel" title="Batal" id="modal-cancel-btn">✕</button>
+      </div>
+    </footer>
+  </form>
+</div>
 
-        <div class="note-body" contenteditable="true" id="editor">
-          Tulis catatanmu di sini...
-        </div>
+</div>
 
-        <label class="checkbox-inline">
-          <input type="checkbox" id="edit-note-important" />
-          ⭐ Tandai sebagai penting
-        </label>
+<!-- ============================================ MODAL: PREVIEW AI ============================================ -->
 
-        <footer class="note-toolbar">
-          <div class="toolbar-group">
-            <button type="button" class="fmt-btn" id="btn-bold" title="Tebal (Ctrl+B)"><b>B</b></button>
-            <button type="button" class="fmt-btn" id="btn-italic" title="Miring (Ctrl+I)"><i>I</i></button>
-            <button type="button" class="fmt-btn" id="btn-underline" title="Garis Bawah (Ctrl+U)"><u>U</u></button>
-            <button type="button" class="fmt-btn" id="btn-strike" title="Coret"><s>S</s></button>
-          </div>
+<div id="ai-preview-modal" class="modal-overlay hidden"> <div class="modal-box" style="max-width: 650px;"> <div class="modal-header"> <h2>✨ Rapikan dengan AI</h2> <button type="button" class="btn-close" id="ai-close-btn">&times;</button> </div>
 
-          <div class="toolbar-divider"></div>
-
-          <div class="toolbar-group">
-            <button type="button" class="fmt-btn" id="btn-h1" title="Heading 1">H1</button>
-            <button type="button" class="fmt-btn" id="btn-h2" title="Heading 2">H2</button>
-            <button type="button" class="fmt-btn" id="btn-h3" title="Heading 3">H3</button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <div class="toolbar-group">
-            <button type="button" class="fmt-btn" id="btn-ul" title="Bullet List">•</button>
-            <button type="button" class="fmt-btn" id="btn-ol" title="Numbered List">1.</button>
-            <button type="button" class="fmt-btn" id="btn-checklist" title="Checklist">☑</button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <div class="toolbar-group">
-            <button type="button" class="fmt-btn" id="btn-link" title="Tambah Link (Ctrl+K)">🔗</button>
-            <button type="button" class="fmt-btn" id="btn-table" title="Tambah Tabel">📊</button>
-            <button type="button" class="fmt-btn" id="btn-image" title="Tambah Gambar">🖼️</button>
-            <button type="button" class="fmt-btn" id="btn-more" title="Lainnya">⋮</button>
-          </div>
-
-          <div class="toolbar-divider"></div>
-
-          <div class="toolbar-group">
-            <button type="submit" class="fmt-btn btn-save" title="Simpan Catatan" id="modal-save-btn">💾</button>
-            <button type="button" class="fmt-btn btn-cancel" title="Batal" id="modal-cancel-btn">✕</button>
-          </div>
-        </footer>
-      </form>
+  <!-- Input Instruksi -->
+  <div style="margin-bottom: 16px;">
+    <label for="ai-instruction" style="display:block; font-size:0.85rem; font-weight:600; color:#5f6368; margin-bottom:4px;">
+      📝 Instruksi tambahan (opsional):
+    </label>
+    <input 
+      type="text" 
+      id="ai-instruction" 
+      placeholder="Contoh: Buatkan ringkasan, Ubah menjadi checklist, Perbaiki grammar..."
+      style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+      onfocus="this.style.borderColor='#4f46e5'"
+      onblur="this.style.borderColor='#e2e8f0'"
+    >
+    <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+      <button type="button" class="ai-quick-btn" data-instruksi="Buatkan ringkasan singkat">📋 Ringkasan</button>
+      <button type="button" class="ai-quick-btn" data-instruksi="Ubah menjadi checklist tugas">☑ Checklist</button>
+      <button type="button" class="ai-quick-btn" data-instruksi="Perbaiki grammar dan ejaan">✏️ Grammar</button>
+      <button type="button" class="ai-quick-btn" data-instruksi="Buat jadwal dari teks ini">📅 Jadwal</button>
+      <button type="button" class="ai-quick-btn" data-instruksi="Buat menjadi poin-poin penting">📍 Poin</button>
+      <button type="button" class="ai-quick-btn" data-instruksi="Buatkan judul yang menarik">📌 Judul</button>
+      <button type="button" class="ai-quick-btn" data-instruksi="Kategorikan dan beri warna">🏷️ Kategori</button>
     </div>
   </div>
 
-  <!-- ============================================
-        MODAL: PREVIEW AI
-        ============================================ -->
-  <div id="ai-preview-modal" class="modal-overlay hidden">
-    <div class="modal-box" style="max-width: 650px;">
-      <div class="modal-header">
-        <h2>✨ Rapikan dengan AI</h2>
-        <button type="button" class="btn-close" id="ai-close-btn">&times;</button>
-      </div>
+  <div id="ai-preview-loading" class="state-box">
+    <p>⏳ AI sedang memproses catatan...</p>
+  </div>
 
-      <!-- Input Instruksi -->
-      <div style="margin-bottom: 16px;">
-        <label for="ai-instruction" style="display:block; font-size:0.85rem; font-weight:600; color:#5f6368; margin-bottom:4px;">
-          📝 Instruksi tambahan (opsional):
-        </label>
-        <input 
-          type="text" 
-          id="ai-instruction" 
-          placeholder="Contoh: Buatkan ringkasan, Ubah menjadi checklist, Perbaiki grammar..."
-          style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
-          onfocus="this.style.borderColor='#4f46e5'"
-          onblur="this.style.borderColor='#e2e8f0'"
-        >
-        <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
-          <button type="button" class="ai-quick-btn" data-instruksi="Buatkan ringkasan singkat">📋 Ringkasan</button>
-          <button type="button" class="ai-quick-btn" data-instruksi="Ubah menjadi checklist tugas">☑ Checklist</button>
-          <button type="button" class="ai-quick-btn" data-instruksi="Perbaiki grammar dan ejaan">✏️ Grammar</button>
-          <button type="button" class="ai-quick-btn" data-instruksi="Buat jadwal dari teks ini">📅 Jadwal</button>
-          <button type="button" class="ai-quick-btn" data-instruksi="Buat menjadi poin-poin penting">📍 Poin</button>
-          <button type="button" class="ai-quick-btn" data-instruksi="Buatkan judul yang menarik">📌 Judul</button>
-          <button type="button" class="ai-quick-btn" data-instruksi="Kategorikan dan beri warna">🏷️ Kategori</button>
-        </div>
-      </div>
+  <div id="ai-preview-error" class="state-box state-error hidden"></div>
 
-      <div id="ai-preview-loading" class="state-box">
-        <p>⏳ AI sedang memproses catatan...</p>
-      </div>
+  <div id="ai-preview-content" class="hidden">
+    <div id="ai-preview-color-bar" style="height:4px; border-radius:4px; margin-bottom:12px;"></div>
+    
+    <div style="margin-bottom:8px;">
+      <span style="font-size:0.75rem; color:#5f6368;">JUDUL</span>
+      <h3 id="ai-preview-title" style="margin:4px 0 8px;"></h3>
+    </div>
 
-      <div id="ai-preview-error" class="state-box state-error hidden"></div>
+    <div style="margin-bottom:8px;">
+      <span style="font-size:0.75rem; color:#5f6368;">KATEGORI</span>
+      <p id="ai-preview-category" style="margin:4px 0 8px;"></p>
+    </div>
 
-      <div id="ai-preview-content" class="hidden">
-        <div id="ai-preview-color-bar" style="height:4px; border-radius:4px; margin-bottom:12px;"></div>
-        
-        <div style="margin-bottom:8px;">
-          <span style="font-size:0.75rem; color:#5f6368;">JUDUL</span>
-          <h3 id="ai-preview-title" style="margin:4px 0 8px;"></h3>
-        </div>
-
-        <div style="margin-bottom:8px;">
-          <span style="font-size:0.75rem; color:#5f6368;">KATEGORI</span>
-          <p id="ai-preview-category" style="margin:4px 0 8px;"></p>
-        </div>
-
-        <div style="margin-bottom:12px;">
-          <span style="font-size:0.75rem; color:#5f6368;">ISI CATATAN</span>
-          <div id="ai-preview-body" style="padding:12px; border:1px solid #e2e8f0; border-radius:8px; min-height:100px; max-height:300px; overflow-y:auto;"></div>
-        </div>
-      </div>
-
-      <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap;">
-        <button type="button" id="ai-cancel-btn" class="btn-secondary">❌ Batal</button>
-        <button type="button" id="ai-edit-btn" class="btn-secondary">✏️ Edit</button>
-        <button type="button" id="ai-apply-btn" class="btn-primary">✅ Gunakan</button>
-      </div>
+    <div style="margin-bottom:12px;">
+      <span style="font-size:0.75rem; color:#5f6368;">ISI CATATAN</span>
+      <div id="ai-preview-body" style="padding:12px; border:1px solid #e2e8f0; border-radius:8px; min-height:100px; max-height:300px; overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- ============================================
-        MODAL: KONFIRMASI HAPUS
-        ============================================ -->
-  <div id="delete-modal" class="modal-overlay hidden">
-    <div class="modal-box modal-box-small">
-      <h2>Hapus catatan?</h2>
-      <p class="modal-confirm-text">
-        Catatan "<span id="delete-note-title"></span>" akan dihapus permanen dan tidak bisa dikembalikan.
-      </p>
-      <div class="modal-actions">
-        <button type="button" id="delete-cancel-btn" class="btn-secondary">Batal</button>
-        <button type="button" id="delete-confirm-btn" class="btn-danger">Ya, Hapus</button>
-      </div>
-    </div>
+  <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap;">
+    <button type="button" id="ai-cancel-btn" class="btn-secondary">❌ Batal</button>
+    <button type="button" id="ai-edit-btn" class="btn-secondary">✏️ Edit</button>
+    <button type="button" id="ai-apply-btn" class="btn-primary">✅ Gunakan</button>
   </div>
+</div>
 
-  <!-- ============================================
-        MODAL: MORE MENU (⋮)
-        ============================================ -->
-  <div id="more-menu-modal" class="modal-overlay hidden">
-    <div class="modal-box modal-box-small">
-      <div class="modal-header">
-        <h2>Lainnya</h2>
-        <button type="button" class="btn-close" id="more-close-btn">&times;</button>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-        <button class="btn-secondary" id="btn-align-left">⬅ Rata Kiri</button>
-        <button class="btn-secondary" id="btn-align-center">⬌ Rata Tengah</button>
-        <button class="btn-secondary" id="btn-align-right">➡ Rata Kanan</button>
-        <button class="btn-secondary" id="btn-clear-format">🧹 Hapus Format</button>
-        <button class="btn-secondary" id="btn-undo">↩ Undo</button>
-        <button class="btn-secondary" id="btn-redo">↪ Redo</button>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="dashboard.js"></script>
-</body>
-</html>
+<!-- ============================================ MODAL: KONFIRMASI HAPUS ============================================ -->
+
+<div id="delete-modal" class="modal-overlay hidden"> <div class="modal-box modal-box-small"> <h2>Hapus catatan?</h2> <p class="modal-confirm-text"> Catatan "<span id="delete-note-title"></span>" akan dihapus permanen dan tidak bisa dikembalikan. </p> <div class="modal-actions"> <button type="button" id="delete-cancel-btn" class="btn-secondary">Batal</button> <button type="button" id="delete-confirm-btn" class="btn-danger">Ya, Hapus</button> </div> </div> </div>
+
+<!-- ============================================ MODAL: MORE MENU (⋮) ============================================ -->
+
+<div id="more-menu-modal" class="modal-overlay hidden"> <div class="modal-box modal-box-small"> <div class="modal-header"> <h2>Lainnya</h2> <button type="button" class="btn-close" id="more-close-btn">&times;</button> </div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"> <button class="btn-secondary" id="btn-align-left">⬅ Rata Kiri</button> <button class="btn-secondary" id="btn-align-center">⬌ Rata Tengah</button> <button class="btn-secondary" id="btn-align-right">➡ Rata Kanan</button> <button class="btn-secondary" id="btn-clear-format">🧹 Hapus Format</button> <button class="btn-secondary" id="btn-undo">↩ Undo</button> <button class="btn-secondary" id="btn-redo">↪ Redo</button> </div> </div> </div>
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>"> <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> <script src="supabase-config.js"></script> <script src="dashboard.js"></script> </body> </html>
+
+Close
