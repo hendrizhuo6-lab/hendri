@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -7,200 +6,196 @@
   <title>Dasbor — Note Catatan</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="dashboard.css" />
-  <link rel="icon" href="data:,">
+  <link rel="icon" type="image/svg+xml" href="data:,">
 </head>
 <body>
 
   <div class="dash-page">
 
-<!-- HEADER -->
-<header class="dash-header">
-  <div class="dash-header-left">
-    <h1>📝 Note Catatan</h1>
-  </div>
-  <div class="dash-header-right">
-    <span id="user-email" class="user-email"></span>
-    <button id="logout-btn" class="btn-logout">Keluar</button>
-  </div>
-</header>
-
-<main class="dash-main">
-
-  <!-- COMPOSE BOX -->
-  <div id="compose-box" class="compose-box">
-    <form id="add-note-form">
-      <input
-        type="text"
-        id="add-note-title"
-        class="compose-title hidden"
-        placeholder="Judul"
-        maxlength="150"
-      />
-
-      <textarea
-        id="add-note-content"
-        class="compose-content"
-        placeholder="Buat catatan..."
-        rows="1"
-      ></textarea>
-
-      <div class="compose-quick-icons" id="compose-quick-icons">
-        <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">⭐</button>
-        <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🎨</button>
+    <!-- HEADER -->
+    <header class="dash-header">
+      <div class="dash-header-left">
+        <h1>📝 Note Catatan</h1>
       </div>
+      <div class="dash-header-right">
+        <span id="user-email" class="user-email"></span>
+        <button id="logout-btn" class="btn-logout">Keluar</button>
+      </div>
+    </header>
 
-      <div class="compose-toolbar hidden" id="compose-toolbar">
-        <div class="compose-toolbar-left">
-          <div class="note-quick-color" id="addColorWrapper">
-            <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🎨</button>
-            <div id="add-color-popover" class="color-popover hidden">
-              <div id="add-color-swatches" class="color-swatches"></div>
-            </div>
-          </div>
-          <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">⭐</button>
+    <main class="dash-main">
+
+      <!-- COMPOSE BOX -->
+      <div id="compose-box" class="compose-box">
+        <form id="add-note-form">
           <input
             type="text"
-            id="add-note-category"
-            class="compose-category"
-            placeholder="Kategori"
-            list="category-suggestions"
-            maxlength="50"
+            id="add-note-title"
+            class="compose-title hidden"
+            placeholder="Judul"
+            maxlength="150"
           />
-        </div>
-        <button type="submit" class="btn-text-close" id="add-modal-save-btn">Tutup</button>
+
+          <textarea
+            id="add-note-content"
+            class="compose-content"
+            placeholder="Buat catatan..."
+            rows="1"
+          ></textarea>
+
+          <div class="compose-quick-icons" id="compose-quick-icons">
+            <button type="button" class="compose-icon-btn" id="quick-important-btn" title="Tandai penting">⭐</button>
+            <button type="button" class="compose-icon-btn" id="quick-palette-btn" title="Ubah warna">🎨</button>
+          </div>
+
+          <div class="compose-toolbar hidden" id="compose-toolbar">
+            <div class="compose-toolbar-left">
+              <div class="note-quick-color" id="addColorWrapper">
+                <button type="button" class="compose-icon-btn" id="add-palette-btn" title="Ubah warna">🎨</button>
+                <div id="add-color-popover" class="color-popover hidden">
+                  <div id="add-color-swatches" class="color-swatches"></div>
+                </div>
+              </div>
+              <button type="button" class="compose-icon-btn" id="add-important-btn" title="Tandai penting">⭐</button>
+              <input
+                type="text"
+                id="add-note-category"
+                class="compose-category"
+                placeholder="Kategori"
+                list="category-suggestions"
+                maxlength="50"
+              />
+            </div>
+            <button type="submit" class="btn-text-close" id="add-modal-save-btn">Tutup</button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
 
-  <!-- TOOLBAR FILTER -->
-  <div class="dash-toolbar">
-    <div class="toolbar-filters">
-      <input
-        type="text"
-        id="search-input"
-        class="search-input"
-        placeholder="🔍 Cari catatan..."
-      />
-      <select id="category-filter" class="category-filter">
-        <option value="">Semua Kategori</option>
-      </select>
-      <datalist id="category-suggestions"></datalist>
-      <label class="checkbox-filter">
-        <input type="checkbox" id="important-filter" />
-        ⭐ Penting saja
-      </label>
-    </div>
-  </div>
+      <!-- TOOLBAR FILTER -->
+      <div class="dash-toolbar">
+        <div class="toolbar-filters">
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="🔍 Cari catatan..."
+          />
+          <select id="category-filter" class="category-filter">
+            <option value="">Semua Kategori</option>
+          </select>
+          <datalist id="category-suggestions"></datalist>
+          <label class="checkbox-filter">
+            <input type="checkbox" id="important-filter" />
+            ⭐ Penting saja
+          </label>
+        </div>
+      </div>
 
-  <!-- STATUS STATE -->
-  <div id="loading-state" class="state-box hidden">
-    <p>⏳ Memuat catatan...</p>
-  </div>
+      <!-- STATUS STATE -->
+      <div id="loading-state" class="state-box hidden">
+        <p>⏳ Memuat catatan...</p>
+      </div>
 
-  <div id="empty-state" class="state-box hidden">
-    <p>Belum ada catatan. Yuk buat catatan pertamamu!</p>
-  </div>
+      <div id="empty-state" class="state-box hidden">
+        <p>Belum ada catatan. Yuk buat catatan pertamamu!</p>
+      </div>
 
-  <div id="error-state" class="state-box state-error hidden"></div>
+      <div id="error-state" class="state-box state-error hidden"></div>
 
-  <!-- GRID CATATAN -->
-  <div id="notes-grid" class="notes-grid"></div>
+      <!-- GRID CATATAN -->
+      <div id="notes-grid" class="notes-grid"></div>
 
-</main>
-
+    </main>
   </div>
 
   <!-- ============================================
         MODAL: EDIT CATATAN (STICKY NOTE)
         ============================================ -->
-
   <div id="edit-note-modal" class="modal-overlay hidden">
     <div class="sticky-note">
-
-  <header class="note-header">
-    <div class="header-actions">
-      <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
-      <div class="color-picker-wrapper" id="colorPickerWrapper" title="Ubah Warna Catatan">
-        <button type="button" class="icon-btn" id="btnPaletteToggle">🎨</button>
-        <div id="edit-color-popover" class="color-popover hidden">
-          <div id="edit-color-swatches" class="color-swatches"></div>
-          <label class="color-popover-custom">
-            Kustom
-            <input type="color" id="bgColorPicker" value="#fff7d1">
-          </label>
+      
+      <header class="note-header">
+        <div class="header-actions">
+          <button type="button" class="icon-btn" title="Catatan Baru" id="modal-new-btn">+</button>
+          <div class="color-picker-wrapper" id="colorPickerWrapper" title="Ubah Warna Catatan">
+            <button type="button" class="icon-btn" id="btnPaletteToggle">🎨</button>
+            <div id="edit-color-popover" class="color-popover hidden">
+              <div id="edit-color-swatches" class="color-swatches"></div>
+              <label class="color-popover-custom">
+                Kustom
+                <input type="color" id="bgColorPicker" value="#fff7d1">
+              </label>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="header-actions">
+          <button type="button" class="icon-btn" id="btnMinimize" title="Minimize">—</button>
+          <button type="button" class="icon-btn" id="edit-delete-btn" title="Hapus Catatan">🗑️</button>
+          <button type="button" class="icon-btn" id="edit-close-btn" title="Tutup">✕</button>
+        </div>
+      </header>
+
+      <div id="edit-modal-message" class="form-message hidden"></div>
+
+      <form id="edit-note-form">
+        <input type="hidden" id="edit-note-id" value="" />
+
+        <div class="note-body" contenteditable="true" id="editor">
+          Tulis catatanmu di sini...
+        </div>
+
+        <label class="checkbox-inline">
+          <input type="checkbox" id="edit-note-important" />
+          ⭐ Tandai sebagai penting
+        </label>
+
+        <footer class="note-toolbar">
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-bold" title="Tebal (Ctrl+B)"><b>B</b></button>
+            <button type="button" class="fmt-btn" id="btn-italic" title="Miring (Ctrl+I)"><i>I</i></button>
+            <button type="button" class="fmt-btn" id="btn-underline" title="Garis Bawah (Ctrl+U)"><u>U</u></button>
+            <button type="button" class="fmt-btn" id="btn-strike" title="Coret"><s>S</s></button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-h1" title="Heading 1">H1</button>
+            <button type="button" class="fmt-btn" id="btn-h2" title="Heading 2">H2</button>
+            <button type="button" class="fmt-btn" id="btn-h3" title="Heading 3">H3</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-ul" title="Bullet List">•</button>
+            <button type="button" class="fmt-btn" id="btn-ol" title="Numbered List">1.</button>
+            <button type="button" class="fmt-btn" id="btn-checklist" title="Checklist">☑</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="button" class="fmt-btn" id="btn-link" title="Tambah Link (Ctrl+K)">🔗</button>
+            <button type="button" class="fmt-btn" id="btn-table" title="Tambah Tabel">📊</button>
+            <button type="button" class="fmt-btn" id="btn-image" title="Tambah Gambar">🖼️</button>
+            <button type="button" class="fmt-btn" id="btn-more" title="Lainnya">⋮</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <div class="toolbar-group">
+            <button type="submit" class="fmt-btn btn-save" title="Simpan Catatan" id="modal-save-btn">💾</button>
+            <button type="button" class="fmt-btn btn-cancel" title="Batal" id="modal-cancel-btn">✕</button>
+          </div>
+        </footer>
+      </form>
     </div>
-    <div class="header-actions">
-      <button type="button" class="icon-btn" id="btnMinimize" title="Minimize">—</button>
-      <button type="button" class="icon-btn" id="edit-delete-btn" title="Hapus Catatan">🗑️</button>
-      <button type="button" class="icon-btn" id="edit-close-btn" title="Tutup">✕</button>
-    </div>
-  </header>
-
-  <div id="edit-modal-message" class="form-message hidden"></div>
-
-  <form id="edit-note-form">
-    <input type="hidden" id="edit-note-id" value="" />
-
-    <div class="note-body" contenteditable="true" id="editor">
-      Tulis catatanmu di sini...
-    </div>
-
-    <label class="checkbox-inline">
-      <input type="checkbox" id="edit-note-important" />
-      ⭐ Tandai sebagai penting
-    </label>
-
-    <footer class="note-toolbar">
-      <div class="toolbar-group">
-        <button type="button" class="fmt-btn" id="btn-bold" title="Tebal (Ctrl+B)"><b>B</b></button>
-        <button type="button" class="fmt-btn" id="btn-italic" title="Miring (Ctrl+I)"><i>I</i></button>
-        <button type="button" class="fmt-btn" id="btn-underline" title="Garis Bawah (Ctrl+U)"><u>U</u></button>
-        <button type="button" class="fmt-btn" id="btn-strike" title="Coret"><s>S</s></button>
-      </div>
-
-      <div class="toolbar-divider"></div>
-
-      <div class="toolbar-group">
-        <button type="button" class="fmt-btn" id="btn-h1" title="Heading 1">H1</button>
-        <button type="button" class="fmt-btn" id="btn-h2" title="Heading 2">H2</button>
-        <button type="button" class="fmt-btn" id="btn-h3" title="Heading 3">H3</button>
-      </div>
-
-      <div class="toolbar-divider"></div>
-
-      <div class="toolbar-group">
-        <button type="button" class="fmt-btn" id="btn-ul" title="Bullet List">•</button>
-        <button type="button" class="fmt-btn" id="btn-ol" title="Numbered List">1.</button>
-        <button type="button" class="fmt-btn" id="btn-checklist" title="Checklist">☑</button>
-      </div>
-
-      <div class="toolbar-divider"></div>
-
-      <div class="toolbar-group">
-        <button type="button" class="fmt-btn" id="btn-link" title="Tambah Link (Ctrl+K)">🔗</button>
-        <button type="button" class="fmt-btn" id="btn-table" title="Tambah Tabel">📊</button>
-        <button type="button" class="fmt-btn" id="btn-image" title="Tambah Gambar">🖼️</button>
-        <button type="button" class="fmt-btn" id="btn-more" title="Lainnya">⋮</button>
-      </div>
-
-      <div class="toolbar-divider"></div>
-
-      <div class="toolbar-group">
-        <button type="submit" class="fmt-btn btn-save" title="Simpan Catatan" id="modal-save-btn">💾</button>
-        <button type="button" class="fmt-btn btn-cancel" title="Batal" id="modal-cancel-btn">✕</button>
-      </div>
-    </footer>
-  </form>
-</div>
-
   </div>
 
   <!-- ============================================
         MODAL: PREVIEW AI
         ============================================ -->
-
   <div id="ai-preview-modal" class="modal-overlay hidden">
     <div class="modal-box" style="max-width: 650px;">
       <div class="modal-header">
@@ -208,68 +203,66 @@
         <button type="button" class="btn-close" id="ai-close-btn">&times;</button>
       </div>
 
-  <!-- Input Instruksi -->
-  <div style="margin-bottom: 16px;">
-    <label for="ai-instruction" style="display:block; font-size:0.85rem; font-weight:600; color:#5f6368; margin-bottom:4px;">
-      📝 Instruksi tambahan (opsional):
-    </label>
-    <input 
-      type="text" 
-      id="ai-instruction" 
-      placeholder="Contoh: Buatkan ringkasan, Ubah menjadi checklist, Perbaiki grammar..."
-      style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
-      onfocus="this.style.borderColor='#4f46e5'"
-      onblur="this.style.borderColor='#e2e8f0'"
-    >
-    <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
-      <button type="button" class="ai-quick-btn" data-instruksi="Buatkan ringkasan singkat">📋 Ringkasan</button>
-      <button type="button" class="ai-quick-btn" data-instruksi="Ubah menjadi checklist tugas">☑ Checklist</button>
-      <button type="button" class="ai-quick-btn" data-instruksi="Perbaiki grammar dan ejaan">✏️ Grammar</button>
-      <button type="button" class="ai-quick-btn" data-instruksi="Buat jadwal dari teks ini">📅 Jadwal</button>
-      <button type="button" class="ai-quick-btn" data-instruksi="Buat menjadi poin-poin penting">📍 Poin</button>
-      <button type="button" class="ai-quick-btn" data-instruksi="Buatkan judul yang menarik">📌 Judul</button>
-      <button type="button" class="ai-quick-btn" data-instruksi="Kategorikan dan beri warna">🏷️ Kategori</button>
+      <!-- Input Instruksi -->
+      <div style="margin-bottom: 16px;">
+        <label for="ai-instruction" style="display:block; font-size:0.85rem; font-weight:600; color:#5f6368; margin-bottom:4px;">
+          📝 Instruksi tambahan (opsional):
+        </label>
+        <input 
+          type="text" 
+          id="ai-instruction" 
+          placeholder="Contoh: Buatkan ringkasan, Ubah menjadi checklist, Perbaiki grammar..."
+          style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px; font-size:0.9rem; outline:none; transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='#4f46e5'"
+          onblur="this.style.borderColor='#e2e8f0'"
+        >
+        <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+          <button type="button" class="ai-quick-btn" data-instruksi="Buatkan ringkasan singkat">📋 Ringkasan</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Ubah menjadi checklist tugas">☑ Checklist</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Perbaiki grammar dan ejaan">✏️ Grammar</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Buat jadwal dari teks ini">📅 Jadwal</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Buat menjadi poin-poin penting">📍 Poin</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Buatkan judul yang menarik">📌 Judul</button>
+          <button type="button" class="ai-quick-btn" data-instruksi="Kategorikan dan beri warna">🏷️ Kategori</button>
+        </div>
+      </div>
+
+      <div id="ai-preview-loading" class="state-box">
+        <p>⏳ AI sedang memproses catatan...</p>
+      </div>
+
+      <div id="ai-preview-error" class="state-box state-error hidden"></div>
+
+      <div id="ai-preview-content" class="hidden">
+        <div id="ai-preview-color-bar" style="height:4px; border-radius:4px; margin-bottom:12px;"></div>
+        
+        <div style="margin-bottom:8px;">
+          <span style="font-size:0.75rem; color:#5f6368;">JUDUL</span>
+          <h3 id="ai-preview-title" style="margin:4px 0 8px;"></h3>
+        </div>
+
+        <div style="margin-bottom:8px;">
+          <span style="font-size:0.75rem; color:#5f6368;">KATEGORI</span>
+          <p id="ai-preview-category" style="margin:4px 0 8px;"></p>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <span style="font-size:0.75rem; color:#5f6368;">ISI CATATAN</span>
+          <div id="ai-preview-body" style="padding:12px; border:1px solid #e2e8f0; border-radius:8px; min-height:100px; max-height:300px; overflow-y:auto;"></div>
+        </div>
+      </div>
+
+      <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap;">
+        <button type="button" id="ai-cancel-btn" class="btn-secondary">❌ Batal</button>
+        <button type="button" id="ai-edit-btn" class="btn-secondary">✏️ Edit</button>
+        <button type="button" id="ai-apply-btn" class="btn-primary">✅ Gunakan</button>
+      </div>
     </div>
-  </div>
-
-  <div id="ai-preview-loading" class="state-box">
-    <p>⏳ AI sedang memproses catatan...</p>
-  </div>
-
-  <div id="ai-preview-error" class="state-box state-error hidden"></div>
-
-  <div id="ai-preview-content" class="hidden">
-    <div id="ai-preview-color-bar" style="height:4px; border-radius:4px; margin-bottom:12px;"></div>
-    
-    <div style="margin-bottom:8px;">
-      <span style="font-size:0.75rem; color:#5f6368;">JUDUL</span>
-      <h3 id="ai-preview-title" style="margin:4px 0 8px;"></h3>
-    </div>
-
-    <div style="margin-bottom:8px;">
-      <span style="font-size:0.75rem; color:#5f6368;">KATEGORI</span>
-      <p id="ai-preview-category" style="margin:4px 0 8px;"></p>
-    </div>
-
-    <div style="margin-bottom:12px;">
-      <span style="font-size:0.75rem; color:#5f6368;">ISI CATATAN</span>
-      <div id="ai-preview-body" style="padding:12px; border:1px solid #e2e8f0; border-radius:8px; min-height:100px; max-height:300px; overflow-y:auto;"></div>
-    </div>
-  </div>
-
-  <div id="ai-preview-actions" class="hidden" style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap;">
-    <button type="button" id="ai-cancel-btn" class="btn-secondary">❌ Batal</button>
-    <button type="button" id="ai-edit-btn" class="btn-secondary">✏️ Edit</button>
-    <button type="button" id="ai-apply-btn" class="btn-primary">✅ Gunakan</button>
-  </div>
-</div>
-
   </div>
 
   <!-- ============================================
         MODAL: KONFIRMASI HAPUS
         ============================================ -->
-
   <div id="delete-modal" class="modal-overlay hidden">
     <div class="modal-box modal-box-small">
       <h2>Hapus catatan?</h2>
@@ -286,7 +279,6 @@
   <!-- ============================================
         MODAL: MORE MENU (⋮)
         ============================================ -->
-
   <div id="more-menu-modal" class="modal-overlay hidden">
     <div class="modal-box modal-box-small">
       <div class="modal-header">
