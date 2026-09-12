@@ -1,7 +1,3 @@
-/* ============================================
-   DESIGN TOKENS — terinspirasi Google Keep
-   ============================================ */
-
 :root {
   --keep-bg: #f6f6f6;
   --keep-surface: #ffffff;
@@ -20,9 +16,7 @@
   --radius-md: 10px;
 }
 
-/* ============================================
-   LAYOUT DASHBOARD
-   ============================================ */
+
 
 .dash-page {
   min-height: 100vh;
@@ -31,9 +25,7 @@
   background: var(--keep-bg);
 }
 
-/* ============================================
-   HEADER
-   ============================================ */
+
 
 .dash-header {
   background: var(--keep-surface);
@@ -84,9 +76,7 @@
   border-color: var(--keep-border-hover);
 }
 
-/* ============================================
-   MAIN
-   ============================================ */
+
 
 .dash-main {
   flex: 1;
@@ -96,10 +86,7 @@
   padding: 28px 32px 60px;
 }
 
-/* ============================================
-   COMPOSE BOX — "Buat catatan..." khas Keep,
-   melebar inline saat diklik/fokus
-   ============================================ */
+
 
 .compose-box {
   width: 100%;
@@ -235,7 +222,7 @@
   background: rgba(0, 0, 0, 0.06);
 }
 
-/* Popover warna generik (dipakai compose box & kartu) */
+
 .color-popover {
   position: absolute;
   bottom: calc(100% + 8px);
@@ -253,9 +240,7 @@
   margin-bottom: 0;
 }
 
-/* ============================================
-   TOOLBAR FILTER — baris sekunder, ringkas
-   ============================================ */
+
 
 .dash-toolbar {
   display: flex;
@@ -385,9 +370,7 @@
   background: #b0271e;
 }
 
-/* ============================================
-   STATUS BOX
-   ============================================ */
+
 
 .state-box {
   text-align: center;
@@ -403,9 +386,7 @@
   border-radius: 8px;
 }
 
-/* ============================================
-   GRID CATATAN — Masonry ala Google Keep
-   ============================================ */
+
 
 .notes-grid {
   column-count: 5;
@@ -556,7 +537,7 @@
   transform: scale(0.95);
 }
 
-/* Popover warna cepat langsung di kartu */
+
 .note-quick-color {
   position: relative;
 }
@@ -576,9 +557,7 @@
   z-index: 20;
 }
 
-/* ============================================
-   PALET WARNA (dipakai di modal & kartu)
-   ============================================ */
+
 
 .color-swatches {
   display: grid;
@@ -617,9 +596,7 @@
   color: rgba(0, 0, 0, 0.55);
 }
 
-/* ============================================
-   MODAL
-   ============================================ */
+
 
 .modal-overlay {
   position: fixed;
@@ -751,9 +728,7 @@
   margin-bottom: 20px;
 }
 
-/* ============================================
-   MODAL EDIT (STICKY NOTE EDITOR)
-   ============================================ */
+
 
 #edit-note-modal .sticky-note {
   --bg-color: #fff7d1;
@@ -945,13 +920,13 @@
   background-color: rgba(198, 40, 40, 0.12);
 }
 
-/* Gagang Resize Pojok Kanan Bawah */
+
 #edit-note-modal .sticky-note::-webkit-resizer {
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 2px;
 }
 
-/* Mode minimize */
+
 #edit-note-modal .sticky-note.minimized .note-body,
 #edit-note-modal .sticky-note.minimized .note-toolbar {
   display: none;
@@ -963,9 +938,7 @@
   resize: none !important;
 }
 
-/* ============================================
-   RESPONSIF
-   ============================================ */
+
 
 @media (max-width: 1200px) {
   .notes-grid {
@@ -1096,9 +1069,7 @@
   }
 }
 
-/* ============================================
-   TOOLBAR EDITOR YANG LEBIH BAIK
-   ============================================ */
+
 
 #edit-note-modal .note-toolbar {
   padding: 10px 2px 0;
@@ -1169,9 +1140,7 @@
   background-color: rgba(198, 40, 40, 0.12);
 }
 
-/* ============================================
-   CHECKLIST STYLING
-   ============================================ */
+
 
 .checklist {
   list-style: none;
@@ -1205,9 +1174,7 @@
   opacity: 0.6;
 }
 
-/* ============================================
-   AI PREVIEW MODAL
-   ============================================ */
+
 
 #ai-preview-modal .modal-box {
   max-width: 600px;
@@ -1240,9 +1207,7 @@
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* ============================================
-   MORE MENU
-   ============================================ */
+
 
 #more-menu-modal .btn-secondary {
   padding: 10px 8px;
@@ -1250,9 +1215,7 @@
   width: 100%;
 }
 
-/* ============================================
-   RESPONSIF - TOOLBAR
-   ============================================ */
+
 
 @media (max-width: 768px) {
   #edit-note-modal .note-toolbar {
@@ -1310,9 +1273,7 @@
   }
 }
 
-/* ============================================
-   TOOLBAR EDITOR YANG LEBIH BAIK
-   ============================================ */
+
 
 #edit-note-modal .note-toolbar {
   padding: 10px 2px 0;
@@ -1383,9 +1344,7 @@
   background-color: rgba(198, 40, 40, 0.12);
 }
 
-/* ============================================
-   CHECKLIST STYLING
-   ============================================ */
+
 
 .checklist {
   list-style: none;
@@ -1419,9 +1378,7 @@
   opacity: 0.6;
 }
 
-/* ============================================
-   AI PREVIEW MODAL
-   ============================================ */
+
 
 #ai-preview-modal .modal-box {
   max-width: 650px;
@@ -1454,9 +1411,7 @@
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* ============================================
-   AI QUICK BUTTONS
-   ============================================ */
+
 
 .ai-quick-btn {
   background: #f1f5f9;
@@ -1485,9 +1440,7 @@
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* ============================================
-   MORE MENU
-   ============================================ */
+
 
 #more-menu-modal .btn-secondary {
   padding: 10px 8px;
@@ -1495,9 +1448,7 @@
   width: 100%;
 }
 
-/* ============================================
-   RESPONSIF - TOOLBAR
-   ============================================ */
+
 
 @media (max-width: 768px) {
   #edit-note-modal .note-toolbar {
@@ -1566,9 +1517,7 @@
 }
 
 
-/* ============================================
-   TOOLBAR EDITOR
-   ============================================ */
+
 
 #edit-note-modal .note-toolbar {
   padding: 10px 2px 0;
@@ -1633,9 +1582,7 @@
   background-color: rgba(198, 40, 40, 0.12);
 }
 
-/* ============================================
-   CHECKLIST
-   ============================================ */
+
 
 .checklist {
   list-style: none;
@@ -1669,9 +1616,7 @@
   opacity: 0.6;
 }
 
-/* ============================================
-   AI PREVIEW MODAL
-   ============================================ */
+
 
 #ai-preview-modal .modal-box {
   max-width: 650px;
@@ -1704,9 +1649,7 @@
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* ============================================
-   AI QUICK BUTTONS
-   ============================================ */
+
 
 .ai-quick-btn {
   background: #f1f5f9;
@@ -1735,9 +1678,7 @@
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
 }
 
-/* ============================================
-   MORE MENU
-   ============================================ */
+
 
 #more-menu-modal .btn-secondary {
   padding: 10px 8px;
@@ -1745,9 +1686,7 @@
   width: 100%;
 }
 
-/* ============================================
-   RESPONSIF
-   ============================================ */
+
 
 @media (max-width: 768px) {
   #edit-note-modal .note-toolbar {
@@ -1799,5 +1738,41 @@
   .ai-quick-btn {
     font-size: 0.65rem;
     padding: 2px 8px;
+  }
+}
+
+/* 3D CUBE EFFECT */
+.note-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+.note-card::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: 12px;
+  bottom: 12px;
+  border: 2px solid var(--keep-accent);
+  border-radius: 3px;
+  opacity: .22;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  animation: keepCubeSpin 3s linear infinite;
+}
+
+@keyframes keepCubeSpin {
+  0%   { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  25%  { transform: rotateX(90deg) rotateY(90deg) rotateZ(45deg); }
+  50%  { transform: rotateX(180deg) rotateY(180deg) rotateZ(90deg); }
+  75%  { transform: rotateX(270deg) rotateY(270deg) rotateZ(135deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .note-card::after {
+    animation: none;
   }
 }
