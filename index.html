@@ -11,9 +11,6 @@
 <body>
   
   <script>
-    // Halaman ini hanya bertugas mengarahkan:
-    // - Kalau sudah login -> dashboard.html (dibuat di tahap berikutnya)
-    // - Kalau belum login -> login.html
     (async function () {
       const { data: { session } } = await supabaseClient.auth.getSession();
 
