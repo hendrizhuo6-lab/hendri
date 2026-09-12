@@ -1,30 +1,35 @@
 /* ============================================
-   ROCK METAL DESIGN TOKENS
+   ROCK METAL DESIGN TOKENS — HORROR EDITION
    ============================================ */
 
 :root {
-  --mtl-bg: #0a0a0c;
-  --mtl-bg-alt: #131316;
-  --mtl-surface: #19191d;
-  --mtl-surface-alt: #212126;
-  --mtl-border: rgba(255, 255, 255, 0.09);
-  --mtl-border-strong: rgba(255, 255, 255, 0.18);
-  --mtl-text: #f4f4f5;
-  --mtl-text-muted: #a1a1aa;
-  --mtl-text-faint: #6b6b72;
+  --mtl-bg: #050507;
+  --mtl-bg-alt: #0a0a0d;
+  --mtl-surface: #121216;
+  --mtl-surface-alt: #1a1a20;
+  --mtl-border: rgba(255, 255, 255, 0.07);
+  --mtl-border-strong: rgba(255, 255, 255, 0.15);
+  --mtl-text: #e8e8ea;
+  --mtl-text-muted: #8a8a92;
+  --mtl-text-faint: #4a4a52;
   --mtl-accent: #dc2626;
-  --mtl-accent-dark: #991b1b;
-  --mtl-accent-light: #f87171;
-  --mtl-accent-glow: rgba(220, 38, 38, 0.35);
-  --mtl-steel: #9ca3af;
-  --mtl-steel-light: #d4d4d8;
+  --mtl-accent-dark: #7f1d1d;
+  --mtl-accent-light: #ef4444;
+  --mtl-accent-glow: rgba(220, 38, 38, 0.45);
+  --mtl-steel: #6b7280;
+  --mtl-steel-light: #9ca3af;
   --mtl-star: #eab308;
   --mtl-danger: #ef4444;
-  --mtl-danger-bg: rgba(239, 68, 68, 0.12);
+  --mtl-danger-bg: rgba(239, 68, 68, 0.15);
   --mtl-success: #22c55e;
   --mtl-success-bg: rgba(34, 197, 94, 0.12);
-  --mtl-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.6);
-  --mtl-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--mtl-border-strong);
+  --mtl-blood: #7f1d1d;
+  --mtl-blood-bright: #b91c1c;
+  --mtl-blood-dark: #450a0a;
+  --mtl-blood-fresh: #8b0000;
+  --mtl-blood-glow: rgba(185, 28, 28, 0.5);
+  --mtl-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 0.8);
+  --mtl-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 0 1px var(--mtl-border-strong);
   --mtl-shadow-glow: 0 0 0 3px var(--mtl-accent-glow);
   --radius-lg: 10px;
   --radius-md: 7px;
@@ -33,74 +38,452 @@
   --font-body: 'Rajdhani', sans-serif;
 }
 
-/* ============================================
-   RESET & DASAR
-   ============================================ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: var(--font-body);
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); }
+
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--mtl-bg);
   color: var(--mtl-text);
   min-height: 100vh;
   position: relative;
+  overflow-x: hidden;
 }
 
+/* ============================================
+   🏚️ BACKGROUND: RUMAH HANTU + KUBURAN
+   Menggunakan CSS gradients (RINGAN, tidak berat)
+   ============================================ */
 
+.haunted-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0a0000 0%, #1a0505 30%, #2a0a0a 55%, #0a0000 100%);
+}
+
+/* Bulan darah */
+.haunted-bg::before {
+  content: '';
+  position: absolute;
+  top: 6%;
+  right: 10%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #ffd8a8 0%, #dc2626 35%, #7f1d1d 70%, transparent 100%);
+  box-shadow:
+    0 0 40px 10px rgba(220, 38, 38, 0.5),
+    0 0 80px 30px rgba(127, 29, 29, 0.4),
+    0 0 140px 60px rgba(69, 10, 10, 0.3);
+  animation: bloodMoon 8s ease-in-out infinite;
+}
+
+@keyframes bloodMoon {
+  0%, 100% { filter: brightness(1); transform: scale(1); }
+  50% { filter: brightness(1.3); transform: scale(1.05); }
+}
+
+/* Rumah hantu + kuburan dengan CSS shapes */
+.haunted-bg::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background:
+    /* Rumah hantu utama */
+    linear-gradient(180deg, transparent 0%, transparent 40%, #000 40%, #000 42%, transparent 42%),
+    /* Atap rumah */
+    conic-gradient(from 180deg at 50% 40%, #000 0deg, #000 90deg, transparent 90deg) 50% 32% / 220px 100px no-repeat,
+    /* Badan rumah */
+    linear-gradient(#000, #000) 50% 40% / 200px 60% no-repeat,
+    /* Menara kiri */
+    linear-gradient(#000, #000) 42% 40% / 50px 55% no-repeat,
+    /* Menara kanan */
+    linear-gradient(#000, #000) 58% 40% / 50px 55% no-repeat,
+    /* Tanah kuburan */
+    linear-gradient(180deg, transparent 0%, transparent 60%, #000 60%, #000 100%);
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.9));
+}
 
 /* ============================================
-   LAYOUT HALAMAN AUTH (Login & Register)
+   KUBURAN — batu nisan dengan pseudo-elemen
+   ============================================ */
+
+.graveyard {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35vh;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.grave {
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 80px;
+  background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+  border-radius: 20px 20px 0 0;
+  box-shadow: inset -4px 0 8px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.9);
+}
+
+.grave::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 40%;
+  background: linear-gradient(180deg, #333, #111);
+  border-radius: 2px;
+}
+
+.grave::after {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+}
+
+.grave:nth-child(1) { left: 5%; height: 70px; width: 35px; }
+.grave:nth-child(2) { left: 12%; height: 90px; width: 45px; }
+.grave:nth-child(3) { left: 22%; height: 60px; width: 30px; }
+.grave:nth-child(4) { left: 68%; height: 75px; width: 40px; }
+.grave:nth-child(5) { left: 78%; height: 95px; width: 50px; }
+.grave:nth-child(6) { left: 90%; height: 65px; width: 35px; }
+
+/* ============================================
+   POHON MATI
+   ============================================ */
+
+.dead-tree {
+  position: fixed;
+  bottom: 30vh;
+  z-index: -1;
+  pointer-events: none;
+  width: 60px;
+  height: 250px;
+  background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+  clip-path: polygon(
+    45% 100%, 45% 70%, 30% 70%, 30% 65%, 45% 65%,
+    45% 50%, 20% 50%, 20% 45%, 45% 45%, 45% 30%,
+    25% 30%, 25% 25%, 45% 25%, 45% 10%, 55% 0%,
+    55% 25%, 75% 25%, 75% 30%, 55% 30%, 55% 45%,
+    80% 45%, 80% 50%, 55% 50%, 55% 65%, 70% 65%,
+    70% 70%, 55% 70%, 55% 100%
+  );
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9));
+}
+
+.dead-tree-left { left: 3%; }
+.dead-tree-right { right: 3%; transform: scaleX(-1); }
+
+/* ============================================
+   ATMOSFER: NOISE + VIGNETTE
+   ============================================ */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.85) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* ============================================
+   LAYER: RED PULSE BORDER
+   ============================================ */
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  animation: pulsingBorder 4.5s ease-in-out infinite;
+}
+
+@keyframes pulsingBorder {
+  0%, 100% { box-shadow: inset 0 0 70px 0px rgba(127, 29, 29, 0.25); }
+  50% { box-shadow: inset 0 0 140px 30px rgba(127, 29, 29, 0.55); }
+}
+
+/* ============================================
+   FOG
+   ============================================ */
+
+.fog-a,
+.fog-b {
+  position: fixed;
+  z-index: 1;
+  pointer-events: none;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: var(--mtl-blood-dark);
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.fog-a { top: -120px; left: -120px; animation: fogDrift1 20s ease-in-out infinite; }
+.fog-b { bottom: -120px; right: -120px; animation: fogDrift2 24s ease-in-out infinite; }
+
+@keyframes fogDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  50% { transform: translate(60px, 40px) scale(1.3); opacity: 0.55; }
+}
+
+@keyframes fogDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+  50% { transform: translate(-50px, -35px) scale(1.3); opacity: 0.55; }
+}
+
+/* ============================================
+   🩸 DARAH REALISTIS
+   ============================================ */
+
+.blood-drip-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blood-drip-layer span {
+  position: absolute;
+  top: -150px;
+  width: 5px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(120, 0, 0, 0.7) 8%,
+    #8b0000 20%,
+    #b91c1c 45%,
+    #8b0000 75%,
+    #7f1d1d 92%,
+    transparent 100%
+  );
+  border-radius: 3px 3px 50% 50%;
+  opacity: 0.95;
+  box-shadow:
+    0 0 8px 2px rgba(139, 0, 0, 0.7),
+    0 0 16px 4px rgba(127, 29, 29, 0.4);
+  filter: blur(0.3px);
+}
+
+.blood-drip-layer span::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 20%;
+  width: 1.5px;
+  height: 45%;
+  background: linear-gradient(to bottom, rgba(255, 180, 180, 0.7), transparent);
+  border-radius: 50%;
+}
+
+.blood-drip-layer span::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #dc2626 0%, #8b0000 50%, #450a0a 100%);
+  box-shadow: 0 0 10px 3px rgba(139, 0, 0, 0.85);
+}
+
+.blood-drip-layer span:nth-child(1) { left: 8%; height: 150px; animation: dripFall 6s linear infinite; }
+.blood-drip-layer span:nth-child(2) { left: 24%; height: 100px; animation: dripFall 8s linear infinite 2s; }
+.blood-drip-layer span:nth-child(3) { left: 42%; height: 190px; animation: dripFall 7s linear infinite 4s; }
+.blood-drip-layer span:nth-child(4) { left: 60%; height: 120px; animation: dripFall 9s linear infinite 1s; }
+.blood-drip-layer span:nth-child(5) { left: 78%; height: 170px; animation: dripFall 6.5s linear infinite 3s; }
+.blood-drip-layer span:nth-child(6) { left: 94%; height: 110px; animation: dripFall 8.5s linear infinite 5s; }
+
+@keyframes dripFall {
+  0% { top: -150px; opacity: 0; }
+  8% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 110vh; opacity: 0; }
+}
+
+/* ============================================
+   GLOWING EYES
+   ============================================ */
+
+.eyes {
+  position: fixed;
+  z-index: 3;
+  pointer-events: none;
+  width: 60px;
+  height: 20px;
+  opacity: 0;
+}
+
+.eyes::before,
+.eyes::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffcc33 0%, #b91c1c 70%, transparent 100%);
+  box-shadow: 0 0 12px 3px rgba(234, 179, 8, 0.8), 0 0 24px 6px rgba(185, 28, 28, 0.5);
+}
+
+.eyes::before { left: 0; }
+.eyes::after { left: 36px; }
+
+.eyes-1 { top: 12%; left: 6%; animation: eyesAppear1 17s ease-in-out infinite; }
+.eyes-2 { bottom: 18%; right: 8%; animation: eyesAppear2 23s ease-in-out infinite 4s; }
+
+@keyframes eyesAppear1 {
+  0%, 85%, 100% { opacity: 0; }
+  87% { opacity: 0.9; }
+  90% { opacity: 0.2; }
+  92% { opacity: 0.8; }
+  95% { opacity: 0; }
+}
+
+@keyframes eyesAppear2 {
+  0%, 80%, 100% { opacity: 0; }
+  82% { opacity: 0.9; }
+  85% { opacity: 0.15; }
+  88% { opacity: 0.75; }
+  91% { opacity: 0; }
+}
+
+/* ============================================
+   WHISPER
+   ============================================ */
+
+.whisper {
+  position: fixed;
+  z-index: 3;
+  pointer-events: none;
+  font-family: var(--font-brand);
+  font-size: 1.1rem;
+  color: var(--mtl-blood-bright);
+  opacity: 0;
+  text-shadow: 0 0 10px var(--mtl-blood-glow);
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.whisper-1 { top: 30%; right: 5%; animation: whisperFlicker1 14s ease-in-out infinite; }
+.whisper-2 { bottom: 25%; left: 4%; animation: whisperFlicker2 19s ease-in-out infinite 6s; }
+
+.whisper-1::before { content: "mereka mengawasi"; }
+.whisper-2::before { content: "jangan menoleh"; }
+
+@keyframes whisperFlicker1 {
+  0%, 91%, 100% { opacity: 0; }
+  92% { opacity: 0.6; }
+  93% { opacity: 0.1; }
+  94% { opacity: 0; }
+}
+
+@keyframes whisperFlicker2 {
+  0%, 88%, 100% { opacity: 0; }
+  89% { opacity: 0.55; }
+  90% { opacity: 0.08; }
+  91% { opacity: 0; }
+}
+
+/* ============================================
+   SHADOW FIGURE
+   ============================================ */
+
+.shadow-figure {
+  position: fixed;
+  bottom: 0;
+  left: -200px;
+  width: 180px;
+  height: 100vh;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(0, 0, 0, 0.95) 0%, transparent 70%);
+  opacity: 0;
+  animation: shadowCross 33s linear infinite;
+}
+
+@keyframes shadowCross {
+  0%, 70%, 100% { opacity: 0; transform: translateX(0); }
+  71% { opacity: 0.85; }
+  85% { opacity: 0.85; transform: translateX(calc(100vw + 200px)); }
+  86% { opacity: 0; }
+}
+
+/* ============================================
+   CRACK OVERLAY
+   ============================================ */
+
+.crack-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  background-image: repeating-conic-gradient(from 0deg at 30% 40%, transparent 0deg 8deg, rgba(255, 255, 255, 0.15) 8deg 8.5deg);
+  mix-blend-mode: overlay;
+  animation: crackFlash 40s ease-in-out infinite;
+}
+
+@keyframes crackFlash {
+  0%, 98.5%, 100% { opacity: 0; }
+  98.7% { opacity: 0.5; }
+  99% { opacity: 0.1; }
+  99.5% { opacity: 0; }
+}
+
+/* ============================================
+   LAYOUT HALAMAN AUTH
    ============================================ */
 
 .auth-page {
   min-height: 100vh;
   display: flex;
+  position: relative;
+  z-index: 10;
 }
 
-/* Panel kiri: branding, hanya tampil di layar lebar */
 .auth-brand {
   flex: 1;
   min-width: 0;
-  background:
-    linear-gradient(160deg, #0a0a0c 0%, #1a1a1e 55%, #0a0a0c 100%);
+  background: linear-gradient(160deg, rgba(5, 0, 0, 0.7) 0%, rgba(26, 5, 5, 0.75) 55%, rgba(5, 0, 0, 0.8) 100%);
   color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 60px;
   position: relative;
-  /* overflow: hidden; */
   border-right: 1px solid var(--mtl-border);
+  backdrop-filter: blur(4px);
 }
 
-/* Tekstur "brushed steel" diagonal */
-.auth-brand::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 12% 22%, var(--mtl-accent-glow) 0px, transparent 3px),
-    radial-gradient(circle at 15% 24%, var(--mtl-accent-glow) 0px, transparent 2px),
-    radial-gradient(circle at 78% 8%, var(--mtl-accent-glow) 0px, transparent 4px),
-    radial-gradient(circle at 82% 12%, var(--mtl-accent-glow) 0px, transparent 2px),
-    radial-gradient(circle at 65% 70%, var(--mtl-accent-glow) 0px, transparent 3px),
-    radial-gradient(circle at 30% 85%, var(--mtl-accent-glow) 0px, transparent 2px),
-    radial-gradient(circle at 90% 55%, var(--mtl-accent-glow) 0px, transparent 3px),
-    repeating-linear-gradient(
-      115deg,
-      transparent,
-      transparent 38px,
-      rgba(255, 255, 255, 0.025) 38px,
-      rgba(255, 255, 255, 0.025) 40px
-    );
-  pointer-events: none;
-}
-
-/* Garis aksen merah menyala di kiri */
 .auth-brand::after {
   content: '';
   position: absolute;
@@ -109,14 +492,17 @@ body {
   left: 0;
   width: 4px;
   background: linear-gradient(to bottom, transparent, var(--mtl-accent) 30%, var(--mtl-accent) 70%, transparent);
-  box-shadow: 0 0 24px 2px var(--mtl-accent-glow);
+  box-shadow: 0 0 30px 4px var(--mtl-accent-glow);
   pointer-events: none;
+  animation: pulseLine 3s ease-in-out infinite;
 }
 
-.auth-brand-content p {
-  position: relative;
-  z-index: 1;
+@keyframes pulseLine {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
+
+.auth-brand-content { position: relative; z-index: 1; }
 
 .auth-brand h1 {
   font-family: var(--font-brand);
@@ -126,7 +512,18 @@ body {
   line-height: 1.3;
   margin-bottom: 18px;
   color: #ffffff;
-    text-shadow: 0 0 14px var(--mtl-accent-glow), 0 3px 0 rgba(0, 0, 0, 0.8);
+  text-shadow: 0 0 14px var(--mtl-accent-glow), 0 3px 0 rgba(0, 0, 0, 0.8);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-brand h1 svg {
+  width: 1.15em;
+  height: 1.15em;
+  color: var(--mtl-accent);
+  flex-shrink: 0;
 }
 
 .auth-brand p {
@@ -137,7 +534,6 @@ body {
   line-height: 1.7;
 }
 
-/* Panel kanan: form */
 .auth-form-panel {
   flex: 1;
   min-width: 0;
@@ -145,17 +541,21 @@ body {
   align-items: center;
   justify-content: center;
   padding: 40px 24px;
-  background: var(--mtl-bg-alt);
+  background: rgba(10, 10, 13, 0.75);
+  backdrop-filter: blur(6px);
+  position: relative;
 }
 
 .auth-card {
   width: 100%;
   max-width: 380px;
-  background: var(--mtl-surface);
+  background: rgba(18, 18, 22, 0.92);
   padding: 40px 32px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--mtl-border);
-  box-shadow: var(--mtl-shadow);
+  box-shadow: var(--mtl-shadow), 0 0 60px rgba(127, 29, 29, 0.15);
+  position: relative;
+  z-index: 1;
 }
 
 .auth-card h2 {
@@ -174,10 +574,6 @@ body {
   font-weight: 500;
   margin-bottom: 28px;
 }
-
-/* ============================================
-   FORM
-   ============================================ */
 
 .auth-card label {
   display: block;
@@ -204,13 +600,9 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.auth-card input[type="email"]::placeholder,
-.auth-card input[type="password"]::placeholder {
-  color: var(--mtl-text-faint);
-}
+.auth-card input::placeholder { color: var(--mtl-text-faint); }
 
-.auth-card input[type="email"]:focus,
-.auth-card input[type="password"]:focus {
+.auth-card input:focus {
   outline: none;
   border-color: var(--mtl-accent);
   box-shadow: var(--mtl-shadow-glow);
@@ -229,17 +621,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   cursor: pointer;
-  transition: filter 0.2s, transform 0.1s, box-shadow 0.2s;
+  transition: filter 0.2s, transform 0.1s;
 }
 
 .auth-card button[type="submit"]:hover:not(:disabled) {
   filter: brightness(1.15);
-  box-shadow: 0 0 20px var(--mtl-accent-glow);
+  box-shadow: 0 0 30px var(--mtl-accent-glow);
   transform: translateY(-1px);
-}
-
-.auth-card button[type="submit"]:active:not(:disabled) {
-  transform: translateY(0);
 }
 
 .auth-card button[type="submit"]:disabled {
@@ -261,10 +649,7 @@ body {
   transition: color 0.2s;
 }
 
-.auth-switch a:hover {
-  color: var(--mtl-accent);
-  text-decoration: underline;
-}
+.auth-switch a:hover { color: var(--mtl-accent); text-decoration: underline; }
 
 /* ============================================
    PESAN ERROR / SUKSES
@@ -290,12 +675,10 @@ body {
   border: 1px solid rgba(34, 197, 94, 0.35);
 }
 
-.hidden {
-  display: none !important;
-}
+.hidden { display: none !important; }
 
 /* ============================================
-   TOMBOL BERSAMA (dipakai juga di dashboard)
+   TOMBOL BERSAMA
    ============================================ */
 
 .btn-primary {
@@ -310,17 +693,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: filter 0.2s, transform 0.1s;
-  white-space: nowrap;
+  transition: filter 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-primary:hover {
-  filter: brightness(1.15);
-}
-
-.btn-primary:active {
-  transform: scale(0.98);
-}
+.btn-primary:hover { filter: brightness(1.15); }
 
 .btn-secondary {
   padding: 10px 20px;
@@ -334,13 +713,13 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-secondary:hover {
-  background: #2a2a30;
-  border-color: var(--mtl-steel);
-}
+.btn-secondary:hover { background: #2a2a30; }
 
 .btn-danger {
   padding: 10px 20px;
@@ -354,15 +733,15 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: filter 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-danger:hover {
-  filter: brightness(1.15);
-}
+.btn-danger:hover { filter: brightness(1.15); }
 
 /* ============================================
-   STATUS BOX (dipakai juga di dashboard)
+   STATUS BOX
    ============================================ */
 
 .state-box {
@@ -381,35 +760,7 @@ body {
 }
 
 /* ============================================
-   RESPONSIF
-   ============================================ */
-
-@media (max-width: 800px) {
-  .auth-brand {
-    display: none;
-  }
-
-  .auth-form-panel {
-    padding: 32px 20px;
-  }
-
-  .auth-card {
-    padding: 32px 24px;
-  }
-}
-
-@media (max-width: 480px) {
-  .auth-card {
-    padding: 24px 16px;
-  }
-
-  .auth-card h2 {
-    font-size: 1.4rem;
-  }
-}
-
-/* ============================================
-   ICON UTILITIES (Tahap 5)
+   ICON UTILITIES
    ============================================ */
 
 .dash-header h1,
@@ -473,31 +824,11 @@ body {
   padding-left: 38px;
 }
 
-.spinner {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+.spinner { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ============================================
-   TETESAN DARAH — panel brand auth
-   ============================================ */
-
-.auth-brand {
-  overflow: visible;
-}
-
-
-@media (max-width: 800px) {
-  .auth-brand::after {
-    display: none;
-  }
-}
-
-/* ============================================
-   TOGGLE PENTING — bintang sebagai indikator
+   TOGGLE PENTING
    ============================================ */
 
 .checkbox-inline input[type="checkbox"],
@@ -513,113 +844,37 @@ body {
 .checkbox-filter svg {
   fill: none;
   stroke: var(--mtl-text-muted);
-  transition: fill 0.2s, stroke 0.2s, transform 0.15s;
+  transition: fill 0.2s, stroke 0.2s;
 }
 
-.checkbox-inline input[type="checkbox"]:checked + svg,
-.checkbox-filter input[type="checkbox"]:checked + svg {
+.checkbox-inline input:checked + svg,
+.checkbox-filter input:checked + svg {
   fill: var(--mtl-star);
   stroke: var(--mtl-star);
-  filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));
-}
-
-.checkbox-inline:hover svg,
-.checkbox-filter:hover svg {
-  transform: scale(1.15);
-}
-
-.checkbox-inline:has(input:checked),
-.checkbox-filter:has(input:checked) {
-  border-color: rgba(234, 179, 8, 0.4);
-  background: rgba(234, 179, 8, 0.08);
+  filter: drop-shadow(0 0 6px rgba(234, 179, 8, 0.7));
 }
 
 /* ============================================
-   ATMOSFER SERAM — background horror
+   RESPONSIF
    ============================================ */
 
-
-
-/* Layer 1: noise/grain film lama + vignette gelap */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(ellipse 60% 50% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.55) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
+@media (max-width: 800px) {
+  .auth-brand { display: none; }
+  .auth-form-panel { padding: 32px 20px; }
+  .auth-card { padding: 32px 24px; }
+  .dead-tree, .graveyard { opacity: 0.4; }
 }
 
-/* Layer 2: glow merah yang "bernapas" pelan-pelan (bukan strobe) */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse 70% 60% at 50% 110%, var(--mtl-accent-glow) 0%, transparent 55%);
-  opacity: 0.5;
-  animation: eerieBreathe 7s ease-in-out infinite;
+@media (max-width: 480px) {
+  .auth-card { padding: 24px 16px; }
+  .auth-card h2 { font-size: 1.4rem; }
+  .haunted-bg::before { width: 80px; height: 80px; }
 }
 
-@keyframes eerieBreathe {
-  0%, 100% { opacity: 0.35; }
-  50% { opacity: 0.75; }
-}
-
-/* Retakan gelap di pojok layar */
-.dash-page::before,
-.auth-page::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 260px;
-  height: 260px;
-  z-index: 0;
-  pointer-events: none;
-  background: var(--mtl-accent-dark);
-  opacity: 0.5;
-  clip-path: polygon(
-    0% 0%, 22% 0%, 15% 18%, 30% 22%, 20% 40%,
-    38% 45%, 25% 65%, 10% 60%, 0% 80%
-  );
-  filter: blur(0.5px);
-}
-
-.dash-page::after,
-.auth-page::after {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 300px;
-  height: 300px;
-  z-index: 0;
-  pointer-events: none;
-  background: var(--mtl-accent-dark);
-  opacity: 0.5;
-  clip-path: polygon(
-    100% 100%, 75% 100%, 82% 82%, 65% 78%, 78% 58%,
-    58% 52%, 72% 32%, 88% 38%, 95% 15%, 100% 25%
-  );
-  filter: blur(0.5px);
-}
-
-/* Pastikan konten utama tetap di atas layer seram, tetap kebaca jelas */
-.dash-header,
-.dash-main,
-.auth-page > .auth-brand,
-.auth-page > .auth-form-panel,
-.modal-overlay {
-  position: relative;
-  z-index: 1;
-}
-
-/* Vignette bikin tepi layar makin gelap saat scroll panjang */
-.dash-main {
-  min-height: 60vh;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
