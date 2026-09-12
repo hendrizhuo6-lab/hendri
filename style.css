@@ -51,8 +51,7 @@ body {
 }
 
 /* ============================================
-   🏚️ BACKGROUND: RUMAH HANTU + KUBURAN
-   Menggunakan CSS gradients (RINGAN, tidak berat)
+   🏚️ BACKGROUND 3D: RUMAH HANTU + KUBURAN
    ============================================ */
 
 .haunted-bg {
@@ -61,58 +60,142 @@ body {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  background: linear-gradient(180deg, #0a0000 0%, #1a0505 30%, #2a0a0a 55%, #0a0000 100%);
+  background: 
+    radial-gradient(ellipse 120% 80% at 50% 100%, #1a0505 0%, transparent 60%),
+    linear-gradient(180deg, #0a0000 0%, #1a0505 25%, #2a0a0a 50%, #0a0000 100%);
+  perspective: 800px;
+  perspective-origin: 50% 60%;
 }
 
-/* Bulan darah */
+/* ===== BULAN DARAH 3D ===== */
 .haunted-bg::before {
   content: '';
   position: absolute;
   top: 6%;
   right: 10%;
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, #ffd8a8 0%, #dc2626 35%, #7f1d1d 70%, transparent 100%);
+  background: 
+    radial-gradient(circle at 38% 35%, #fff5e0 0%, #ffd8a8 8%, #dc2626 40%, #7f1d1d 75%, transparent 100%);
   box-shadow:
-    0 0 40px 10px rgba(220, 38, 38, 0.5),
-    0 0 80px 30px rgba(127, 29, 29, 0.4),
-    0 0 140px 60px rgba(69, 10, 10, 0.3);
+    0 0 60px 15px rgba(220, 38, 38, 0.6),
+    0 0 120px 40px rgba(127, 29, 29, 0.45),
+    0 0 200px 80px rgba(69, 10, 10, 0.3),
+    inset -20px -10px 40px rgba(0, 0, 0, 0.6);
   animation: bloodMoon 8s ease-in-out infinite;
+  transform-style: preserve-3d;
+  filter: contrast(1.2);
+}
+
+/* Kawah di bulan */
+.haunted-bg::before {
+  background-image:
+    radial-gradient(circle at 38% 35%, #fff5e0 0%, #ffd8a8 8%, #dc2626 40%, #7f1d1d 75%, transparent 100%),
+    radial-gradient(circle at 30% 60%, rgba(0,0,0,0.3) 3px, transparent 4px),
+    radial-gradient(circle at 65% 40%, rgba(0,0,0,0.25) 5px, transparent 6px),
+    radial-gradient(circle at 50% 70%, rgba(0,0,0,0.2) 2px, transparent 3px),
+    radial-gradient(circle at 70% 65%, rgba(0,0,0,0.15) 4px, transparent 5px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
 }
 
 @keyframes bloodMoon {
-  0%, 100% { filter: brightness(1); transform: scale(1); }
-  50% { filter: brightness(1.3); transform: scale(1.05); }
+  0%, 100% { 
+    filter: brightness(1) contrast(1.2); 
+    transform: scale(1); 
+    box-shadow:
+      0 0 60px 15px rgba(220, 38, 38, 0.6),
+      0 0 120px 40px rgba(127, 29, 29, 0.45),
+      0 0 200px 80px rgba(69, 10, 10, 0.3);
+  }
+  50% { 
+    filter: brightness(1.35) contrast(1.3); 
+    transform: scale(1.06); 
+    box-shadow:
+      0 0 90px 25px rgba(220, 38, 38, 0.8),
+      0 0 160px 60px rgba(127, 29, 29, 0.6),
+      0 0 280px 120px rgba(69, 10, 10, 0.4);
+  }
 }
 
-/* Rumah hantu + kuburan dengan CSS shapes */
+/* ===== RUMAH HANTU 3D ===== */
 .haunted-bg::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 55%;
+  left: 50%;
+  transform: translateX(-50%) rotateX(8deg);
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 70%;
+  pointer-events: none;
+  
+  /* Rumah hantu dengan layer 3D */
   background:
-    /* Rumah hantu utama */
-    linear-gradient(180deg, transparent 0%, transparent 40%, #000 40%, #000 42%, transparent 42%),
-    /* Atap rumah */
-    conic-gradient(from 180deg at 50% 40%, #000 0deg, #000 90deg, transparent 90deg) 50% 32% / 220px 100px no-repeat,
-    /* Badan rumah */
-    linear-gradient(#000, #000) 50% 40% / 200px 60% no-repeat,
+    /* Jendela menyala */
+    radial-gradient(ellipse 8px 12px at 47% 48%, rgba(255, 200, 50, 0.9) 0%, rgba(255, 150, 0, 0.6) 40%, transparent 70%),
+    radial-gradient(ellipse 8px 12px at 53% 48%, rgba(255, 200, 50, 0.9) 0%, rgba(255, 150, 0, 0.6) 40%, transparent 70%),
+    radial-gradient(ellipse 6px 10px at 50% 65%, rgba(255, 180, 30, 0.7) 0%, transparent 60%),
+    
+    /* Pintu depan */
+    linear-gradient(180deg, transparent 55%, #0a0000 55%, #0a0000 100%) 50% 100% / 40px 100% no-repeat,
+    
+    /* Badan rumah utama 3D */
+    linear-gradient(90deg, #000 0%, #0a0505 20%, #1a0a0a 50%, #0a0505 80%, #000 100%) 50% 55% / 240px 220px no-repeat,
+    
+    /* Atap rumah (perspektif 3D) */
+    linear-gradient(180deg, #000 0%, #0a0000 100%) 50% 20% / 280px 120px no-repeat,
+    
     /* Menara kiri */
-    linear-gradient(#000, #000) 42% 40% / 50px 55% no-repeat,
+    linear-gradient(90deg, #000 0%, #0a0505 50%, #000 100%) 38% 40% / 60px 180px no-repeat,
+    
     /* Menara kanan */
-    linear-gradient(#000, #000) 58% 40% / 50px 55% no-repeat,
+    linear-gradient(90deg, #000 0%, #0a0505 50%, #000 100%) 62% 40% / 60px 180px no-repeat,
+    
+    /* Atap menara kiri */
+    linear-gradient(180deg, #000 0%, #0a0000 100%) 38% 18% / 80px 80px no-repeat,
+    
+    /* Atap menara kanan */
+    linear-gradient(180deg, #000 0%, #0a0000 100%) 62% 18% / 80px 80px no-repeat,
+    
     /* Tanah kuburan */
-    linear-gradient(180deg, transparent 0%, transparent 60%, #000 60%, #000 100%);
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.9));
+    linear-gradient(180deg, transparent 0%, transparent 70%, #000 70%, #050202 100%) 0 0 / 100% 100% no-repeat;
+  
+  filter: 
+    drop-shadow(0 0 30px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 60px rgba(127, 29, 29, 0.3));
+  
+  animation: houseGlow 6s ease-in-out infinite;
+}
+
+@keyframes houseGlow {
+  0%, 100% { filter: drop-shadow(0 0 30px rgba(0,0,0,0.95)) drop-shadow(0 0 60px rgba(127,29,29,0.3)); }
+  50% { filter: drop-shadow(0 0 40px rgba(0,0,0,1)) drop-shadow(0 0 80px rgba(185,28,28,0.5)); }
+}
+
+/* ===== BAYANGAN RUMAH (GROUND SHADOW) ===== */
+.graveyard::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) rotateX(75deg);
+  width: 400px;
+  height: 200px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, transparent 75%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: shadowBreathe 6s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes shadowBreathe {
+  0%, 100% { transform: translateX(-50%) rotateX(75deg) scale(1); opacity: 0.85; }
+  50% { transform: translateX(-50%) rotateX(75deg) scale(1.08); opacity: 1; }
 }
 
 /* ============================================
-   KUBURAN — batu nisan dengan pseudo-elemen
+   KUBURAN 3D — BATU NISAN REALISTIS
    ============================================ */
 
 .graveyard {
@@ -120,78 +203,164 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 35vh;
+  height: 40vh;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
+  perspective: 600px;
+  perspective-origin: 50% 100%;
 }
 
 .grave {
   position: absolute;
   bottom: 0;
-  width: 40px;
-  height: 80px;
-  background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
-  border-radius: 20px 20px 0 0;
-  box-shadow: inset -4px 0 8px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.9);
+  width: 50px;
+  height: 90px;
+  background: 
+    linear-gradient(90deg, #000 0%, #0d0d0d 15%, #1a1a1a 40%, #0d0d0d 85%, #000 100%);
+  border-radius: 50% 50% 8px 8px / 30% 30% 8px 8px;
+  box-shadow: 
+    inset -8px 0 16px rgba(0, 0, 0, 0.9),
+    inset 8px 0 12px rgba(255, 255, 255, 0.03),
+    0 8px 20px rgba(0, 0, 0, 0.9),
+    0 2px 4px rgba(0, 0, 0, 1);
+  transform-style: preserve-3d;
+  transform: rotateX(5deg) rotateY(-3deg);
+  animation: graveSway 8s ease-in-out infinite;
 }
 
+/* Efek tekstur batu */
 .grave::before {
   content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.04) 1px, transparent 2px),
+    radial-gradient(circle at 70% 50%, rgba(255,255,255,0.03) 1px, transparent 2px),
+    radial-gradient(circle at 40% 70%, rgba(0,0,0,0.3) 1px, transparent 2px),
+    radial-gradient(circle at 80% 20%, rgba(0,0,0,0.2) 1px, transparent 2px);
+  background-size: 15px 15px, 20px 20px, 18px 18px, 25px 25px;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Tulisan di batu nisan */
+.grave::after {
+  content: 'R.I.P';
   position: absolute;
   top: 25%;
   left: 50%;
   transform: translateX(-50%);
-  width: 4px;
-  height: 40%;
-  background: linear-gradient(180deg, #333, #111);
-  border-radius: 2px;
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #2a2a2a;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 -1px 0 rgba(255,255,255,0.05);
+  writing-mode: horizontal-tb;
 }
 
-.grave::after {
+/* Silang di batu nisan */
+.grave .cross::before,
+.grave .cross::after {
   content: '';
   position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 3px;
-  background: #333;
+  background: #1a1a1a;
   border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9), 0 1px 1px rgba(255,255,255,0.05);
 }
 
-.grave:nth-child(1) { left: 5%; height: 70px; width: 35px; }
-.grave:nth-child(2) { left: 12%; height: 90px; width: 45px; }
-.grave:nth-child(3) { left: 22%; height: 60px; width: 30px; }
-.grave:nth-child(4) { left: 68%; height: 75px; width: 40px; }
-.grave:nth-child(5) { left: 78%; height: 95px; width: 50px; }
-.grave:nth-child(6) { left: 90%; height: 65px; width: 35px; }
+.grave:nth-child(1) { 
+  left: 5%; height: 80px; width: 45px; 
+  transform: rotateX(5deg) rotateY(-4deg) rotateZ(-2deg);
+  animation-delay: 0s;
+}
+.grave:nth-child(2) { 
+  left: 12%; height: 100px; width: 55px; 
+  transform: rotateX(6deg) rotateY(2deg) rotateZ(1deg);
+  animation-delay: 0.5s;
+  background: linear-gradient(90deg, #000 0%, #111 20%, #222 45%, #111 80%, #000 100%);
+}
+.grave:nth-child(3) { 
+  left: 22%; height: 70px; width: 40px; 
+  transform: rotateX(4deg) rotateY(-2deg) rotateZ(3deg);
+  animation-delay: 1s;
+}
+.grave:nth-child(4) { 
+  left: 68%; height: 85px; width: 48px; 
+  transform: rotateX(5deg) rotateY(3deg) rotateZ(-1deg);
+  animation-delay: 1.5s;
+}
+.grave:nth-child(5) { 
+  left: 78%; height: 105px; width: 58px; 
+  transform: rotateX(6deg) rotateY(-3deg) rotateZ(2deg);
+  animation-delay: 2s;
+  background: linear-gradient(90deg, #000 0%, #111 25%, #1f1f1f 50%, #111 75%, #000 100%);
+}
+.grave:nth-child(6) { 
+  left: 90%; height: 75px; width: 42px; 
+  transform: rotateX(4deg) rotateY(4deg) rotateZ(-3deg);
+  animation-delay: 2.5s;
+}
+
+@keyframes graveSway {
+  0%, 100% { transform: rotateX(5deg) rotateY(-3deg) translateZ(0); }
+  50% { transform: rotateX(5deg) rotateY(-3deg) translateZ(4px); }
+}
 
 /* ============================================
-   POHON MATI
+   POHON MATI 3D
    ============================================ */
 
 .dead-tree {
   position: fixed;
-  bottom: 30vh;
+  bottom: 35vh;
   z-index: -1;
   pointer-events: none;
-  width: 60px;
-  height: 250px;
-  background: linear-gradient(180deg, #000 0%, #0a0a0a 100%);
+  width: 90px;
+  height: 320px;
+  background: linear-gradient(180deg, #0a0000 0%, #000 100%);
   clip-path: polygon(
-    45% 100%, 45% 70%, 30% 70%, 30% 65%, 45% 65%,
-    45% 50%, 20% 50%, 20% 45%, 45% 45%, 45% 30%,
-    25% 30%, 25% 25%, 45% 25%, 45% 10%, 55% 0%,
-    55% 25%, 75% 25%, 75% 30%, 55% 30%, 55% 45%,
-    80% 45%, 80% 50%, 55% 50%, 55% 65%, 70% 65%,
-    70% 70%, 55% 70%, 55% 100%
+    47% 100%, 47% 72%, 32% 72%, 32% 66%, 47% 66%,
+    47% 52%, 22% 52%, 22% 46%, 47% 46%, 47% 32%,
+    27% 32%, 27% 26%, 47% 26%, 47% 12%, 52% 0%,
+    53% 25%, 73% 25%, 73% 31%, 53% 31%, 53% 45%,
+    78% 45%, 78% 51%, 53% 51%, 53% 65%, 68% 65%,
+    68% 71%, 53% 71%, 53% 100%
   );
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.9));
+  filter: 
+    drop-shadow(0 0 15px rgba(0, 0, 0, 0.95))
+    drop-shadow(0 0 30px rgba(0, 0, 0, 0.7));
+  transform-style: preserve-3d;
+  animation: treeSway 6s ease-in-out infinite;
 }
 
-.dead-tree-left { left: 3%; }
-.dead-tree-right { right: 3%; transform: scaleX(-1); }
+.dead-tree-left { 
+  left: 3%; 
+  transform: rotateZ(-2deg);
+  transform-origin: bottom center;
+}
+
+.dead-tree-right { 
+  right: 3%; 
+  transform: scaleX(-1) rotateZ(2deg);
+  transform-origin: bottom center;
+}
+
+@keyframes treeSway {
+  0%, 100% { transform: rotateZ(-2deg) rotateX(0deg); }
+  50% { transform: rotateZ(-3deg) rotateX(2deg); }
+}
+
+.dead-tree-right {
+  animation: treeSwayRight 7s ease-in-out infinite;
+}
+
+@keyframes treeSwayRight {
+  0%, 100% { transform: scaleX(-1) rotateZ(2deg) rotateX(0deg); }
+  50% { transform: scaleX(-1) rotateZ(3deg) rotateX(-2deg); }
+}
 
 /* ============================================
    ATMOSFER: NOISE + VIGNETTE
@@ -257,6 +426,116 @@ body::after {
   50% { transform: translate(-50px, -35px) scale(1.3); opacity: 0.55; }
 }
 
+/* ===== KABUT BERLAPIS 3D ===== */
+.fog-a, .fog-b {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+
+.fog-a {
+  top: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(127, 29, 29, 0.5) 0%, transparent 70%);
+  animation: fogDrift1 20s ease-in-out infinite;
+}
+
+.fog-b {
+  bottom: -100px;
+  right: -100px;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(69, 10, 10, 0.6) 0%, transparent 70%);
+  animation: fogDrift2 24s ease-in-out infinite;
+}
+
+/* Lapisan kabut tambahan di atas tanah */
+.graveyard::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, transparent 0%, rgba(80, 20, 20, 0.15) 50%, rgba(40, 5, 5, 0.3) 100%);
+  pointer-events: none;
+  animation: groundFog 12s ease-in-out infinite;
+}
+
+@keyframes groundFog {
+  0%, 100% { opacity: 0.5; transform: translateY(0); }
+  50% { opacity: 0.9; transform: translateY(-10px); }
+}
+
+/* ===== LENTERA RUMAH HANTU ===== */
+.lantern {
+  position: fixed;
+  z-index: 4;
+  pointer-events: none;
+  width: 10px;
+  height: 14px;
+  background: radial-gradient(ellipse at center, #ffdd44 0%, #ff8800 50%, #cc4400 100%);
+  border-radius: 50% 50% 30% 30%;
+  box-shadow: 
+    0 0 15px 5px rgba(255, 200, 50, 0.8),
+    0 0 30px 10px rgba(255, 150, 0, 0.5),
+    0 0 60px 25px rgba(200, 80, 0, 0.3);
+  animation: lanternFlicker 1.5s ease-in-out infinite;
+}
+
+.lantern-left {
+  top: 52%;
+  left: 44%;
+}
+
+.lantern-right {
+  top: 52%;
+  right: 44%;
+  animation-delay: 0.3s;
+}
+
+@keyframes lanternFlicker {
+  0%, 100% { 
+    opacity: 1; 
+    box-shadow: 
+      0 0 15px 5px rgba(255, 200, 50, 0.8),
+      0 0 30px 10px rgba(255, 150, 0, 0.5),
+      0 0 60px 25px rgba(200, 80, 0, 0.3);
+  }
+  25% { opacity: 0.75; }
+  50% { 
+    opacity: 0.95;
+    box-shadow: 
+      0 0 20px 8px rgba(255, 220, 80, 0.9),
+      0 0 40px 15px rgba(255, 170, 0, 0.6),
+      0 0 80px 35px rgba(220, 100, 0, 0.4);
+  }
+  75% { opacity: 0.85; }
+}
+
+/* Glow besar dari jendela rumah */
+.lantern-glow {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 400px;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(255, 180, 50, 0.15) 0%, rgba(200, 80, 0, 0.08) 30%, transparent 70%);
+  animation: windowGlow 5s ease-in-out infinite;
+}
+
+@keyframes windowGlow {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+}
+
 /* ============================================
    🩸 DARAH REALISTIS
    ============================================ */
@@ -272,23 +551,26 @@ body::after {
 .blood-drip-layer span {
   position: absolute;
   top: -150px;
-  width: 5px;
+  width: 6px;
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(120, 0, 0, 0.7) 8%,
-    #8b0000 20%,
-    #b91c1c 45%,
+    rgba(120, 0, 0, 0.6) 5%,
+    #8b0000 15%,
+    #dc2626 35%,
+    #b91c1c 55%,
     #8b0000 75%,
-    #7f1d1d 92%,
+    #7f1d1d 90%,
     transparent 100%
   );
   border-radius: 3px 3px 50% 50%;
   opacity: 0.95;
   box-shadow:
-    0 0 8px 2px rgba(139, 0, 0, 0.7),
-    0 0 16px 4px rgba(127, 29, 29, 0.4);
-  filter: blur(0.3px);
+    0 0 10px 3px rgba(139, 0, 0, 0.8),
+    0 0 20px 6px rgba(127, 29, 29, 0.5),
+    inset 0 0 4px rgba(255, 100, 100, 0.3);
+  filter: blur(0.2px);
+  transform-style: preserve-3d;
 }
 
 .blood-drip-layer span::before {
@@ -302,17 +584,22 @@ body::after {
   border-radius: 50%;
 }
 
+/* Tetesan darah 3D dengan highlight */
 .blood-drip-layer span::after {
   content: '';
   position: absolute;
-  bottom: -5px;
+  bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 9px;
-  height: 9px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #dc2626 0%, #8b0000 50%, #450a0a 100%);
-  box-shadow: 0 0 10px 3px rgba(139, 0, 0, 0.85);
+  background: 
+    radial-gradient(circle at 35% 30%, #ff4444 0%, #dc2626 30%, #8b0000 70%, #450a0a 100%);
+  box-shadow: 
+    0 0 12px 4px rgba(139, 0, 0, 0.9),
+    0 0 24px 8px rgba(127, 29, 29, 0.5),
+    inset -2px -2px 4px rgba(0,0,0,0.5);
 }
 
 .blood-drip-layer span:nth-child(1) { left: 8%; height: 150px; animation: dripFall 6s linear infinite; }
@@ -413,27 +700,33 @@ body::after {
   91% { opacity: 0; }
 }
 
-/* ============================================
-   SHADOW FIGURE
-   ============================================ */
-
+/* ===== BAYANGAN SILHOUETTE REALISTIS ===== */
 .shadow-figure {
   position: fixed;
   bottom: 0;
-  left: -200px;
-  width: 180px;
+  left: -250px;
+  width: 220px;
   height: 100vh;
-  z-index: 3;
+  z-index: 5;
   pointer-events: none;
-  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(0, 0, 0, 0.95) 0%, transparent 70%);
   opacity: 0;
   animation: shadowCross 33s linear infinite;
+  
+  background: 
+    /* Kepala */
+    radial-gradient(ellipse 30px 35px at 50% 18%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 60%, transparent 100%),
+    /* Badan */
+    radial-gradient(ellipse 45px 120px at 50% 45%, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, transparent 100%),
+    /* Kabut di bawah */
+    radial-gradient(ellipse 100px 40px at 50% 95%, rgba(0,0,0,0.9) 0%, transparent 70%);
+  filter: blur(3px);
 }
 
 @keyframes shadowCross {
-  0%, 70%, 100% { opacity: 0; transform: translateX(0); }
+  0%, 70%, 100% { opacity: 0; transform: translateX(0) scale(1); }
   71% { opacity: 0.85; }
-  85% { opacity: 0.85; transform: translateX(calc(100vw + 200px)); }
+  78% { opacity: 0.95; transform: translateX(30vw) scale(1.05); }
+  85% { opacity: 0.85; transform: translateX(calc(100vw + 250px)) scale(1); }
   86% { opacity: 0; }
 }
 
