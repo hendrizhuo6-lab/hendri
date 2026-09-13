@@ -105,25 +105,68 @@ html, body {
 }
 
 .btn-logout {
-  background: transparent;
-  color: var(--mtl-steel-light);
-  border: 1px solid var(--mtl-border-strong);
+  background: #8b0000;
+  color: #fff;
+  border: 2px solid #660000;
   padding: 8px 18px;
   border-radius: var(--radius-md);
   font-family: var(--font-heading);
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
+  text-shadow: 0 0 5px #ff0000;
   letter-spacing: 0.04em;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  transtransition: all 0.3s ease;
 }
 
 .btn-logout:hover {
-  background: var(--mtl-danger-bg);
+  background: #ff0000;
   border-color: var(--mtl-danger);
+  box-shadow: 0 0 15px #ff0000;
   color: #fca5a5;
 }
+
+.user-email {
+  color: #39ff14; /* hijau neon */
+  text-shadow: 0 0 5px #39ff14;
+}
+
+
+
+/* HORROR TEXT STYLE */
+.horror-text {
+  font-family: 'Nosifer', cursive; /* font horror dari Google Fonts */
+  color: #8b0000; /* merah darah */
+  text-shadow: 
+    0 0 5px #ff0000,
+    0 0 10px #660000,
+    0 0 20px #330000;
+  letter-spacing: 2px;
+  animation: flicker 1.5s infinite alternate,
+             drip 6s infinite;
+}
+
+/* Efek berkedip */
+@keyframes flicker {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Efek darah menetes */
+@keyframes drip {
+  0%   { text-shadow: 0 0 10px #ff0000; }
+  50%  { text-shadow: 0 10px 20px #660000; }
+  100% { text-shadow: 0 0 10px #330000; }
+}
+
+.horror-text {
+  background: linear-gradient(black, #1a0000);
+  padding: 10px;
+  border: 2px solid #660000;
+}
+
 
 /* ============================================
    MAIN

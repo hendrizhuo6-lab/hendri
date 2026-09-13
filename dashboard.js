@@ -995,9 +995,6 @@ editNoteForm.addEventListener("submit", async function (e) {
     await loadNotes();
   });
 
-  // ============================================
-  // AI GEMINI
-  // ============================================
 async function callGemini(content, instruction) {
   const { data, error } = await supabaseClient.functions.invoke('gemini', {
     body: {
@@ -1006,9 +1003,35 @@ async function callGemini(content, instruction) {
     }
   });
 
-  if (error) throw error;
+  if (error) {
+    console.error('🔴 Edge Function error object:', error);
+    
+    let detailMsg = error.message || 'Unknown error';
+    
+    // ✅ Extract pesan asli dari response body
+    if (error.context) {
+      try {
+        // Coba sebagai JSON
+        const cloned = error.context.clone ? error.context.clone() : error.context;
+        const bodyText = await cloned.text();
+        console.error('🔴 Raw error body:', bodyText);
+        
+        try {
+          const parsed = JSON.parse(bodyText);
+          if (parsed.error) detailMsg = parsed.error;
+          if (parsed.detail) detailMsg += ' — ' + parsed.detail;
+        } catch {
+          if (bodyText) detailMsg = bodyText;
+        }
+      } catch (e) {
+        console.error('🔴 Failed to extract error body:', e);
+      }
+    }
+    
+    throw new Error(detailMsg);
+  }
 
-  // Edge Function bisa mengembalikan { result: {...} }, {...}, atau string JSON.
+  // ... sisanya sama
   let result = data?.result ?? data?.data ?? data?.output ?? data;
 
   if (typeof result === 'string') {

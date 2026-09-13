@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
+  console.log('✅ Supabase client terhubung');
+
+  });
+
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
 
