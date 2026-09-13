@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   let allNotes = [];
   let noteIdPendingDelete = null;
-  let selectedAddColor = "#ffffff";
+  let selectedAddColor = "#19191d";
   let openQuickColorPopover = null;
 
   let aiPendingNoteId = null;
@@ -90,18 +90,18 @@ document.addEventListener("DOMContentLoaded", async function () {
   userEmailEl.textContent = currentUser.email;
 
   const NOTE_COLORS = [
-    { name: "Default", value: "#ffffff" },
-    { name: "Coral", value: "#f28b82" },
-    { name: "Persik", value: "#fbbc04" },
-    { name: "Pasir", value: "#fff475" },
-    { name: "Mint", value: "#ccff90" },
-    { name: "Toska", value: "#a7ffeb" },
-    { name: "Langit", value: "#cbf0f8" },
-    { name: "Biru", value: "#aecbfa" },
-    { name: "Lavender", value: "#d7aefb" },
-    { name: "Merah Muda", value: "#fdcfe8" },
-    { name: "Tanah", value: "#e6c9a8" },
-    { name: "Abu-abu", value: "#e8eaed" },
+    { name: "Default", value: "#19191d" },
+    { name: "Coral", value: "#4a1015" },
+    { name: "Persik", value: "#4a2e10" },
+    { name: "Pasir", value: "#3f3a10" },
+    { name: "Mint", value: "#123322" },
+    { name: "Toska", value: "#0f3a3a" },
+    { name: "Langit", value: "#142a3a" },
+    { name: "Biru", value: "#16213a" },
+    { name: "Lavender", value: "#2a1740" },
+    { name: "Merah Muda", value: "#3a1626" },
+    { name: "Tanah", value: "#2e2013" },
+    { name: "Abu-abu", value: "#26262b" },
   ];
 
   function renderColorSwatches(container, selectedValue, onSelect) {
@@ -244,7 +244,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const card = document.createElement("div");
       card.className =
         "note-card" + (note.is_important ? " note-card-important" : "");
-      card.style.setProperty("--card-color", note.color || "#ffffff");
+    card.style.setProperty("--card-color", note.color || "#19191d");
       card.dataset.id = note.id;
 
       card.innerHTML = `
@@ -361,7 +361,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     wrapper.appendChild(popover);
     openQuickColorPopover = popover;
 
-    renderColorSwatches(popover, note ? note.color : "#ffffff", async function (color) {
+      renderColorSwatches(popover, note ? note.color : "#19191d", async function (color) {
       closeQuickColorPicker();
       await setNoteColor(id, color);
     });
@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function resetComposeBox() {
     addNoteForm.reset();
-    selectedAddColor = "#ffffff";
+    selectedAddColor = "#19191d";
     selectedAddImportant = false;
     updateAddImportantIcon();
     renderColorSwatches(addColorSwatches, selectedAddColor, selectAddColor);
@@ -523,13 +523,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     editNoteContentInput.innerHTML = note.content || "";
     editNoteImportantInput.checked = !!note.is_important;
-    editBgColorPicker.value = note.color || "#fff7d1";
-    renderColorSwatches(editColorSwatches, note.color || "#fff7d1", applyEditColor);
+       editBgColorPicker.value = note.color || "#19191d";
+    renderColorSwatches(editColorSwatches, note.color || "#19191d", applyEditColor);
     editColorPopover.classList.add("hidden");
 
     const stickyEl = editNoteModal.querySelector(".sticky-note");
     if (stickyEl) {
-      stickyEl.style.setProperty("--bg-color", note.color || "#fff7d1");
+           stickyEl.style.setProperty("--bg-color", note.color || "#19191d");
       stickyEl.classList.remove("minimized");
     }
 
@@ -794,7 +794,7 @@ editNoteForm.addEventListener("submit", async function (e) {
     // folder_id: folderValue,
     content: contentHTML,
     is_important: editNoteImportantInput ? editNoteImportantInput.checked : false,
-    color: editBgColorPicker ? editBgColorPicker.value : '#ffffff',
+       color: editBgColorPicker ? editBgColorPicker.value : '#19191d',
     updated_at: new Date().toISOString(),
   };
 
@@ -1056,13 +1056,13 @@ async function applyAIResult() {
   editNoteContentInput.innerHTML = content;
   
   editNoteImportantInput.checked = !!note.is_important;
-  editBgColorPicker.value = note.color || '#fff7d1';
-  renderColorSwatches(editColorSwatches, note.color || '#fff7d1', applyEditColor);
+  editBgColorPicker.value = note.color || "#19191d";
+    renderColorSwatches(editColorSwatches, note.color || "#19191d", applyEditColor)
   editColorPopover.classList.add('hidden');
   
   const stickyEl = editNoteModal.querySelector('.sticky-note');
   if (stickyEl) {
-    stickyEl.style.setProperty('--bg-color', note.color || '#fff7d1');
+   stickyEl.style.setProperty('--bg-color', note.color || '#19191d');
     stickyEl.classList.remove('minimized');
   }
   
