@@ -201,15 +201,28 @@
       <form id="edit-note-form">
         <input type="hidden" id="edit-note-id" value="" />
 
+        <div class="edit-note-meta">
+          <div>
+            <label for="edit-note-title">Judul</label>
+            <input type="text" id="edit-note-title" class="edit-note-title"
+                   maxlength="150" placeholder="Judul catatan" autocomplete="off">
+          </div>
+          <div>
+            <label for="edit-note-category">Kategori</label>
+            <input type="text" id="edit-note-category" class="edit-note-category"
+                   maxlength="50" placeholder="Umum" autocomplete="off">
+          </div>
+        </div>
+
         <div class="note-body" contenteditable="true" id="editor">
           Tulis catatanmu di sini...
         </div>
 
-        <label class="checkbox-inline">
-          <input type="checkbox" id="edit-note-important" />
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          Tandai sebagai penting
-        </label>
+      <label class="checkbox-inline" for="edit-note-important">
+  <input type="checkbox" id="edit-note-important" />
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+  <span>Tandai sebagai penting</span>
+</label>
 
         <footer class="note-toolbar">
           <div class="toolbar-group">
@@ -289,15 +302,14 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           Instruksi tambahan (opsional):
         </label>
-        <input 
-          type="text" 
-          id="ai-instruction" 
-          placeholder="Contoh: Buatkan ringkasan, Ubah menjadi checklist, Perbaiki grammar..."
-          style="width:100%; padding:10px 14px; border:1px solid var(--mtl-border-strong); border-radius:var(--radius-md); font-size:0.9rem; outline:none; transition:border-color 0.2s; background:var(--mtl-surface-alt); color:var(--mtl-text);"
-          onfocus="this.style.borderColor='#dc2626'"
-          onblur="this.style.borderColor='var(--mtl-border-strong)'"
-        >
-        <div style="display:flex; gap:8px; margin-top:6px; flex-wrap:wrap;">
+        <input type="text" id="ai-instruction" class="ai-instruction-input"
+          placeholder="Contoh: Buatkan ringkasan, checklist, atau rapikan grammar..."
+          autocomplete="off">
+        <div class="ai-action-row">
+          <button type="button" id="ai-run-btn" class="ai-run-btn">✦ Proses dengan Gemini</button>
+          <span class="ai-hint">Pilih aksi cepat atau tulis instruksi sendiri.</span>
+        </div>
+        <div class="ai-quick-actions">
           <button type="button" class="ai-quick-btn" data-instruksi="Buatkan ringkasan singkat">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             Ringkasan

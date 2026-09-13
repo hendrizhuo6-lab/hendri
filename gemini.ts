@@ -42,7 +42,11 @@ INSTRUKSI:
 5. Kelompokkan informasi yang saling berkaitan
 6. Temukan tanggal atau deadline jika ada
 7. Tentukan kategori yang sesuai (Pekerjaan/Pribadi/Belajar/Proyek/Lainnya)
-8. Berikan rekomendasi warna (hex) yang cocok
+8. Berikan rekomendasi warna (hex) — WAJIB pilih SALAH SATU dari daftar ini:
+   #19191d (default gelap), #4a1015 (coral), #4a2e10 (persik),
+   #3f3a10 (pasir), #123322 (mint), #0f3a3a (toska),
+   #142a3a (langit), #16213a (biru), #2a1740 (lavender),
+   #3a1626 (merah muda), #2e2013 (tanah), #26262b (abu-abu)
 
 ATURAN PENTING:
 - JANGAN mengarang informasi baru

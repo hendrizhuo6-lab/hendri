@@ -1,3 +1,59 @@
+// ============================================
+// VALIDASI WARNA — Cegah warna nyasar dari Gemini
+// ============================================
+const PALETTE_COLORS = [
+  '#19191d', '#4a1015', '#4a2e10', '#3f3a10',
+  '#123322', '#0f3a3a', '#142a3a', '#16213a',
+  '#2a1740', '#3a1626', '#2e2013', '#26262b'
+];
+
+function normalizeColorToPalette(inputColor) {
+  if (!inputColor || typeof inputColor !== 'string') {
+    return '#19191d';
+  }
+
+  let hex = inputColor.trim().toLowerCase();
+  if (!hex.startsWith('#')) hex = '#' + hex;
+  
+  if (hex.length === 4) {
+    hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+  }
+  
+  if (!/^#[0-9a-f]{6}$/.test(hex)) {
+    return '#19191d';
+  }
+
+  const exact = PALETTE_COLORS.find(c => c === hex);
+  if (exact) return exact;
+
+  const r1 = parseInt(hex.slice(1, 3), 16);
+  const g1 = parseInt(hex.slice(3, 5), 16);
+  const b1 = parseInt(hex.slice(5, 7), 16);
+
+  let closest = PALETTE_COLORS[0];
+  let minDist = Infinity;
+  
+  for (const c of PALETTE_COLORS) {
+    const r2 = parseInt(c.slice(1, 3), 16);
+    const g2 = parseInt(c.slice(3, 5), 16);
+    const b2 = parseInt(c.slice(5, 7), 16);
+    
+    const dist = Math.sqrt(
+      Math.pow(r1 - r2, 2) +
+      Math.pow(g1 - g2, 2) +
+      Math.pow(b1 - b2, 2)
+    );
+    
+    if (dist < minDist) {
+      minDist = dist;
+      closest = c;
+    }
+  }
+  
+  console.log(`🎨 Warna nyasar "${inputColor}" → "${closest}"`);
+  return closest;
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
   if (typeof supabaseClient === "undefined") {
     console.error("❌ Supabase client tidak ditemukan. Cek supabase-config.js");
@@ -79,6 +135,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   const deleteCancelBtn = document.getElementById("delete-cancel-btn");
   const deleteConfirmBtn = document.getElementById("delete-confirm-btn");
 
+  // Set placeholder untuk editor
+if (editNoteContentInput) {
+  editNoteContentInput.setAttribute('data-placeholder', 'Tulis catatanmu di sini...');
+}
+
   let allNotes = [];
   let noteIdPendingDelete = null;
   let selectedAddColor = "#19191d";
@@ -89,21 +150,81 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   userEmailEl.textContent = currentUser.email;
 
-  const NOTE_COLORS = [
-    { name: "Default", value: "#19191d" },
-    { name: "Coral", value: "#4a1015" },
-    { name: "Persik", value: "#4a2e10" },
-    { name: "Pasir", value: "#3f3a10" },
-    { name: "Mint", value: "#123322" },
-    { name: "Toska", value: "#0f3a3a" },
-    { name: "Langit", value: "#142a3a" },
-    { name: "Biru", value: "#16213a" },
-    { name: "Lavender", value: "#2a1740" },
-    { name: "Merah Muda", value: "#3a1626" },
-    { name: "Tanah", value: "#2e2013" },
-    { name: "Abu-abu", value: "#26262b" },
-  ];
+// ============================================
+// VALIDASI WARNA — Paksa warna masuk ke palet
+// ============================================
+const NOTE_COLORS = [
+  { name: "Default", value: "#19191d" },
+  { name: "Coral", value: "#4a1015" },
+  { name: "Persik", value: "#4a2e10" },
+  { name: "Pasir", value: "#3f3a10" },
+  { name: "Mint", value: "#123322" },
+  { name: "Toska", value: "#0f3a3a" },
+  { name: "Langit", value: "#142a3a" },
+  { name: "Biru", value: "#16213a" },
+  { name: "Lavender", value: "#2a1740" },
+  { name: "Merah Muda", value: "#3a1626" },
+  { name: "Tanah", value: "#2e2013" },
+  { name: "Abu-abu", value: "#26262b" },
+];
 
+/**
+ * Cari warna palet terdekat dari warna manapun yang diberikan.
+ * Pakai rumus Euclidean distance di ruang RGB.
+ */
+function normalizeColorToPalette(inputColor) {
+  if (!inputColor || typeof inputColor !== 'string') {
+    return '#19191d';
+  }
+
+  // Normalize input: pastikan format #rrggbb
+  let hex = inputColor.trim().toLowerCase();
+  if (!hex.startsWith('#')) hex = '#' + hex;
+  
+  // Handle #rgb → #rrggbb
+  if (hex.length === 4) {
+    hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+  }
+  
+  // Validasi format
+  if (!/^#[0-9a-f]{6}$/.test(hex)) {
+    return '#19191d';
+  }
+
+  // Kalau sudah persis sama dengan salah satu palet, return
+  const exact = NOTE_COLORS.find(c => c.value.toLowerCase() === hex);
+  if (exact) return exact.value;
+
+  // Konversi ke RGB
+  const r1 = parseInt(hex.slice(1, 3), 16);
+  const g1 = parseInt(hex.slice(3, 5), 16);
+  const b1 = parseInt(hex.slice(5, 7), 16);
+
+  // Cari warna palet terdekat
+  let closest = NOTE_COLORS[0];
+  let minDist = Infinity;
+  
+  for (const c of NOTE_COLORS) {
+    const r2 = parseInt(c.value.slice(1, 3), 16);
+    const g2 = parseInt(c.value.slice(3, 5), 16);
+    const b2 = parseInt(c.value.slice(5, 7), 16);
+    
+    // Euclidean distance
+    const dist = Math.sqrt(
+      Math.pow(r1 - r2, 2) +
+      Math.pow(g1 - g2, 2) +
+      Math.pow(b1 - b2, 2)
+    );
+    
+    if (dist < minDist) {
+      minDist = dist;
+      closest = c;
+    }
+  }
+  
+  console.log(`🎨 Warna "${inputColor}" → "${closest.value}" (${closest.name})`);
+  return closest.value;
+}
   function renderColorSwatches(container, selectedValue, onSelect) {
     if (!container) return;
     container.innerHTML = "";
@@ -241,32 +362,41 @@ document.addEventListener("DOMContentLoaded", async function () {
     emptyState.classList.add("hidden");
 
     filtered.forEach(function (note) {
-      const card = document.createElement("div");
-      card.className =
-        "note-card" + (note.is_important ? " note-card-important" : "");
-    card.style.setProperty("--card-color", note.color || "#19191d");
-      card.dataset.id = note.id;
+  const card = document.createElement("div");
+  card.className =
+    "note-card" + (note.is_important ? " note-card-important" : "");
+  card.style.setProperty("--card-color", note.color || "#19191d");
+  card.dataset.id = note.id;
 
-      card.innerHTML = `
-        <div class="note-card-top">
-          <span class="note-card-title">${escapeHtml(note.title || "Catatan")}</span>
-          <button class="note-pin-btn${note.is_important ? " is-active" : ""}" title="${note.is_important ? "Lepas tanda penting" : "Tandai penting"}" data-id="${note.id}">${note.is_important ? "⭐" : "☆"}</button>
+  card.innerHTML = `
+    <div class="note-card-top">
+      <span class="note-card-title">${escapeHtml(note.title || "Catatan")}</span>
+      <button class="note-pin-btn${note.is_important ? " is-active" : ""}" 
+              title="${note.is_important ? "Lepas tanda penting" : "Tandai penting"}" 
+              data-id="${note.id}">
+        ${note.is_important ? "⭐" : "☆"}
+      </button>
+    </div>
+    
+    <span class="note-category-badge">${escapeHtml(note.category || "Umum")}</span>
+    
+    <div class="note-card-divider"></div>
+    
+    <div class="note-card-content">${note.content}</div>
+    
+    <div class="note-card-footer">
+      <span class="note-date">${formatDate(note.updated_at || note.created_at)}</span>
+      <div class="note-card-actions">
+        <button class="note-action-btn ai-btn" title="Rapikan dengan AI" data-id="${note.id}">✨</button>
+        <div class="note-quick-color">
+          <button class="note-action-btn color-btn" title="Ubah warna" data-id="${note.id}">🎨</button>
         </div>
-        <span class="note-category-badge">${escapeHtml(note.category || "Umum")}</span>
-        <div class="note-card-content">${note.content}</div>
-        <div class="note-card-footer">
-          <span class="note-date">${formatDate(note.updated_at || note.created_at)}</span>
-          <div class="note-card-actions">
-            <button class="note-action-btn ai-btn" title="Rapikan dengan AI" data-id="${note.id}">✨</button>
-            <div class="note-quick-color">
-              <button class="note-action-btn color-btn" title="Ubah warna" data-id="${note.id}">🎨</button>
-            </div>
-            <button class="note-action-btn delete-btn" title="Hapus" data-id="${note.id}">🗑️</button>
-          </div>
-        </div>
-      `;
-      notesGrid.appendChild(card);
-    });
+        <button class="note-action-btn delete-btn" title="Hapus" data-id="${note.id}">🗑️</button>
+      </div>
+    </div>
+  `;
+  notesGrid.appendChild(card);
+});
 
     notesGrid.querySelectorAll(".note-card").forEach(function (card) {
       card.addEventListener("click", function (e) {
@@ -416,18 +546,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     addColorPopover.classList.add("hidden");
   }
 
-  function resetComposeBox() {
-    addNoteForm.reset();
+function resetComposeBox() {
+  addNoteForm.reset();
 
-    selectedAddColor = "#19191d";
-
-        selectedAddColor = "#ffffff";
-
-    selectedAddImportant = false;
-    updateAddImportantIcon();
-    renderColorSwatches(addColorSwatches, selectedAddColor, selectAddColor);
-    composeBox.style.removeProperty("--card-color");
-  }
+  // ✅ Set default color sekali saja
+  selectedAddColor = "#19191d";
+  selectedAddImportant = false;
+  
+  // Update UI
+  updateAddImportantIcon();
+  renderColorSwatches(addColorSwatches, selectedAddColor, selectAddColor);
+  
+  // Reset preview color compose box
+  composeBox.style.removeProperty("--card-color");
+}
 
   async function saveAndCollapseComposeBox() {
     const title = addNoteTitleInput.value.trim();
@@ -527,15 +659,18 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     editNoteContentInput.innerHTML = note.content || "";
     editNoteImportantInput.checked = !!note.is_important;
-       editBgColorPicker.value = note.color || "#19191d";
-    renderColorSwatches(editColorSwatches, note.color || "#19191d", applyEditColor);
+       const safeColor = normalizeColorToPalette(note.color);
+editBgColorPicker.value = safeColor;
+renderColorSwatches(editColorSwatches, safeColor, applyEditColor);
     editColorPopover.classList.add("hidden");
 
     const stickyEl = editNoteModal.querySelector(".sticky-note");
-    if (stickyEl) {
-           stickyEl.style.setProperty("--bg-color", note.color || "#19191d");
-      stickyEl.classList.remove("minimized");
-    }
+if (stickyEl) {
+  // Gunakan warna catatan, tapi kalau terlalu terang pakai default gelap
+  const noteColor = note.color || "#19191d";
+  stickyEl.style.setProperty("--bg-color", safeColor);
+  stickyEl.classList.remove("minimized");
+}
 
     editModalMessage.classList.add("hidden");
     editNoteModal.classList.remove("hidden");
@@ -583,7 +718,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function applyEditColor(color) {
     const stickyEl = editNoteModal.querySelector(".sticky-note");
-    if (stickyEl) stickyEl.style.setProperty("--bg-color", color);
+    if (stickyEl) stickyEl.style.setProperty("--bg-color", safeColor);
     editBgColorPicker.value = color;
     renderColorSwatches(editColorSwatches, color, applyEditColor);
   }
@@ -795,6 +930,7 @@ editNoteForm.addEventListener("submit", async function (e) {
 
   const payload = {
     title: editNoteTitleInput ? editNoteTitleInput.value.trim() : 'Catatan Tanpa Judul',
+    category: editNoteCategoryInput ? (editNoteCategoryInput.value.trim() || 'Umum') : 'Umum',
     // folder_id: folderValue,
     content: contentHTML,
     is_important: editNoteImportantInput ? editNoteImportantInput.checked : false,
@@ -864,14 +1000,37 @@ editNoteForm.addEventListener("submit", async function (e) {
   // ============================================
 async function callGemini(content, instruction) {
   const { data, error } = await supabaseClient.functions.invoke('gemini', {
-    body: { 
-      content: content,       // Isi catatan
-      instruction: instruction // Instruksi AI (misal: "Ringkasan", "Checklist", dll)
+    body: {
+      content,
+      instruction: instruction || 'Rapikan catatan ini agar lebih terstruktur dan mudah dibaca.'
     }
   });
 
   if (error) throw error;
-  return data;
+
+  // Edge Function bisa mengembalikan { result: {...} }, {...}, atau string JSON.
+  let result = data?.result ?? data?.data ?? data?.output ?? data;
+
+  if (typeof result === 'string') {
+    try { result = JSON.parse(result); }
+    catch (_) { result = { content: result }; }
+  }
+
+  if (result?.result && typeof result.result === 'object') {
+    result = result.result;
+  }
+
+  if (!result || typeof result !== 'object') {
+    throw new Error('Format hasil Gemini tidak dikenali.');
+  }
+
+  return {
+    title: result.title || '',
+    content: result.content || result.body || result.text || '',
+    category: result.category || '',
+    color: result.color || '',
+    is_important: !!result.is_important
+  };
 }
 
  async function openAIPreview(noteId) {
@@ -929,11 +1088,12 @@ async function callGemini(content, instruction) {
     if (bodyEl) bodyEl.innerHTML = result.content || note.content || '';
     if (categoryEl) categoryEl.textContent = result.category || note.category || 'Umum';
     
-    const color = result.color || note.color || '#ffffff';
-    if (colorBar) {
-      colorBar.style.backgroundColor = color;
-      colorBar.style.background = color;
-    }
+const rawColor = result.color || note.color || '#19191d';
+const safeColor = normalizeColorToPalette(rawColor);  
+if (colorBar) {
+  colorBar.style.backgroundColor = safeColor;
+  colorBar.style.background = safeColor;
+}
     
   } catch (error) {
     console.error('❌ AI Error:', error);
@@ -960,18 +1120,26 @@ async function applyAIResult() {
   }
 
   const bodyEl = document.getElementById('ai-preview-body');
-  const resultContent = (aiResult.content || (bodyEl ? bodyEl.innerHTML : '') || '').trim();
+  let resultContent = (aiResult.content || (bodyEl ? bodyEl.innerHTML : '') || '').trim();
 
   if (!resultContent) {
     alert("Hasil AI kosong!");
     return;
   }
 
+  // ✅ Pastikan HTML valid
+  if (typeof markdownToHtml === 'function') {
+    resultContent = markdownToHtml(resultContent);
+  }
+
+  // ✅ VALIDASI WARNA — paksa masuk palet
+  const safeColor = normalizeColorToPalette(aiResult.color || '#19191d');
+
   const payload = {
     title: aiResult.title || 'Catatan Tanpa Judul',
     content: resultContent,
     category: aiResult.category || 'Umum',
-    color: aiResult.color || '#ffffff',
+    color: normalizeColorToPalette(aiResult.color),  // ← warna yang sudah divalidasi
     is_important: !!aiResult.is_important,
     updated_at: new Date().toISOString(),
   };
@@ -1060,23 +1228,41 @@ async function applyAIResult() {
   editNoteContentInput.innerHTML = content;
   
   editNoteImportantInput.checked = !!note.is_important;
-  editBgColorPicker.value = note.color || "#19191d";
-    renderColorSwatches(editColorSwatches, note.color || "#19191d", applyEditColor)
+  const safeColor = normalizeColorToPalette(note.color);  
+editBgColorPicker.value = safeColor;
+renderColorSwatches(editColorSwatches, safeColor, applyEditColor);
   editColorPopover.classList.add('hidden');
   
-  const stickyEl = editNoteModal.querySelector('.sticky-note');
-  if (stickyEl) {
-   stickyEl.style.setProperty('--bg-color', note.color || '#19191d');
-    stickyEl.classList.remove('minimized');
-  }
+ const stickyEl = editNoteModal.querySelector('.sticky-note');
+if (stickyEl) {
+  const noteColor = note.color || '#19191d';
+  const safeColor = normalizeColorToPalette(noteColor);
+  stickyEl.style.setProperty("--bg-color", safeColor);
+  stickyEl.classList.remove('minimized');
+}
   
   editModalMessage.classList.add('hidden');
   editNoteModal.classList.remove('hidden');
   editNoteContentInput.focus();
 }
 
+  const aiRunBtn = document.getElementById('ai-run-btn');
   const aiCloseBtn = document.getElementById('ai-close-btn');
   const aiCancelBtn = document.getElementById('ai-cancel-btn');
+
+  if (aiRunBtn) {
+    aiRunBtn.addEventListener('click', async () => {
+      if (!aiPendingNoteId) return;
+      aiRunBtn.disabled = true;
+      aiRunBtn.textContent = '⏳ Memproses...';
+      try {
+        await openAIPreview(aiPendingNoteId);
+      } finally {
+        aiRunBtn.disabled = false;
+        aiRunBtn.textContent = '✦ Proses dengan Gemini';
+      }
+    });
+  }
   const aiApplyBtn = document.getElementById('ai-apply-btn');
   const aiEditBtn = document.getElementById('ai-edit-btn');
   const aiModal = document.getElementById('ai-preview-modal');
