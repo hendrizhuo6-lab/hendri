@@ -418,7 +418,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   function resetComposeBox() {
     addNoteForm.reset();
+
     selectedAddColor = "#19191d";
+
+        selectedAddColor = "#ffffff";
+
     selectedAddImportant = false;
     updateAddImportantIcon();
     renderColorSwatches(addColorSwatches, selectedAddColor, selectAddColor);

@@ -2,6 +2,9 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
 const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY')
+
+// Perbaikan pada nama model (gunakan gemini-2.5-flash atau gemini-1.5-flash)
+
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`
 
 serve(async (req) => {
@@ -13,6 +16,10 @@ serve(async (req) => {
         JSON.stringify({ error: 'Content is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
+    }
+
+    if (!GEMINI_API_KEY) {
+      throw new Error('GEMINI_API_KEY is missing in environment variables')
     }
 
     // Build prompt untuk Gemini
@@ -69,6 +76,7 @@ Keluarkan HANYA JSON, tanpa teks lain.
         generationConfig: {
           temperature: 0.3,
           maxOutputTokens: 2048,
+          responseMimeType: "application/json" // Memaksa Gemini mengembalikan JSON murni
         }
       })
     })
@@ -89,7 +97,6 @@ Keluarkan HANYA JSON, tanpa teks lain.
     // Parse JSON dari response
     let parsed;
     try {
-      // Coba ekstrak JSON dari teks (mungkin ada markdown)
       const jsonMatch = resultText.match(/\{[\s\S]*\}/)
       if (jsonMatch) {
         parsed = JSON.parse(jsonMatch[0])
