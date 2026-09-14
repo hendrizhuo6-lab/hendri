@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const btnFmtItalic = document.getElementById("btn-italic");
   const btnFmtUnderline = document.getElementById("btn-underline");
   const btnFmtStrike = document.getElementById("btn-strike");
-  const btnFmtList = document.getElementById("btn-list");
+  const btnFmtList = document.getElementById("btn-ul");
   const btnFmtImage = document.getElementById("btn-image");
   const editImageInput = document.getElementById("imageInput");
 
@@ -225,27 +225,46 @@ function normalizeColorToPalette(inputColor) {
   console.log(`🎨 Warna "${inputColor}" → "${closest.value}" (${closest.name})`);
   return closest.value;
 }
-  function renderColorSwatches(container, selectedValue, onSelect) {
+
+
+function renderColorSwatches(container, selectedValue = "", onSelect) {
     if (!container) return;
-    container.innerHTML = "";
-    NOTE_COLORS.forEach(function (c) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className =
-        "color-swatch" +
-        (selectedValue && selectedValue.toLowerCase() === c.value.toLowerCase()
-          ? " is-selected"
-          : "");
-      btn.style.backgroundColor = c.value;
-      btn.title = c.name;
-      btn.setAttribute("aria-label", c.name);
-      btn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        onSelect(c.value);
-      });
-      container.appendChild(btn);
+
+    // Gunakan DocumentFragment untuk menghindari reflow DOM berulang kali
+    const fragment = document.createDocumentFragment();
+    const normalizedSelected = selectedValue.toLowerCase();
+
+    NOTE_COLORS.forEach(({ name, value }) => {
+        const btn = document.createElement("button");
+        const isSelected = normalizedSelected === value.toLowerCase();
+
+        btn.type = "button";
+        btn.className = `color-swatch${isSelected ? " is-selected" : ""}`;
+        btn.style.backgroundColor = value;
+        btn.title = name;
+        
+        // Peningkatan Aksesibilitas (a11y)
+        btn.setAttribute("aria-label", name);
+        btn.setAttribute("aria-pressed", isSelected ? "true" : "false");
+
+        // Custom property untuk Event Delegation
+        btn.dataset.color = value;
+
+        fragment.appendChild(btn);
     });
-  }
+
+    // Bersihkan kontainer dan ganti isinya sekaligus
+    container.replaceChildren(fragment);
+
+    // Event Delegation: Hapus listener lama jika ada, lalu pasang di kontainer utama
+    container.onclick = (e) => {
+        const swatch = e.target.closest(".color-swatch");
+        if (swatch && typeof onSelect === "function") {
+            e.stopPropagation();
+            onSelect(swatch.dataset.color);
+        }
+    };
+}
 
   function showMessage(el, text, type) {
     if (!el) return;
@@ -716,12 +735,13 @@ if (stickyEl) {
     });
   }
 
-  function applyEditColor(color) {
-    const stickyEl = editNoteModal.querySelector(".sticky-note");
-    if (stickyEl) stickyEl.style.setProperty("--bg-color", safeColor);
-    editBgColorPicker.value = color;
-    renderColorSwatches(editColorSwatches, color, applyEditColor);
-  }
+ function applyEditColor(color) {
+  const safeColor = normalizeColorToPalette(color);  // ← tambahkan ini
+  const stickyEl = editNoteModal.querySelector(".sticky-note");
+  if (stickyEl) stickyEl.style.setProperty("--bg-color", safeColor);
+  editBgColorPicker.value = safeColor;
+  renderColorSwatches(editColorSwatches, safeColor, applyEditColor);
+}
 
   if (editBgColorPicker) {
     editBgColorPicker.addEventListener("input", (e) => {
