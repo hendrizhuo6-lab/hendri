@@ -11,36 +11,56 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   console.log('✅ Supabase client terhubung');
 
-  });
-
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
 
   // ============================================
-  // JIKA SUDAH LOGIN, JANGAN TAMPILKAN HALAMAN LOGIN/REGISTER LAGI
+  // CEK SESSION
   // ============================================
 
-  const { data: { session } } = await supabaseClient.auth.getSession();
+  async function checkSession() {
+    const { data: { session }, error } =
+      await supabaseClient.auth.getSession();
 
-  if (session && (loginForm || registerForm)) {
-    console.log('✅ Sudah login sebagai:', session.user.email);
-    window.location.href = 'dashboard.html';
-    return;
+    if (error) {
+      console.error('❌ Gagal mengecek session:', error.message);
+      return;
+    }
+
+    if (session) {
+      console.log('✅ User sudah login:', session.user);
+
+      // Jika sudah login, langsung ke dashboard
+      if (window.location.pathname.includes('login.html')) {
+        window.location.href = 'dashboard.html';
+      }
+    } else {
+      console.log('ℹ️ User belum login');
+    }
   }
 
+  await checkSession();
+
   // ============================================
-  // HELPER: tampilkan pesan error/sukses di form
+  // HELPER
   // ============================================
 
   function showMessage(el, text, type) {
     if (!el) return;
+
     el.textContent = text;
-    el.className = 'form-message ' + (type === 'error' ? 'form-message-error' : 'form-message-success');
+    el.className =
+      'form-message ' +
+      (type === 'error'
+        ? 'form-message-error'
+        : 'form-message-success');
+
     el.classList.remove('hidden');
   }
 
   function setLoading(button, isLoading, loadingText, normalText) {
     if (!button) return;
+
     button.disabled = isLoading;
     button.textContent = isLoading ? loadingText : normalText;
   }
@@ -53,37 +73,74 @@ document.addEventListener('DOMContentLoaded', async function () {
     loginForm.addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const email = document.getElementById('login-email').value.trim();
-      const password = document.getElementById('login-password').value;
+      const emailInput = document.getElementById('login-email');
+      const passwordInput = document.getElementById('login-password');
       const messageEl = document.getElementById('login-message');
-      const submitBtn = loginForm.querySelector('button[type="submit"]');
+      const submitBtn =
+        loginForm.querySelector('button[type="submit"]');
 
-      messageEl.classList.add('hidden');
-      setLoading(submitBtn, true, '⏳ Masuk...', 'Masuk');
+      if (!emailInput || !passwordInput) {
+        console.error('❌ Input login tidak ditemukan.');
+        return;
+      }
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
 
-      setLoading(submitBtn, false, '⏳ Masuk...', 'Masuk');
+      if (messageEl) {
+        messageEl.classList.add('hidden');
+      }
+
+      setLoading(
+        submitBtn,
+        true,
+        '⏳ Masuk...',
+        'Masuk'
+      );
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+      setLoading(
+        submitBtn,
+        false,
+        '⏳ Masuk...',
+        'Masuk'
+      );
 
       if (error) {
-        // Supabase mengembalikan pesan error dalam bahasa Inggris,
-        // kita terjemahkan pesan yang paling umum supaya lebih ramah.
-        let pesan = 'Email atau password salah.';
+        console.error('❌ Login gagal:', error);
+
+        let pesan = error.message;
+
+        if (error.message.includes('Invalid login credentials')) {
+          pesan = 'Email atau password salah.';
+        }
 
         if (error.message.includes('Email not confirmed')) {
           pesan = 'Email belum diverifikasi. Cek inbox email kamu.';
         }
 
-        showMessage(messageEl, '❌ ' + pesan, 'error');
+        showMessage(
+          messageEl,
+          '❌ ' + pesan,
+          'error'
+        );
+
         return;
       }
 
-      showMessage(messageEl, '✅ Berhasil masuk! Mengalihkan...', 'success');
+      console.log('✅ Login berhasil:', data.user);
 
-      // Tahap berikutnya kita akan buat dashboard.html
+      showMessage(
+        messageEl,
+        '✅ Berhasil masuk! Mengalihkan...',
+        'success'
+      );
+
       setTimeout(function () {
         window.location.href = 'dashboard.html';
       }, 800);
@@ -98,38 +155,78 @@ document.addEventListener('DOMContentLoaded', async function () {
     registerForm.addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const email = document.getElementById('register-email').value.trim();
-      const password = document.getElementById('register-password').value;
-      const confirmPassword = document.getElementById('register-confirm-password').value;
-      const messageEl = document.getElementById('register-message');
-      const submitBtn = registerForm.querySelector('button[type="submit"]');
+      const emailInput =
+        document.getElementById('register-email');
+
+      const passwordInput =
+        document.getElementById('register-password');
+
+      const confirmPasswordInput =
+        document.getElementById('register-confirm-password');
+
+      const messageEl =
+        document.getElementById('register-message');
+
+      const submitBtn =
+        registerForm.querySelector('button[type="submit"]');
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
 
       messageEl.classList.add('hidden');
 
-      // Validasi sederhana di sisi frontend
       if (password.length < 6) {
-        showMessage(messageEl, '❌ Password minimal 6 karakter.', 'error');
+        showMessage(
+          messageEl,
+          '❌ Password minimal 6 karakter.',
+          'error'
+        );
         return;
       }
 
       if (password !== confirmPassword) {
-        showMessage(messageEl, '❌ Konfirmasi password tidak cocok.', 'error');
+        showMessage(
+          messageEl,
+          '❌ Konfirmasi password tidak cocok.',
+          'error'
+        );
         return;
       }
 
-      setLoading(submitBtn, true, '⏳ Mendaftar...', 'Daftar');
+      setLoading(
+        submitBtn,
+        true,
+        '⏳ Mendaftar...',
+        'Daftar'
+      );
 
-      const { data, error } = await supabaseClient.auth.signUp({
-        email: email,
-        password: password
-      });
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+          email: email,
+          password: password
+        });
 
-      setLoading(submitBtn, false, '⏳ Mendaftar...', 'Daftar');
+      setLoading(
+        submitBtn,
+        false,
+        '⏳ Mendaftar...',
+        'Daftar'
+      );
 
       if (error) {
-        showMessage(messageEl, '❌ ' + error.message, 'error');
+        console.error('❌ Register gagal:', error);
+
+        showMessage(
+          messageEl,
+          '❌ ' + error.message,
+          'error'
+        );
+
         return;
       }
+
+      console.log('✅ Register berhasil:', data);
 
       showMessage(
         messageEl,
@@ -142,11 +239,18 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   // ============================================
-  // LOGOUT (dipakai nanti di dashboard.js)
+  // LOGOUT
   // ============================================
 
   window.handleLogout = async function () {
-    await supabaseClient.auth.signOut();
+    const { error } =
+      await supabaseClient.auth.signOut();
+
+    if (error) {
+      console.error('❌ Logout gagal:', error.message);
+      return;
+    }
+
     window.location.href = 'login.html';
   };
 
